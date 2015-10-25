@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Drawing;
 
 namespace Code_College.Models
 {
@@ -20,7 +21,9 @@ namespace Code_College.Models
         public string Username { get; set; }
         public string PasswordHash { get; set; }
         public string DOB { get; set; }
-        public int PlayerScore { get; set; }
-        public int PlayerLevel { get; set; }
+        public char Gender { get; set; }
+        public Bitmap ProfilePicture { get; set; }
+        public int UserScore { get; set; }
+        public int UserLevel { get; set; }
     }
 }
