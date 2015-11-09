@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Code_College.Models
 {
-    public class Authentication
+    public class Account
     {
         private UserDBEntities DB = new UserDBEntities();
 
@@ -117,7 +117,7 @@ namespace Code_College.Models
 
             if (user != null)
             {
-                user.PP = NewPP;
+                user.ProfilePicture = NewPP;
                 DB.SaveChangesAsync();
             }
         }
