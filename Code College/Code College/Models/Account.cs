@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace Code_College.Models
@@ -37,7 +39,7 @@ namespace Code_College.Models
 
                 if (PP == null)
                 {
-                    GenerateRandomImage(Gender);
+                    
                 }
 
                 NewUser.UserScore = 0;
@@ -122,47 +124,15 @@ namespace Code_College.Models
             }
         }
 
-        public Bitmap GenerateRandomImage(char Gender)
+        public Bitmap ProcessImage(Bitmap UploadedPicture)
         {
-            Bitmap Pixel = new Bitmap(1, 1);
-            Pixel.SetPixel(0, 0, Color.White);
+            Bitmap Image;
+            Graphics GImage = Graphics.FromImage(UploadedPicture);
 
-            Bitmap Image = new Bitmap(Pixel, 400, 400);
-            Random Rand = new Random();
-            int ColoredBits = Rand.Next(1, 17);
-            int i, j, count = 0;
-            Color color = new Color();
-            int[] UsedPixels;
-            UsedPixels = new int[ColoredBits * 100];
-
-            if (Gender == 'M')
-            {
-                color = Color.Blue;
-            }
-            else if (Gender == 'F')
-            {
-                color = Color.Pink;
-            }
-            else
-            {
-                color = Color.Black;
-            }
-
-            while (count < ColoredBits)
-            {
-                i = Rand.Next(1, 5) * 10;
-                j = Rand.Next(1, 5) * 10;
-
-                for (int index = 0; index <= 200; index++)
-                {
-                    Image.SetPixel(i, j, color);
-
-                    ++i;
-                    ++j;
-                }
-
-                count++;
-            }
+            GImage.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            GImage.SmoothingMode = SmoothingMode.HighQuality;
+            GImage.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            GImage.CompositingQuality = CompositingQuality.HighQuality;
 
             return Image;
         }
@@ -175,6 +145,35 @@ namespace Code_College.Models
             {
                 Cookie.Expires.AddYears(-2);
             }
+        }
+
+        public bool Validation(string Data, char FieldType)
+        {
+            bool Validated = false;
+
+            switch (FieldType)
+            {
+                case 'n':
+                    Regex NameValidator = new Regex("[a-zA-Z'-]", RegexOptions.Compiled);
+
+                    Validated = NameValidator.IsMatch(Data);
+
+                    break;
+                case 'e':
+                    Regex EmailValidator = new Regex("[a-zA-Z0-9'-@.]", RegexOptions.Compiled);
+
+                    Validated = EmailValidator.IsMatch(Data);
+
+                    break;
+                case 'u':
+                    Regex UsernameValidator = new Regex("[a-zA-Z0-9'-_]", RegexOptions.Compiled);
+
+                    Validated = UsernameValidator.IsMatch(Data);
+
+                    break;
+            }
+
+            return Validated;
         }
     }
 }
