@@ -109,7 +109,7 @@ body a{
 }
 .warning_4, .warning_44{
 	padding:1px 5px !important;
-}	
+}
 .but_list, .tab-content{
 	margin:1.5em 0 0 0;
 }
@@ -268,7 +268,7 @@ ul.nav.navbar-nav.navbar-right {
 }
 .dropdown-menu {
   min-width: 202px !important;
-}  
+}
 /* Active state */
 .wrapper-dropdown-4.active i.dropdown-icon{
     background-position:-2px -2px;
@@ -684,7 +684,6 @@ i.icon_13{
 }
 #style-2::-webkit-scrollbar-track
 {
-	
 	background-color:#f0f0f0;
 }
 
@@ -696,7 +695,6 @@ i.icon_13{
 
 #style-2::-webkit-scrollbar-thumb
 {
-	
 	background-color:rgb(6, 217, 149);
 }
 /*-- General stats --*/
@@ -967,7 +965,7 @@ button.note-color-btn {
 .label {
   font-weight: 300 !important;
   border-radius:4px;
-}  
+}
 .grid_5{
 	background:#fff;
 	padding:2em;
@@ -1267,7 +1265,7 @@ div[id^=uniform-] input {
   -moz-opacity: 0;
 }
 .email-list1{
-  padding: 0; 
+  padding: 0;
 }
 ul.collection {
   margin: 0;
@@ -1283,7 +1281,7 @@ ul.collection li.email_last{
 }
 #email-list .collection .collection-item.avatar {
   height: auto;
-  
+
   position: relative;
 }
 #email-list .collection .collection-item.avatar .icon {
@@ -1417,10 +1415,10 @@ i.icon_6{
   background: #4CAF50;
 }
 h4.content-box-header{
-  color: #000; 
-  font-size: 1.3em; 
-  font-weight: 300; 
-  margin-bottom: 1em; 
+  color: #000;
+  font-size: 1.3em;
+  font-weight: 300;
+  margin-bottom: 1em;
   text-align:left;
 }
 .editor{
@@ -1472,7 +1470,7 @@ div.checker input {
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
   font-size: 0.85em;
   color: #999;
-} 
+}
 .mailbox-content table tbody tr:hover {
   background: #FAFAFA;
 }
@@ -1922,7 +1920,7 @@ label.round {
 	line-height:1.8em;
 }
 .list-inline>li a{
-   font-size:0.85em;	
+   font-size:0.85em;
 }
 /*-- media --*/
 .bs-example5{
@@ -2141,7 +2139,7 @@ ul.new li.new_left{
 }
 ul.new li.new_left p, p.sign{
   font-weight:300;
-} 
+}
 p.sign a, ul.new li.new_left p a{
   color:#000;
 }
@@ -2176,10 +2174,10 @@ ul.new li.new_right{
 .col-xs-8.activity-desc {
   width: 64.666667%;
   padding: 0;
-}	
+}
 .activity-desc h5 {
   font-size: 0.85em;
-}  
+}
 .svg{
   width: 600px !important;
   height: 400px;
@@ -2201,7 +2199,7 @@ canvas#doughnut, canvas#line, canvas#polarArea, #bar, #pie, #radar {
 @media (max-width:1280px){
 .col-xs-8.activity-desc {
   width: 63.666667%;
-}	
+}
 .activity-desc p {
   font-size: 12px;
 }
@@ -2220,7 +2218,7 @@ i.text-info {
   width: 45.5%;
 }
 }
-@media (max-width:1024px){	
+@media (max-width:1024px){
 .r3_counter_box .fa {
   width: 50px;
   height: 50px;
@@ -2284,7 +2282,7 @@ div#vmap {
 }
 .col_2 {
   padding: 5px;
-}  
+}
 .tiles_info .tiles-head {
   padding: 5px 5px;
   font-size: 11px;
@@ -2298,7 +2296,7 @@ div#vmap {
 }
 p.date-in, span.date-on{
   font-size: 1em;
-}  
+}
 .grid-date h4 {
   font-size: 3.5em;
   padding: 44px 0 15px 0;
@@ -2324,7 +2322,7 @@ ul.collection, .mailbox-content{
 }
 .mrg10A {
   margin:1px!important;
-}  
+}
 .tile-progress {
   padding: 15px;
 }
@@ -2389,7 +2387,7 @@ span.badge {
   right: 10px;
 }
 }
-@media (max-width:768px){	
+@media (max-width:768px){
 .navbar-right {
   margin-right:3px !important;
 }
@@ -2437,7 +2435,7 @@ span.badge {
 .coffee-top img{
   display:inline-block;
 }
-.stats-info3{ 
+.stats-info3{
   padding:0;
   margin-bottom:1em;
 }
@@ -2569,7 +2567,7 @@ button.btn.btn-lg, button.btn{
 }
 .app-cam input[type="text"], .app-cam input[type="password"]{
   padding: 10px;
-}  
+}
 .login-logo {
   padding: 40px 0;
 }
@@ -2627,7 +2625,7 @@ td.head {
 }
 h2.form-heading {
   font-size: 16px;
-}  
+}
 .login-social-link a {
   padding: 8px 15px;
 }

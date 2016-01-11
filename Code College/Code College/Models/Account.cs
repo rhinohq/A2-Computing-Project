@@ -39,7 +39,6 @@ namespace Code_College.Models
 
                 if (PP == null)
                 {
-                    
                 }
 
                 NewUser.UserScore = 0;
@@ -159,12 +158,14 @@ namespace Code_College.Models
                     Validated = NameValidator.IsMatch(Data);
 
                     break;
+
                 case 'e':
                     Regex EmailValidator = new Regex("[a-zA-Z0-9'-@.]", RegexOptions.Compiled);
 
                     Validated = EmailValidator.IsMatch(Data);
 
                     break;
+
                 case 'u':
                     Regex UsernameValidator = new Regex("[a-zA-Z0-9'-_]", RegexOptions.Compiled);
 

@@ -17,6 +17,7 @@ namespace Code_College.Models
     {
         [Key]
         public int ExID { get; set; }
+
         public string ExTitle { get; set; }
         public string ExDescription { get; set; }
         public XmlDocument ExMarkScheme { get; set; }
