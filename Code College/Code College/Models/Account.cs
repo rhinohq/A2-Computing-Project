@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -39,7 +40,12 @@ namespace Code_College.Models
 
                 if (PP == null)
                 {
+                    NewUser.ProfilePicture = ProcessImage(Properties.Resources.DefaultPP);
                 }
+                else if (PP.Height == 512 && PP.Width == 512)
+                    NewUser.ProfilePicture = PP;
+                else
+                    NewUser.ProfilePicture = ProcessImage(PP);
 
                 NewUser.UserScore = 0;
                 NewUser.UserLevel = 0;
@@ -123,17 +129,29 @@ namespace Code_College.Models
             }
         }
 
-        public Bitmap ProcessImage(Bitmap UploadedPicture)
+        public Bitmap ProcessImage(Image UploadedPicture)
         {
-            Bitmap Image;
-            Graphics GImage = Graphics.FromImage(UploadedPicture);
+            var destRect = new Rectangle(0, 0, 512, 512);
+            var destImage = new Bitmap(512, 512);
 
-            GImage.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            GImage.SmoothingMode = SmoothingMode.HighQuality;
-            GImage.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            GImage.CompositingQuality = CompositingQuality.HighQuality;
+            destImage.SetResolution(UploadedPicture.HorizontalResolution, UploadedPicture.VerticalResolution);
 
-            return Image;
+            using (var graphics = Graphics.FromImage(destImage))
+            {
+                graphics.CompositingMode = CompositingMode.SourceCopy;
+                graphics.CompositingQuality = CompositingQuality.HighQuality;
+                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphics.SmoothingMode = SmoothingMode.HighQuality;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                using (var wrapMode = new ImageAttributes())
+                {
+                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+                    graphics.DrawImage(UploadedPicture, destRect, 0, 0, UploadedPicture.Width, UploadedPicture.Height, GraphicsUnit.Pixel, wrapMode);
+                }
+            }
+
+            return destImage;
         }
 
         public void RemoveCookie(HttpRequest Request)
