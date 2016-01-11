@@ -59,5 +59,29 @@ namespace Code_College.Interpreter
             
             return false;
         }
+
+        public bool FullMark()
+        {
+            if (MarkScheme.CheckOutput)
+            {
+                return MarkOutput();
+            }
+            else if (MarkScheme.CheckVars)
+            {
+                return MarkVars();
+            }
+            else if (MarkScheme.CheckExprs)
+            {
+                return MarkExprs();
+            }
+            else if (MarkScheme.CheckConStruct)
+            {
+                return MarkControlStructs();
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
