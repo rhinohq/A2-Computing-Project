@@ -111,6 +111,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Interpreter\Combinators.cs" />
+    <Compile Include="Interpreter\Equality.cs" />
+    <Compile Include="Interpreter\Interpreter.cs" />
+    <Compile Include="Interpreter\Lexer.cs" />
+    <Compile Include="Interpreter\Lua\LuaAST.cs" />
+    <Compile Include="Interpreter\Lua\LuaLexer.cs" />
+    <Compile Include="Interpreter\Lua\LuaParser.cs" />
+    <Compile Include="Interpreter\Marker.cs" />
+    <Compile Include="Interpreter\MarkerLists.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\ExDBEntities.cs" />
     <Compile Include="Models\UserDBEntities.cs" />
