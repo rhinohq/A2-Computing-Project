@@ -35,3 +35,5 @@ C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Pr
 C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\obj\Debug\Code College.csprojResolveAssemblyReference.cache
 C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\obj\Debug\Code College.dll
 C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\obj\Debug\Code College.pdb
+C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\obj\Debug\Code_College.Properties.Resources.resources
+C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\obj\Debug\Code College.csproj.GenerateResource.Cache
