@@ -4,7 +4,10 @@ namespace Code_College.Interpreter
 {
     internal class Result
     {
-        public string Repr(string Token, int Pos)
+        public string Token { get; set; }
+        public int Pos { get; set; }
+        
+        public string Repr()
         {
             return "Result(" + Token + ", " + Pos.ToString() + ")";
         }
@@ -57,7 +60,10 @@ namespace Code_College.Interpreter
             {
                 Result result = new Result();
 
-                return result.Repr(Tokens[Pos, 0], Pos++);
+                result.Token = Tokens[Pos, 0];
+                result.Pos = Pos++;
+
+                return result.Repr();
             }
             else
                 return null;
@@ -76,7 +82,10 @@ namespace Code_College.Interpreter
             {
                 Result result = new Result();
 
-                return result.Repr(Tokens[Pos, 0], Pos++);
+                result.Token = Tokens[Pos, 0];
+                result.Pos = Pos++;
+
+                return result.Repr();
             }
             else
                 return null;

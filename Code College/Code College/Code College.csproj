@@ -140,6 +140,7 @@
     <Content Include="Views\Dashboard\Dash.cshtml">
       <BrowseToURL>~/Dash</BrowseToURL>
     </Content>
+    <Content Include="Views\Login\Login.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

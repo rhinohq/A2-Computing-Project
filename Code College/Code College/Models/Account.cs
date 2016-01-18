@@ -12,7 +12,7 @@ namespace Code_College.Models
 {
     public class Account
     {
-        private UserDBEntities DB = new UserDBEntities();
+        private UserDBEntities UserDB = new UserDBEntities();
 
         public string HashCredentials(string Salt, string Password)
         {
@@ -26,7 +26,7 @@ namespace Code_College.Models
 
         public void CreateNewUser(string Name, string Email, string Username, string Password, string DOB, char Gender, Bitmap PP, HttpResponse Response)
         {
-            User user = DB.Users.Where(x => x.Username == Username).FirstOrDefault();
+            User user = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
 
             if (user == null)
             {
@@ -50,8 +50,8 @@ namespace Code_College.Models
                 NewUser.UserScore = 0;
                 NewUser.UserLevel = 0;
 
-                DB.Users.Add(NewUser);
-                DB.SaveChangesAsync();
+                UserDB.Users.Add(NewUser);
+                UserDB.SaveChangesAsync();
 
                 AddCookie(NewUser.Username, Response, false);
             }
@@ -63,7 +63,7 @@ namespace Code_College.Models
 
         public bool VerifyUser(string Username, string Password)
         {
-            User user = DB.Users.Where(x => x.Username == Username).FirstOrDefault();
+            User user = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
 
             if (user == null)
             {
@@ -98,34 +98,34 @@ namespace Code_College.Models
 
         public void DeleteUser(string Username, string Password)
         {
-            User user = DB.Users.Where(x => x.Username == Username).FirstOrDefault();
+            User user = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
 
             if (user != null)
             {
-                DB.Users.Remove(user);
-                DB.SaveChangesAsync();
+                UserDB.Users.Remove(user);
+                UserDB.SaveChangesAsync();
             }
         }
 
         public void ChangePassword(string Email, string Username, string NewPassword)
         {
-            User user = DB.Users.Where(x => x.Username == Username).FirstOrDefault();
+            User user = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
 
             if (user != null)
             {
                 user.PasswordHash = HashCredentials(Email, NewPassword);
-                DB.SaveChangesAsync();
+                UserDB.SaveChangesAsync();
             }
         }
 
         public void ChangePP(string Username, Bitmap NewPP)
         {
-            User user = DB.Users.Where(x => x.Username == Username).FirstOrDefault();
+            User user = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
 
             if (user != null)
             {
                 user.ProfilePicture = NewPP;
-                DB.SaveChangesAsync();
+                UserDB.SaveChangesAsync();
             }
         }
 
