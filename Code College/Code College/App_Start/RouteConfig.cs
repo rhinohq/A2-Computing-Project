@@ -11,8 +11,8 @@ namespace Code_College
 
             routes.MapRoute(
                 name: "Default",
-                url: "{HomeController}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                url: "{DashboardController}/{action}/{id}",
+                defaults: new { controller = "Dash", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

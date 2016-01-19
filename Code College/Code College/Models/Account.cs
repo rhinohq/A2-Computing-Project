@@ -24,7 +24,7 @@ namespace Code_College.Models
             return HashedCredentials;
         }
 
-        public void CreateNewUser(string Name, string Email, string Username, string Password, string DOB, char Gender, Bitmap PP, HttpResponse Response)
+        public void CreateNewUser(string Name, string Email, string Username, string Password, string DOB, char Gender, Bitmap PP, HttpResponseBase Response)
         {
             User user = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
 
@@ -79,7 +79,7 @@ namespace Code_College.Models
             }
         }
 
-        public static void AddCookie(string Username, HttpResponse Response, bool RememberUser)
+        public void AddCookie(string Username, HttpResponseBase Response, bool RememberUser)
         {
             HttpCookie LoginCookie = new HttpCookie("UserAuthentication");
             LoginCookie["User"] = Username;
