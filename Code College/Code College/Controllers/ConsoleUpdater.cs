@@ -12,5 +12,10 @@ namespace Code_College.Controllers
         {
             Clients.All.hello();
         }
+
+        public void UpdateConsole(string ConsoleOutput)
+        {
+            Clients.All.ChangeConsoleContents(ConsoleOutput);
+        }
     }
 }

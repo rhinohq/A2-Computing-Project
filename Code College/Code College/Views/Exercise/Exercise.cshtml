@@ -1,9 +1,12 @@
-﻿
-@{
-    @using System.Data.Entity;
-    @using Code_College.Models;
+﻿@using System.Web.Optimization;
+@using System.Data.Entity;
+@using Code_College.Models;
 
+@{
     private ExDBEntities ExDB = new ExDBEntities();
+
+    Styles.Render();
+    Scripts.Render();
 }
 
 <!DOCTYPE html>
@@ -13,7 +16,7 @@
     <meta name="viewport" content="width=device-width" />
 </head>
 <body>
-    <div> 
+    <div>
     </div>
 </body>
 </html>
