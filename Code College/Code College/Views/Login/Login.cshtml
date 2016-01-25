@@ -1,13 +1,12 @@
 ﻿
 @{
-    using System.Web.Optimization;
+    @using System.Web.Optimization;
+    @using Code_College.Models;
 
     Layout = null;
     ViewBag.Title = "Login - Code College";
 
-    System.Web.Optimization
-
-    Code_College.Models.Account Account = new Code_College.Models.Account();
+    Account Account = new Account();
 
     if (IsPost)
     {
@@ -34,7 +33,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="Code College, Login, Learn Programming, Learn Lua, Lua, Development, Code" />
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-    @
+    @Styles.Render();
+    @Scripts.Render();
 </head>
 
 <body id="login">

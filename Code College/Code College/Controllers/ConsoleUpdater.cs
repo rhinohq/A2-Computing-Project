@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNet.SignalR;
 
 namespace Code_College.Controllers
 {
-    public class LoginController : Controller
+    public class ConsoleUpdater : Hub
     {
-        // GET: Login
-        public ActionResult Index()
+        public void Hello()
         {
-            return View();
+            Clients.All.hello();
         }
     }
 }
