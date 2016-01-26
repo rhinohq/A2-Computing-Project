@@ -16,10 +16,7 @@ namespace Code_College
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            if (ExDB.Exercises.Where(x => x.ExID == 1).First() == null)
-            {
-                
-            }
+            //  TODO: Check exercise database for entries.
         }
     }
 }

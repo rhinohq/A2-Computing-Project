@@ -2,11 +2,8 @@
 @using System.Data.Entity;
 @using Code_College.Models;
 
-@{
-    private ExDBEntities ExDB = new ExDBEntities();
-
-    Styles.Render();
-    Scripts.Render();
+@{ 
+    ExDBEntities ExDB = new ExDBEntities();
 }
 
 <!DOCTYPE html>
@@ -14,6 +11,8 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    @Styles.Render();
+    @Scripts.Render();
 </head>
 <body>
     <div>

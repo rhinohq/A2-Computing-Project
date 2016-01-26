@@ -2,12 +2,14 @@
 {
     internal class Equality
     {
-        public bool Eq()
+        public bool Equal()
         {
+            return true;
         }
 
-        public bool Ne()
+        public bool NotEqual()
         {
+            return false;
         }
     }
 }
