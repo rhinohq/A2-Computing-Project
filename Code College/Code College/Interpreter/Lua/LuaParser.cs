@@ -5,12 +5,12 @@
         private Tag INT = new Tag();
         private Tag ID = new Tag();
 
-        //public Result LuaParse(string[,] Tokens)
-        //{
-        //    Result AST;
+        public Result LuaParse(string[,] Tokens)
+        {
+            Result AST;
 
-        //    return AST;
-        //}
+            return AST;
+        }
 
         public Reserved Keyword(string KW)
         {
