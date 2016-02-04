@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Hubs;
 
-namespace Code_College.Controllers
+namespace Code_College.Hubs
 {
-    public class ConsoleUpdater : Hub
+    [HubName("Console")]
+    public class ConsoleHub : Hub
     {
         public void Hello()
         {
@@ -15,7 +17,7 @@ namespace Code_College.Controllers
 
         public void UpdateConsole(string ConsoleOutput)
         {
-            Clients.All.ChangeConsoleContents(ConsoleOutput);
+            Clients.Caller.ChangeConsoleContents(ConsoleOutput);
         }
     }
 }
