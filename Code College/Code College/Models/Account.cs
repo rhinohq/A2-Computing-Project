@@ -213,5 +213,14 @@ namespace Code_College.Models
                 return false;
             }
         }
+
+        public void LevelUp(string Username)
+        {
+            User user = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
+
+            user.UserLevel++;
+
+            UserDB.SaveChangesAsync();
+        }
     }
 }
