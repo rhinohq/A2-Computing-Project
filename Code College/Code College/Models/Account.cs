@@ -53,7 +53,7 @@ namespace Code_College.Models
                 UserDB.Users.Add(NewUser);
                 UserDB.SaveChangesAsync();
 
-                AddCookie(NewUser.Username, Response, false);
+                AddCookie(NewUser.Username, Password, Response, false);
             }
             else
             {
@@ -79,10 +79,11 @@ namespace Code_College.Models
             }
         }
 
-        public void AddCookie(string Username, HttpResponseBase Response, bool RememberUser)
+        public void AddCookie(string Username, string Password, HttpResponseBase Response, bool RememberUser)
         {
             HttpCookie LoginCookie = new HttpCookie("UserAuthentication");
             LoginCookie["User"] = Username;
+            LoginCookie["Password"] = Password;
 
             if (RememberUser)
             {
@@ -185,7 +186,7 @@ namespace Code_College.Models
                     break;
 
                 case 'u':
-                    Regex UsernameValidator = new Regex("[a-zA-Z0-9'-_]", RegexOptions.Compiled);
+                    Regex UsernameValidator = new Regex("[a-zA-Z0-9'-_.]", RegexOptions.Compiled);
 
                     Validated = UsernameValidator.IsMatch(Data);
 
@@ -193,6 +194,24 @@ namespace Code_College.Models
             }
 
             return Validated;
+        }
+
+        public bool VerifyCookie(HttpRequest Request, HttpCookie Cookie)
+        {
+            User user = UserDB.Users.Where(x => x.Username == Cookie["Username"]).FirstOrDefault();
+
+            if (user == null)
+            {
+                return false;
+            }
+            else if (user.PasswordHash == HashCredentials(Cookie["Username"], Cookie["Password"]))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
