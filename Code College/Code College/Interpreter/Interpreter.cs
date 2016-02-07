@@ -5,6 +5,7 @@
         public void Interpret(string Code)
         {
             Lua.LuaLexer Lexer = new Lua.LuaLexer();
+            Lua.LuaParser Parser = new Lua.LuaParser();
 
             string[,] Tokens = Lexer.LuaLex(Code);
         }

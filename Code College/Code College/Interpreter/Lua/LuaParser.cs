@@ -22,9 +22,9 @@
             return KeywordTag;
         }
 
-        public Phase Parser()
+        public Phrase Parser()
         {
-            Phase phrase = new Phase();
+            Phrase phrase = new Phrase();
 
             return phrase;
         }

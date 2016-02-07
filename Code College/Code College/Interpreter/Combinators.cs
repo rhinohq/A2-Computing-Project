@@ -94,35 +94,43 @@ namespace Code_College.Interpreter
 
     internal class Concat : Parser
     {
-        public Parser Left { get; set; }
-        public Parser Right { get; set; }
+        public Tag Left { get; set; }
+        public Reserved Right { get; set; }
     }
 
     internal class Exp : Parser
     {
+        public Alternate Parser { get; set; }
+        public Process Separator { get; set; }
     }
 
     internal class Alternate : Parser
     {
+        public Reserved Left { get; set; }
+        public Reserved Right { get; set; }
     }
 
     internal class Opt : Parser
     {
+        public Concat Parser { get; set; }
     }
 
     internal class Rep : Parser
     {
+        public Concat Parser { get; set; }
     }
 
     internal class Process : Parser
     {
+        public Concat Parser { get; set; }
     }
 
     internal class Lazy : Parser
     {
     }
 
-    internal class Phase : Parser
+    internal class Phrase : Parser
     {
+        public Exp Parser { get; set; }
     }
 }

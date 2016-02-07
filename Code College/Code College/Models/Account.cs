@@ -82,7 +82,7 @@ namespace Code_College.Models
 
         public void AddCookie(string Username, string Password, HttpResponseBase Response, bool RememberUser)
         {
-            HttpCookie LoginCookie = new HttpCookie("UserAuthentication");
+            HttpCookie LoginCookie = new HttpCookie("UserAuth");
             LoginCookie["Username"] = Username;
             LoginCookie["Password"] = Cryptography.Encrypt(Password, Username);
 
@@ -158,7 +158,7 @@ namespace Code_College.Models
 
         public void RemoveCookie(HttpRequest Request)
         {
-            HttpCookie Cookie = Request.Cookies["UserAuthentication"];
+            HttpCookie Cookie = Request.Cookies["UserAuth"];
 
             if (Cookie != null)
             {
