@@ -39,6 +39,17 @@ namespace Marker
             }
         }
 
+        public class Function : IEquatable<Function>
+        {
+            public string[] Parameters { get; set; }
+            public string ReturnType { get; set; }
+
+            public bool Equals(Function other)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public string Output { get; set; }
 
         public bool CheckOutput { get; set; }
@@ -49,6 +60,7 @@ namespace Marker
         public List<Variable> AssignedVariables = new List<Variable>();
         public List<Expression> Expressions = new List<Expression>();
         public List<ControlStructure> ControlStructures = new List<ControlStructure>();
+        public List<Function> Functions = new List<Function>();
     }
 
     public class UserCode
@@ -87,10 +99,22 @@ namespace Marker
             }
         }
 
+        public class Function : IEquatable<Function>
+        {
+            public string[] Parameters { get; set; }
+            public string ReturnType { get; set; }
+
+            public bool Equals(Function other)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public string Output { get; set; }
 
         public List<Variable> AssignedVariables = new List<Variable>();
         public List<Expression> Expressions = new List<Expression>();
         public List<ControlStructure> ControlStructures = new List<ControlStructure>();
+        public List<Function> Functions = new List<Function>();
     }
 }

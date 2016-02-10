@@ -1,47 +1,54 @@
 ﻿using System;
-using System.IO;
 
 using Language.Lua.Library;
 
+using Marker;
+
 namespace Language.Lua
 {
-    internal class LuaInterpreter
+    public static class LuaInterpreter
     {
-        public static LuaValue RunFile(string luaFile)
+        public static UserCode CodeReport { get; set; }
+
+        public static LuaValue RunCode(string UserCode)
         {
-            return Interpreter(File.ReadAllText(luaFile));
+            return Interpreter(UserCode);
         }
 
-        public static LuaValue RunFile(string luaFile, LuaTable enviroment)
+        public static LuaValue RunFile(string UserCode, LuaTable Enviroment)
         {
-            return Interpreter(File.ReadAllText(luaFile), enviroment);
+            return Interpreter(UserCode, Enviroment);
         }
 
-        public static LuaValue Interpreter(string luaCode)
+        public static LuaValue Interpreter(string UserCode)
         {
-            return Interpreter(luaCode, CreateGlobalEnviroment());
+            return Interpreter(UserCode, CreateGlobalEnviroment());
         }
 
-        public static LuaValue Interpreter(string luaCode, LuaTable enviroment)
+        public static LuaValue Interpreter(string UserCode, LuaTable Enviroment)
         {
-            Chunk chunk = Parse(luaCode);
-            chunk.Enviroment = enviroment;
-            return chunk.Execute();
+            Chunk Chunk = Parse(UserCode);
+
+            Chunk.Enviroment = Enviroment;
+
+            return Chunk.Execute();
         }
 
-        private static Parser parser = new Parser();
+        private static Parser Parser = new Parser();
 
-        public static Chunk Parse(string luaCode)
+        public static Chunk Parse(string UserCode)
         {
-            bool success;
-            Chunk chunk = parser.ParseChunk(new TextInput(luaCode), out success);
-            if (success)
+            bool Success;
+
+            Chunk Chunk = Parser.ParseChunk(new TextInput(UserCode), out Success);
+
+            if (Success)
             {
-                return chunk;
+                return Chunk;
             }
             else
             {
-                throw new ArgumentException("Code has syntax errors:\r\n" + parser.GetErrorMessages());
+                throw new ArgumentException("Code has syntax errors:\r\n" + Parser.GetErrorMessages());
             }
         }
 
@@ -52,7 +59,6 @@ namespace Language.Lua
             BaseLib.RegisterFunctions(global);
             StringLib.RegisterModule(global);
             TableLib.RegisterModule(global);
-            IOLib.RegisterModule(global);
             MathLib.RegisterModule(global);
 
             global.SetNameValue("_G", global);

@@ -191,7 +191,6 @@
     <Compile Include="Interpreter\Expr\Expr.cs" />
     <Compile Include="Interpreter\LuaInterpreter.cs" />
     <Compile Include="Interpreter\LuaLibs\BaseLib.cs" />
-    <Compile Include="Interpreter\LuaLibs\IOLib.cs" />
     <Compile Include="Interpreter\LuaLibs\MathLib.cs" />
     <Compile Include="Interpreter\LuaLibs\StringLib.cs" />
     <Compile Include="Interpreter\LuaLibs\TableLib.cs" />
