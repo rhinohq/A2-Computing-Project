@@ -19,6 +19,7 @@ namespace Code_College.Models
         public int ExID { get; set; }
         public string ExTitle { get; set; }
         public string ExDescription { get; set; }
+        public string ExCodeTemplate { get; set; }
         public XmlDocument ExMarkScheme { get; set; }
     }
 }

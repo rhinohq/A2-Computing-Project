@@ -231,6 +231,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="NewInterpreter\LuaLibs\" />
     <Folder Include="Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
