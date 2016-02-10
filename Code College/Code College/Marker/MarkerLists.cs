@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Code_College.Interpreter
+namespace Marker
 {
     public class ExMarkScheme
     {
