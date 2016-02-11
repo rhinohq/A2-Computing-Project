@@ -20,6 +20,7 @@ namespace Code_College.Models
         public string ExTitle { get; set; }
         public string ExDescription { get; set; }
         public string ExCodeTemplate { get; set; }
+        public string ExAppendCode { get; set; }
         public XmlDocument ExMarkScheme { get; set; }
     }
 }
