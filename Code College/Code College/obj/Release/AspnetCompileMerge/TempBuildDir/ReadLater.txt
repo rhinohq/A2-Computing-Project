@@ -1,2 +1,0 @@
-﻿To disable OWIN startup discovery, add the appSetting owin:AutomaticAppStartup with a value of "false" in your web.config.
-To specify the OWIN startup Assembly, Class, or Method, add the appSetting owin:AppStartup with the fully qualified startup class or configuration method name in your web.config.]
