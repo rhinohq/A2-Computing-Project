@@ -2,12 +2,6 @@
 @using Code_College.Models;
 
 @{
-
-    Layout = null;
-    ViewBag.Title = "Login - Code College";
-
-    Account Account = new Account();
-
     if (IsPost)
     {
         ViewBag.Username = Request.Form["Username"];
@@ -16,11 +10,9 @@
 
         if (Account.VerifyUser(ViewBag.Username, ViewBag.Password))
         {
-            Account.AddCookie(ViewBag.Username, this.Response, true);
-        }
-        else
-        {
-            Response.Redirect("~/Login");
+            Account.AddCookie(ViewBag.Username, ViewBag.Password, Response, true);
+
+            Response.Redirect("~/Dashboard");
         }
     }
 }
@@ -33,8 +25,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="Code College, Login, Learn Programming, Learn Lua, Lua, Development, Code" />
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-    @Styles.Render();
-    @Scripts.Render();
+    <title>Login - Code College</title>
+
+    @Styles.Render("~/bundles/css")
+    @Scripts.Render("~/bundles/js")
 </head>
 
 <body id="login">
@@ -44,12 +38,12 @@
     <h2 class="form-heading">Login</h2>
     <div class="app-cam">
         <form method="post">
-            <input name="Username" type="text" class="text" value="Username" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'E-mail address';}">
-            <input name="Password" type="password" value="Password" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}">
-            <div class="submit"><input type="submit" onclick="UserMessage()" value="Login"></div>
+            @Html.TextBox("Username")
+            @Html.Password("Password")
+            <div class="submit"><input type="submit" value="Login"></div>
             <ul class="new">
                 <li class="new_left"><p><a href="#">Forgot Password?</a></p></li>
-                <li class="new_right"><p class="sign">New here?<a href="register.html">Sign Up</a></p></li>
+                <li class="new_right"><p class="sign">New here? <a href="/SignUp">Sign Up</a></p></li>
                 <div class="clearfix"></div>
             </ul>
         </form>

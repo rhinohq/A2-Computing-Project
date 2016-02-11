@@ -11,11 +11,11 @@ using System.Web;
 
 namespace Code_College.Models
 {
-    public class Account
+    public static class Account
     {
-        private UserDBEntities UserDB = new UserDBEntities();
+        private static UserDBEntities UserDB = new UserDBEntities();
 
-        public string HashCredentials(string Salt, string Password)
+        public static string HashCredentials(string Salt, string Password)
         {
             SHA512 Hash = SHA512.Create();
 
@@ -25,7 +25,7 @@ namespace Code_College.Models
             return HashedCredentials;
         }
 
-        public void CreateNewUser(string Name, string Email, string Username, string Password, string DOB, char Gender, Bitmap PP, HttpResponseBase Response)
+        public static void CreateNewUser(string Name, string Email, string Username, string Password, string DOB, char Gender, Bitmap PP, HttpResponseBase Response)
         {
             User user = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
 
@@ -62,7 +62,7 @@ namespace Code_College.Models
             }
         }
 
-        public bool VerifyUser(string Username, string Password)
+        public static bool VerifyUser(string Username, string Password)
         {
             User user = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
 
@@ -80,7 +80,7 @@ namespace Code_College.Models
             }
         }
 
-        public void AddCookie(string Username, string Password, HttpResponseBase Response, bool RememberUser)
+        public static void AddCookie(string Username, string Password, HttpResponseBase Response, bool RememberUser)
         {
             HttpCookie LoginCookie = new HttpCookie("UserAuth");
             LoginCookie["Username"] = Username;
@@ -98,7 +98,7 @@ namespace Code_College.Models
             Response.Cookies.Add(LoginCookie);
         }
 
-        public void DeleteUser(string Username, string Password)
+        public static void DeleteUser(string Username, string Password)
         {
             User user = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
 
@@ -109,7 +109,7 @@ namespace Code_College.Models
             }
         }
 
-        public void ChangePassword(string Email, string Username, string NewPassword)
+        public static void ChangePassword(string Email, string Username, string NewPassword)
         {
             User user = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
 
@@ -120,7 +120,7 @@ namespace Code_College.Models
             }
         }
 
-        public void ChangePP(string Username, Bitmap NewPP)
+        public static void ChangePP(string Username, Bitmap NewPP)
         {
             User user = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
 
@@ -131,7 +131,7 @@ namespace Code_College.Models
             }
         }
 
-        public Bitmap ProcessImage(Image UploadedPicture)
+        public static Bitmap ProcessImage(Image UploadedPicture)
         {
             var destRect = new Rectangle(0, 0, 512, 512);
             var destImage = new Bitmap(512, 512);
@@ -156,7 +156,7 @@ namespace Code_College.Models
             return destImage;
         }
 
-        public void RemoveCookie(HttpRequest Request)
+        public static void RemoveCookie(HttpRequest Request)
         {
             HttpCookie Cookie = Request.Cookies["UserAuth"];
 
@@ -166,7 +166,7 @@ namespace Code_College.Models
             }
         }
 
-        public bool Validation(string Data, char FieldType)
+        public static bool Validation(string Data, char FieldType)
         {
             bool Validated = false;
 
@@ -197,25 +197,31 @@ namespace Code_College.Models
             return Validated;
         }
 
-        public bool VerifyCookie(HttpRequest Request, HttpCookie Cookie)
+        public static bool VerifyCookie(HttpRequest Request, HttpCookie Cookie)
         {
             User user = UserDB.Users.Where(x => x.Username == Cookie["Username"]).FirstOrDefault();
 
             if (user == null)
-            {
                 return false;
-            }
             else if (user.PasswordHash == HashCredentials(Cookie["Username"], Cryptography.Decrypt(Cookie["Password"], Cookie["Username"])))
-            {
                 return true;
-            }
             else
-            {
                 return false;
-            }
         }
 
-        public void LevelUp(string Username)
+        public static string GetCookieUsername(HttpRequest Request, HttpCookie Cookie)
+        {
+            User user = UserDB.Users.Where(x => x.Username == Cookie["Username"]).FirstOrDefault();
+
+            if (user == null)
+                return null;
+            else if (Cookie["Username"] != null)
+                return Cookie["Username"];
+            else
+                return null;
+        }
+
+        public static void LevelUp(string Username)
         {
             User user = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
 

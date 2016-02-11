@@ -69,3 +69,9 @@ C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Pr
 C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\obj\Release\Code College.csproj.GenerateResource.Cache
 C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\obj\Release\Code College.dll
 C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\obj\Release\Code College.pdb
+C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\bin\Microsoft.AspNet.SignalR.Owin.dll
+C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\bin\MoonSharp.Interpreter.dll
+C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\bin\Microsoft.AspNet.SignalR.Owin.xml
+C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\bin\MoonSharp.Interpreter.pdb
+C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\bin\MoonSharp.Interpreter.xml
+C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\obj\Release\Code College.csprojResolveAssemblyReference.cache

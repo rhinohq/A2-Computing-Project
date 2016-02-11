@@ -4,6 +4,7 @@
 
 @{ 
     ExDBEntities ExDB = new ExDBEntities();
+    UserDBEntities UserDB = new UserDBEntities();
 }
 
 <!DOCTYPE html>
@@ -11,8 +12,8 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    @Styles.Render();
-    @Scripts.Render();
+    @Styles.Render()
+    @Scripts.Render()
 
     <script type="text/javascript">
         $(function () {
@@ -28,8 +29,10 @@
         });
     </script>
 </head>
+
 <body>
     <div>
+        It worked!
     </div>
 </body>
 </html>
