@@ -1,8 +1,6 @@
-﻿using System;
-
-using Language.Lua.Library;
-
+﻿using Language.Lua.Library;
 using Marker;
+using System;
 
 namespace Language.Lua
 {

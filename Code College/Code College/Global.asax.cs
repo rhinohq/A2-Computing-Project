@@ -1,8 +1,7 @@
-﻿using System.Web.Mvc;
-using System.Web.Routing;
-using System.Linq;
-using Code_College.App_Start;
+﻿using Code_College.App_Start;
+using System.Web.Mvc;
 using System.Web.Optimization;
+using System.Web.Routing;
 
 namespace Code_College
 {

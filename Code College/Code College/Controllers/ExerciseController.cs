@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Code_College.Models;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Data.Entity;
-using Code_College.Models;
 
 namespace Code_College.Controllers
 {
     public class ExerciseController : Controller
     {
         private ExDBEntities ExDB = new ExDBEntities();
+
         // GET: Exercise
         public ActionResult Index()
         {

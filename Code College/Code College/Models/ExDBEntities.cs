@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Marker;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Xml;
-using Marker;
 
 namespace Code_College.Models
 {
@@ -18,6 +18,7 @@ namespace Code_College.Models
     {
         [Key]
         public int ExID { get; set; }
+
         public string ExTitle { get; set; }
         public string ExDescription { get; set; }
         public string ExCodeTemplate { get; set; }

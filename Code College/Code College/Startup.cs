@@ -2,6 +2,7 @@
 using Owin;
 
 [assembly: OwinStartup(typeof(Code_College.Startup))]
+
 namespace Code_College
 {
     public class Startup
