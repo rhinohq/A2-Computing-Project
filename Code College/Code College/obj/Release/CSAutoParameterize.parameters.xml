@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="Code_College.Models.ExDBEntities-Web.config Connection String" description="Code_College.Models.ExDBEntities Connection String used in web.config by the application to access the database." defaultValue="Code_College.Models.ExDBEntities_ConnectionString" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Ryan\\New\ College\\Computing\\A2\ Computing\\A2\ Project\\Code\\A2-Computing-Project\\Code\ College\\Code\ College\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='Code_College.Models.ExDBEntities']/@connectionString" />
+  </parameter>
+  <parameter name="Code_College.Models.UserDBEntities-Web.config Connection String" description="Code_College.Models.UserDBEntities Connection String used in web.config by the application to access the database." defaultValue="Code_College.Models.UserDBEntities_ConnectionString" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Ryan\\New\ College\\Computing\\A2\ Computing\\A2\ Project\\Code\\A2-Computing-Project\\Code\ College\\Code\ College\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='Code_College.Models.UserDBEntities']/@connectionString" />
+  </parameter>
+</parameters>

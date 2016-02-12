@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="CodeCollege" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\Ryan\\New\ College\\Computing\\A2\ Computing\\A2\ Project\\Code\\A2-Computing-Project\\Code\ College\\Code\ College\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\Ryan\\New\ College\\Computing\\A2\ Computing\\A2\ Project\\Code\\A2-Computing-Project\\Code\ College\\Code\ College\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="Code_College.Models.ExDBEntities-Web.config Connection String" description="" value="Code_College.Models.ExDBEntities_ConnectionString" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Ryan\\New\ College\\Computing\\A2\ Computing\\A2\ Project\\Code\\A2-Computing-Project\\Code\ College\\Code\ College\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='Code_College.Models.ExDBEntities']/@connectionString" />
+  </parameter>
+  <parameter name="Code_College.Models.UserDBEntities-Web.config Connection String" description="" value="Code_College.Models.UserDBEntities_ConnectionString" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Ryan\\New\ College\\Computing\\A2\ Computing\\A2\ Project\\Code\\A2-Computing-Project\\Code\ College\\Code\ College\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='Code_College.Models.UserDBEntities']/@connectionString" />
+  </parameter>
+</parameters>
