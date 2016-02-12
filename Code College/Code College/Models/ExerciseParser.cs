@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Marker;
+using System;
 using System.IO;
 using System.Xml;
 
@@ -8,17 +9,20 @@ namespace Code_College.Models
     {
         private static ExDBEntities ExDB = new ExDBEntities();
         private static Exercise NewExercise = new Exercise();
+        private static ExMarkScheme NewMarkScheme = new ExMarkScheme();
 
         public static void ParseExFile(string Filename)
         {
             StreamReader File = new StreamReader(Filename);
 
-            NewExercise.ExID = Parsing.GetExID(File);
-            NewExercise.ExTitle = Parsing.GetExTitle(File);
-            NewExercise.ExDescription = Parsing.GetExDescription(File);
-            NewExercise.ExCodeTemplate = Parsing.GetExCodeTemplate(File);
-            NewExercise.ExAppendCode = Parsing.GetExAppendCode(File);
-            NewExercise.ExMarkScheme = Parsing.GetExMarkScheme(File);
+            NewExercise.ExID = ExParsing.GetExID(File);
+            NewExercise.ExTitle = ExParsing.GetExTitle(File);
+            NewExercise.ExDescription = ExParsing.GetExDescription(File);
+            NewExercise.ExCodeTemplate = ExParsing.GetExCodeTemplate(File);
+            NewExercise.ExAppendCode = ExParsing.GetExAppendCode(File);
+            NewExercise.ExMarkSchemeXML = ExParsing.GetExMarkSchemeXML(File);
+
+            NewMarkScheme.Output = XMLParsing.GetExOutput(NewExercise.ExMarkSchemeXML);
         }
 
         private class ExParsing
@@ -100,7 +104,7 @@ namespace Code_College.Models
                 return null;
             }
 
-            public static XmlDocument GetExMarkScheme(StreamReader File)
+            public static XmlDocument GetExMarkSchemeXML(StreamReader File)
             {
                 XmlDocument XML = new XmlDocument();
 
@@ -121,10 +125,13 @@ namespace Code_College.Models
 
                 return null;
             }
+        }
 
-            private static class XMLParsing
+        private class XMLParsing
+        {
+            public static string GetExOutput(XmlDocument XML)
             {
-
+                return XML.SelectSingleNode("MarkScheme/Output").InnerText;
             }
         }
     }

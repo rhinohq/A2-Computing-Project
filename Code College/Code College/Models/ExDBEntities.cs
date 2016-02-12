@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Xml;
+using Marker;
 
 namespace Code_College.Models
 {
@@ -21,6 +22,7 @@ namespace Code_College.Models
         public string ExDescription { get; set; }
         public string ExCodeTemplate { get; set; }
         public string ExAppendCode { get; set; }
-        public XmlDocument ExMarkScheme { get; set; }
+        public XmlDocument ExMarkSchemeXML { get; set; }
+        public ExMarkScheme ExMarkScheme { get; set; }
     }
 }
