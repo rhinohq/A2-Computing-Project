@@ -39,15 +39,6 @@ namespace Code_College.Models
                 NewUser.DOB = DOB;
                 NewUser.Gender = Gender;
 
-                if (PP == null)
-                {
-                    NewUser.ProfilePicture = ProcessImage(Properties.Resources.DefaultPP);
-                }
-                else if (PP.Height == 512 && PP.Width == 512)
-                    NewUser.ProfilePicture = PP;
-                else
-                    NewUser.ProfilePicture = ProcessImage(PP);
-
                 NewUser.UserScore = 0;
                 NewUser.UserLevel = 0;
 
@@ -116,17 +107,6 @@ namespace Code_College.Models
             if (user != null)
             {
                 user.PasswordHash = HashCredentials(Email, NewPassword);
-                UserDB.SaveChangesAsync();
-            }
-        }
-
-        public static void ChangePP(string Username, Bitmap NewPP)
-        {
-            User user = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
-
-            if (user != null)
-            {
-                user.ProfilePicture = NewPP;
                 UserDB.SaveChangesAsync();
             }
         }

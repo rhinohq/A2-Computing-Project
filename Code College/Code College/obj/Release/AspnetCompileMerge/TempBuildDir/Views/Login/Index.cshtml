@@ -7,7 +7,6 @@
         ViewBag.Username = Request.Form["Username"];
         ViewBag.Password = Account.HashCredentials(ViewBag.Username, Request.Form["Password"]);
 
-
         if (Account.VerifyUser(ViewBag.Username, ViewBag.Password))
         {
             Account.AddCookie(ViewBag.Username, ViewBag.Password, Response, true);
