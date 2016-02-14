@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Code_College.Models
+﻿namespace Code_College.Models
 {
-    class ServerMaintenance
+    internal class ServerMaintenance
     {
         public void InitExDB()
         {
-
         }
     }
 }

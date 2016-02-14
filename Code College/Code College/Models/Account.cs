@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -25,7 +22,7 @@ namespace Code_College.Models
             return HashedCredentials;
         }
 
-        public static void CreateNewUser(string Name, string Email, string Username, string Password, string DOB, char Gender, Bitmap PP, HttpResponseBase Response)
+        public static void CreateNewUser(string Name, string Email, string Username, string Password, HttpResponseBase Response)
         {
             User user = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
 
@@ -36,16 +33,13 @@ namespace Code_College.Models
                 NewUser.Email = Email;
                 NewUser.Username = Username;
                 NewUser.PasswordHash = HashCredentials(Email, Password);
-                NewUser.DOB = DOB;
-                NewUser.Gender = Gender;
 
-                NewUser.UserScore = 0;
                 NewUser.UserLevel = 0;
 
                 UserDB.Users.Add(NewUser);
                 UserDB.SaveChangesAsync();
 
-                AddCookie(NewUser.Username, Password, Response, false);
+                AddCookie(NewUser.Username, Password, Response);
             }
             else
             {
@@ -61,7 +55,7 @@ namespace Code_College.Models
             {
                 return false;
             }
-            else if (user.PasswordHash == HashCredentials(Username, HashCredentials(Username, Password)))
+            else if (user.PasswordHash == HashCredentials(Username, HashCredentials(user.Email, Password)))
             {
                 return true;
             }
@@ -71,20 +65,13 @@ namespace Code_College.Models
             }
         }
 
-        public static void AddCookie(string Username, string Password, HttpResponseBase Response, bool RememberUser)
+        public static void AddCookie(string Username, string Password, HttpResponseBase Response)
         {
             HttpCookie LoginCookie = new HttpCookie("UserAuth");
-            LoginCookie["Username"] = Username;
-            LoginCookie["Password"] = Cryptography.Encrypt(Password, Username);
+            LoginCookie.Values["Username"] = Username;
+            LoginCookie.Values["Password"] = Cryptography.Encrypt(Password, Username);
 
-            if (RememberUser)
-            {
-                LoginCookie.Expires = DateTime.Now.AddYears(1);
-            }
-            else
-            {
-                LoginCookie.Expires = DateTime.Now.AddDays(1);
-            }
+            LoginCookie.Expires = DateTime.Now.AddYears(1);
 
             Response.Cookies.Add(LoginCookie);
         }
@@ -109,31 +96,6 @@ namespace Code_College.Models
                 user.PasswordHash = HashCredentials(Email, NewPassword);
                 UserDB.SaveChangesAsync();
             }
-        }
-
-        public static Bitmap ProcessImage(Image UploadedPicture)
-        {
-            var destRect = new Rectangle(0, 0, 512, 512);
-            var destImage = new Bitmap(512, 512);
-
-            destImage.SetResolution(UploadedPicture.HorizontalResolution, UploadedPicture.VerticalResolution);
-
-            using (var graphics = Graphics.FromImage(destImage))
-            {
-                graphics.CompositingMode = CompositingMode.SourceCopy;
-                graphics.CompositingQuality = CompositingQuality.HighQuality;
-                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                graphics.SmoothingMode = SmoothingMode.HighQuality;
-                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-                using (var wrapMode = new ImageAttributes())
-                {
-                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-                    graphics.DrawImage(UploadedPicture, destRect, 0, 0, UploadedPicture.Width, UploadedPicture.Height, GraphicsUnit.Pixel, wrapMode);
-                }
-            }
-
-            return destImage;
         }
 
         public static void RemoveCookie(HttpRequest Request)
@@ -177,13 +139,15 @@ namespace Code_College.Models
             return Validated;
         }
 
-        public static bool VerifyCookie(HttpRequest Request, HttpCookie Cookie)
+        public static bool VerifyCookie(HttpCookie Cookie)
         {
-            User user = UserDB.Users.Where(x => x.Username == Cookie["Username"]).FirstOrDefault();
+            string Username = Convert.ToString(Cookie.Values["Username"]);
+            string Password = Convert.ToString(Cookie.Values["Password"]);
+            User user = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
 
             if (user == null)
                 return false;
-            else if (user.PasswordHash == HashCredentials(Cookie["Username"], Cryptography.Decrypt(Cookie["Password"], Cookie["Username"])))
+            else if (user.PasswordHash == HashCredentials(Username, Cryptography.Decrypt(Password, Username)))
                 return true;
             else
                 return false;

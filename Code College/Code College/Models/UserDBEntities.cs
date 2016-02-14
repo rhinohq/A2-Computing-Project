@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
-using System.Drawing;
 
 namespace Code_College.Models
 {
@@ -20,9 +19,6 @@ namespace Code_College.Models
         public string Email { get; set; }
         public string Username { get; set; }
         public string PasswordHash { get; set; }
-        public string DOB { get; set; }
-        public char Gender { get; set; }
-        public int UserScore { get; set; }
         public int UserLevel { get; set; }
     }
 }

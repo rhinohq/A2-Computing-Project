@@ -2,6 +2,13 @@
 @using Code_College.Models;
 
 @{
+    HttpCookie Cookie = Request.Cookies["UserAuth"];
+
+    if (Account.VerifyCookie(Cookie))
+    {
+        Response.Redirect("/Dashboard");
+    }
+
     if (IsPost)
     {
         ViewBag.Username = Request.Form["Username"];
@@ -9,7 +16,7 @@
 
         if (Account.VerifyUser(ViewBag.Username, ViewBag.Password))
         {
-            Account.AddCookie(ViewBag.Username, ViewBag.Password, Response, true);
+            Account.AddCookie(ViewBag.Username, ViewBag.Password, Response);
 
             Response.Redirect("~/Dashboard");
         }
@@ -37,8 +44,8 @@
     <h2 class="form-heading">Login</h2>
     <div class="app-cam">
         <form method="post">
-            @Html.TextBox("Username")
-            @Html.Password("Password")
+            @Html.TextBox("Username", null, new { placeholder = "Username" })
+            @Html.Password("Password", null, new { placeholder = "Password" })
             <div class="submit"><input type="submit" value="Login"></div>
             <ul class="new">
                 <li class="new_left"><p><a href="#">Forgot Password?</a></p></li>
