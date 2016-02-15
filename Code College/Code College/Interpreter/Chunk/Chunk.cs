@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Marker;
+
 namespace Language.Lua
 {
     public partial class Assignment : Statement
@@ -20,6 +22,9 @@ namespace Language.Lua
                     if (varName != null)
                     {
                         SetKeyValue(enviroment, new LuaString(varName.Name), values[i]);
+
+                        LuaInterpreter.CodeReport.AssignedVariables.Add(new UserCode.Variable { VarName = varName.Name, VarValue = values[i].Value.ToString() });
+
                         continue;
                     }
                 }

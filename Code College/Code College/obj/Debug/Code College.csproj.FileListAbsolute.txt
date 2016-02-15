@@ -73,3 +73,5 @@ C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Pr
 C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\obj\Debug\Code College.pdb
 C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\obj\Debug\Code College.csprojResolveAssemblyReference.cache
 C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\bin\Images\bg.jpg
+C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\bin\Code College.dll.CodeAnalysisLog.xml
+C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\bin\Code College.dll.lastcodeanalysissucceeded

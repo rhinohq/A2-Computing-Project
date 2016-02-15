@@ -63,5 +63,15 @@ namespace Language.Lua
 
             return global;
         }
+
+        public static bool Mark(UserCode UserCode, ExMarkScheme MarkScheme)
+        {
+            Marker.Marker Marker = new Marker.Marker();
+
+            CodeReport = UserCode;
+            Marker.MarkScheme = MarkScheme;
+
+            return Marker.FullMark();
+        }
     }
 }

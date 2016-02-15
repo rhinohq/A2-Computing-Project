@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 
+using Language.Lua;
+
 namespace Marker
 {
     public class Marker
     {
         public ExMarkScheme MarkScheme { get; set; }
-        public UserCode Code { get; set; }
 
         public bool MarkOutput()
         {
-            if (MarkScheme.Output == Code.Output)
+            if (MarkScheme.Output == LuaInterpreter.CodeReport.Output)
             {
                 return true;
             }
@@ -21,7 +22,7 @@ namespace Marker
 
         public bool MarkVars()
         {
-            foreach (UserCode.Variable Var in Code.AssignedVariables)
+            foreach (UserCode.Variable Var in LuaInterpreter.CodeReport.AssignedVariables)
             {
                 if (MarkScheme.AssignedVariables.Contains(new ExMarkScheme.Variable { VarName = Var.VarName, VarType = Var.VarType, VarValue = Var.VarValue }))
                 {
@@ -34,7 +35,7 @@ namespace Marker
 
         public bool MarkExprs()
         {
-            foreach (UserCode.Expression Expr in Code.Expressions)
+            foreach (UserCode.Expression Expr in LuaInterpreter.CodeReport.Expressions)
             {
                 if (MarkScheme.Expressions.Contains(new ExMarkScheme.Expression { ExpressionStr = Expr.ExpressionStr, ExpressionType = Expr.ExpressionType }))
                 {
@@ -47,7 +48,7 @@ namespace Marker
 
         public bool MarkControlStructs()
         {
-            foreach (UserCode.ControlStructure ConStruct in Code.ControlStructures)
+            foreach (UserCode.ControlStructure ConStruct in LuaInterpreter.CodeReport.ControlStructures)
             {
                 if (MarkScheme.ControlStructures.Contains(new ExMarkScheme.ControlStructure { StructureType = ConStruct.StructureType, StrutureCondition = ConStruct.StrutureCondition }))
                 {
