@@ -177,24 +177,43 @@ namespace Code_College.Models
 
                 private static string GetExOutput(XmlDocument XML)
                 {
-                    return XML.SelectSingleNode("/MarkScheme/Output").InnerText;
+                    try
+                    {
+                        return XML.SelectSingleNode("/MarkScheme/Output").InnerText;
+                    }
+                    catch
+                    {
+                        return null;
+                    }
                 }
 
                 private static void GetExVars(XmlDocument XML)
                 {
-                    XmlNodeList VariablesNode = XML.SelectNodes("/MarkScheme/Variables");
+                    try
+                    {
+                        XmlNodeList VariablesNode = XML.SelectNodes("/MarkScheme/Variables");
 
-                    foreach (XmlNode Node in VariablesNode)
+                        foreach (XmlNode Node in VariablesNode)
+                        {
+                            ExMarkScheme.Variable NewVar = new ExMarkScheme.Variable();
+
+                            NewVar.VarName = Node.InnerText;
+                            NewVar.VarValue = Node.Attributes.GetNamedItem("VarValue").Value;
+
+                            if (NewVar.VarName == "[DNM]")
+                                NewVar.VarName = null;
+                            else if (NewVar.VarValue == "[DNM]")
+                                NewVar.VarValue = null;
+
+                            NewMarkScheme.AssignedVariables.Add(NewVar);
+                        }
+                    }
+                    catch
                     {
                         ExMarkScheme.Variable NewVar = new ExMarkScheme.Variable();
 
-                        NewVar.VarName = Node.InnerText;
-                        NewVar.VarValue = Node.Attributes.GetNamedItem("VarValue").Value;
-
-                        if (NewVar.VarName == "[DNM]")
-                            NewVar.VarName = null;
-                        else if (NewVar.VarValue == "[DNM]")
-                            NewVar.VarValue = null;
+                        NewVar.VarName = null;
+                        NewVar.VarValue = null;
 
                         NewMarkScheme.AssignedVariables.Add(NewVar);
                     }
@@ -202,19 +221,31 @@ namespace Code_College.Models
 
                 private static void GetExExprs(XmlDocument XML)
                 {
-                    XmlNodeList ExprsNode = XML.SelectNodes("/MarkScheme/Expressions");
+                    try
+                    {
+                        XmlNodeList ExprsNode = XML.SelectNodes("/MarkScheme/Expressions");
 
-                    foreach (XmlNode Node in ExprsNode)
+                        foreach (XmlNode Node in ExprsNode)
+                        {
+                            ExMarkScheme.Expression NewExpr = new ExMarkScheme.Expression();
+
+                            NewExpr.ExpressionStr = Node.InnerText;
+                            NewExpr.ExpressionType = Node.Attributes.GetNamedItem("ExpressionType").Value;
+
+                            if (NewExpr.ExpressionStr == "[DNM]")
+                                NewExpr.ExpressionStr = null;
+                            else if (NewExpr.ExpressionType == "[DNM]")
+                                NewExpr.ExpressionType = null;
+
+                            NewMarkScheme.Expressions.Add(NewExpr);
+                        }
+                    }
+                    catch
                     {
                         ExMarkScheme.Expression NewExpr = new ExMarkScheme.Expression();
 
-                        NewExpr.ExpressionStr = Node.InnerText;
-                        NewExpr.ExpressionType = Node.Attributes.GetNamedItem("ExpressionType").Value;
-
-                        if (NewExpr.ExpressionStr == "[DNM]")
-                            NewExpr.ExpressionStr = null;
-                        else if (NewExpr.ExpressionType == "[DNM]")
-                            NewExpr.ExpressionType = null;
+                        NewExpr.ExpressionStr = null;
+                        NewExpr.ExpressionType = null;
 
                         NewMarkScheme.Expressions.Add(NewExpr);
                     }
@@ -222,19 +253,31 @@ namespace Code_College.Models
 
                 private static void GetExConStructs(XmlDocument XML)
                 {
-                    XmlNodeList ConStructsNode = XML.SelectNodes("/MarkScheme/ControlStructures");
+                    try
+                    {
+                        XmlNodeList ConStructsNode = XML.SelectNodes("/MarkScheme/ControlStructures");
 
-                    foreach (XmlNode Node in ConStructsNode)
+                        foreach (XmlNode Node in ConStructsNode)
+                        {
+                            ExMarkScheme.ControlStructure NewConStruct = new ExMarkScheme.ControlStructure();
+
+                            NewConStruct.StructureCondition = Node.InnerText;
+                            NewConStruct.StructureType = Node.Attributes.GetNamedItem("StructType").Value;
+
+                            if (NewConStruct.StructureCondition == "[DNM]")
+                                NewConStruct.StructureCondition = null;
+                            else if (NewConStruct.StructureType == "[DNM]")
+                                NewConStruct.StructureType = null;
+
+                            NewMarkScheme.ControlStructures.Add(NewConStruct);
+                        }
+                    }
+                    catch
                     {
                         ExMarkScheme.ControlStructure NewConStruct = new ExMarkScheme.ControlStructure();
 
-                        NewConStruct.StructureCondition = Node.InnerText;
-                        NewConStruct.StructureType = Node.Attributes.GetNamedItem("StructType").Value;
-
-                        if (NewConStruct.StructureCondition == "[DNM]")
-                            NewConStruct.StructureCondition = null;
-                        else if (NewConStruct.StructureType == "[DNM]")
-                            NewConStruct.StructureType = null;
+                        NewConStruct.StructureCondition = null;
+                        NewConStruct.StructureType = null;
 
                         NewMarkScheme.ControlStructures.Add(NewConStruct);
                     }

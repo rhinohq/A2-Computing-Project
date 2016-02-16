@@ -24,10 +24,13 @@ namespace Code_College.Controllers
             if (File.ContentLength > 0)
             {
                 string FileName = Path.GetFileName(File.FileName);
-                string FilePath = Path.Combine(Server.MapPath("~/App_Data/Exercises"), FileName);
-                File.SaveAs(FilePath);
+                string FilePath = Path.Combine(Server.MapPath("~/Exercises"), FileName);
 
-                ExerciseParser.ParseExFile(FilePath);
+                if (File.FileName.EndsWith(".ex"))
+                {
+                    File.SaveAs(FilePath);
+                    ExerciseParser.ParseExFile(FilePath);
+                }
             }
 
             return RedirectToAction("Index");

@@ -250,7 +250,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\Exercises\" />
+    <Folder Include="App_Data\" />
+    <Folder Include="Exercises\" />
     <Folder Include="Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
