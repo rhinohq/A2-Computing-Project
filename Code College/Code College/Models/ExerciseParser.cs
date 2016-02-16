@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Marker;
+
+using System;
 using System.IO;
 using System.Xml;
-
-using Marker;
 
 namespace Code_College.Models
 {
@@ -11,18 +11,28 @@ namespace Code_College.Models
         private static ExDBEntities ExDB = new ExDBEntities();
         private static Exercise NewExercise = new Exercise();
         private static ExMarkScheme NewMarkScheme = new ExMarkScheme();
+        private static StreamReader File;
 
         public static void ParseExFile(string Filename)
         {
-            StreamReader File = new StreamReader(Filename);
+            File = new StreamReader(Filename);
 
-            NewExercise.ExID = ExParsing.GetExID(File);
-            NewExercise.ExTitle = ExParsing.GetExTitle(File);
-            NewExercise.ExDescription = ExParsing.GetExDescription(File);
-            NewExercise.ExCodeTemplate = ExParsing.GetExCodeTemplate(File);
-            NewExercise.ExAppendCode = ExParsing.GetExAppendCode(File);
+            NewExercise.ExID = ExParsing.GetExID();
+            File.BaseStream.Position = 0;
 
-            XMLParsing.ParseXML(ExParsing.GetExMarkSchemeXML(File));
+            NewExercise.ExTitle = ExParsing.GetExTitle();
+            File.BaseStream.Position = 0;
+
+            NewExercise.ExDescription = ExParsing.GetExDescription();
+            File.BaseStream.Position = 0;
+
+            NewExercise.ExCodeTemplate = ExParsing.GetExCodeTemplate();
+            File.BaseStream.Position = 0;
+
+            NewExercise.ExAppendCode = ExParsing.GetExAppendCode();
+            File.BaseStream.Position = 0;
+
+            ExParsing.XMLParsing.ParseXML(ExParsing.GetExMarkSchemeXML());
 
             NewExercise.ExMarkScheme = NewMarkScheme;
 
@@ -31,178 +41,203 @@ namespace Code_College.Models
 
         private static class ExParsing
         {
-            public static int GetExID(StreamReader File)
+            public static int GetExID()
             {
                 while (!File.EndOfStream)
                 {
-                    string Line = File.ReadLineAsync().ToString();
+                    string Line = File.ReadLine();
 
-                    if (Line != "[ExTitle]" && Line != null)
+                    if (!Line.StartsWith("[") && Line != "")
                         return Convert.ToInt32(Line);
                 }
 
                 return 0;
             }
 
-            public static string GetExTitle(StreamReader File)
+            public static string GetExTitle()
             {
                 while (!File.EndOfStream)
                 {
-                    string Line = File.ReadLineAsync().ToString();
-                    string Entry = "";
+                    string Line = File.ReadLine();
 
-                    if (Line == "[ExDescription]" && Line == null)
-                        return Entry;
-
-                    Entry += Line;
+                    if (Line.StartsWith("[Title]") && Line != "")
+                        return File.ReadLine();
                 }
 
                 return null;
             }
 
-            public static string GetExDescription(StreamReader File)
+            public static string GetExDescription()
             {
+                string Entry = "";
+
                 while (!File.EndOfStream)
                 {
-                    string Line = File.ReadLineAsync().ToString();
-                    string Entry = "";
+                    string Line = File.ReadLine();
 
-                    if (Line == "[ExCodeTemplate]")
-                        return Entry;
+                    if (Line.StartsWith("[ExDescription]"))
+                    {
+                        while (true)
+                        {
+                            Line = File.ReadLine();
 
-                    Entry += Line;
+                            if (!Line.StartsWith("[ExCodeTemplate]"))
+                                Entry = " " + Line;
+                            else
+                                return Entry;
+                        }
+                    }
                 }
 
                 return null;
             }
 
-            public static string GetExCodeTemplate(StreamReader File)
+            public static string GetExCodeTemplate()
             {
+                string Entry = "";
+
                 while (!File.EndOfStream)
                 {
-                    string Line = File.ReadLineAsync().ToString();
-                    string Entry = "";
+                    string Line = File.ReadLine();
 
-                    if (Line == "[ExAppendCode]")
-                        return Entry;
+                    if (Line.StartsWith("[ExCodeTemplate]"))
+                    {
+                        while (true)
+                        {
+                            Line = File.ReadLine();
 
-                    Entry += Line;
+                            if (!Line.StartsWith("[ExAppendCode]"))
+                                Entry = " " + Line;
+                            else
+                                return Entry;
+                        }
+                    }
                 }
 
                 return null;
             }
 
-            public static string GetExAppendCode(StreamReader File)
+            public static string GetExAppendCode()
             {
+                string Entry = "";
+
                 while (!File.EndOfStream)
                 {
-                    string Line = File.ReadLineAsync().ToString();
-                    string Entry = "";
+                    string Line = File.ReadLine();
 
-                    if (Line == "[ExMarkScheme]")
-                        return Entry;
+                    if (Line.StartsWith("[ExAppendCode]"))
+                    {
+                        while (true)
+                        {
+                            Line = File.ReadLine();
 
-                    Entry += Line;
+                            if (!Line.StartsWith("[ExMarkScheme]"))
+                                Entry = " " + Line;
+                            else
+                                return Entry;
+                        }
+                    }
                 }
 
                 return null;
             }
 
-            public static XmlDocument GetExMarkSchemeXML(StreamReader File)
+            public static XmlDocument GetExMarkSchemeXML()
             {
                 XmlDocument XML = new XmlDocument();
+                string Entry = "";
+                string Line = "";
+
+                while (!Line.StartsWith("[ExMarkScheme]"))
+                {
+                    Line = File.ReadLine();
+                }
 
                 while (!File.EndOfStream)
                 {
-                    string Line = File.ReadLineAsync().ToString();
-                    string Entry = "";
-
-                    if (Line == "[ExAppendCode]")
-                    {
-                        XML.LoadXml(Entry);
-
-                        return XML;
-                    }
+                    Line = File.ReadLine();
 
                     Entry += Line;
                 }
 
-                return null;
-            }
-        }
+                XML.LoadXml(Entry);
 
-        private static class XMLParsing
-        {
-            public static void ParseXML(XmlDocument XML)
-            {
-                NewMarkScheme.Output = GetExOutput(XML);
-                GetExVars(XML);
-                GetExExprs(XML);
-                GetExConStructs(XML);
+                return XML;
             }
 
-            private static string GetExOutput(XmlDocument XML)
+            public static class XMLParsing
             {
-                return XML.SelectSingleNode("/MarkScheme/Output").InnerText;
-            }
-
-            private static void GetExVars(XmlDocument XML)
-            {
-                XmlNodeList VariablesNode = XML.SelectNodes("/MarkScheme/Variables");
-
-                foreach (XmlNode Node in VariablesNode)
+                public static void ParseXML(XmlDocument XML)
                 {
-                    ExMarkScheme.Variable NewVar = new ExMarkScheme.Variable();
-
-                    NewVar.VarName = Node.InnerText;
-                    NewVar.VarValue = Node.Attributes.GetNamedItem("VarValue").Value;
-
-                    if (NewVar.VarName == "[DNM]")
-                        NewVar.VarName = null;
-                    else if (NewVar.VarValue == "[DNM]")
-                        NewVar.VarValue = null;
-
-                    NewMarkScheme.AssignedVariables.Add(NewVar);
+                    NewMarkScheme.Output = GetExOutput(XML);
+                    GetExVars(XML);
+                    GetExExprs(XML);
+                    GetExConStructs(XML);
                 }
-            }
 
-            private static void GetExExprs(XmlDocument XML)
-            {
-                XmlNodeList ExprsNode = XML.SelectNodes("/MarkScheme/Expressions");
-
-                foreach (XmlNode Node in ExprsNode)
+                private static string GetExOutput(XmlDocument XML)
                 {
-                    ExMarkScheme.Expression NewExpr = new ExMarkScheme.Expression();
-
-                    NewExpr.ExpressionStr = Node.InnerText;
-                    NewExpr.ExpressionType = Node.Attributes.GetNamedItem("ExpressionType").Value;
-
-                    if (NewExpr.ExpressionStr == "[DNM]")
-                        NewExpr.ExpressionStr = null;
-                    else if (NewExpr.ExpressionType == "[DNM]")
-                        NewExpr.ExpressionType = null;
-
-                    NewMarkScheme.Expressions.Add(NewExpr);
+                    return XML.SelectSingleNode("/MarkScheme/Output").InnerText;
                 }
-            }
 
-            private static void GetExConStructs(XmlDocument XML)
-            {
-                XmlNodeList ConStructsNode = XML.SelectNodes("/MarkScheme/ControlStructures");
-
-                foreach (XmlNode Node in ConStructsNode)
+                private static void GetExVars(XmlDocument XML)
                 {
-                    ExMarkScheme.ControlStructure NewConStruct = new ExMarkScheme.ControlStructure();
+                    XmlNodeList VariablesNode = XML.SelectNodes("/MarkScheme/Variables");
 
-                    NewConStruct.StructureCondition = Node.InnerText;
-                    NewConStruct.StructureType = Node.Attributes.GetNamedItem("StructType").Value;
+                    foreach (XmlNode Node in VariablesNode)
+                    {
+                        ExMarkScheme.Variable NewVar = new ExMarkScheme.Variable();
 
-                    if (NewConStruct.StructureCondition == "[DNM]")
-                        NewConStruct.StructureCondition = null;
-                    else if (NewConStruct.StructureType == "[DNM]")
-                        NewConStruct.StructureType = null;
+                        NewVar.VarName = Node.InnerText;
+                        NewVar.VarValue = Node.Attributes.GetNamedItem("VarValue").Value;
 
-                    NewMarkScheme.ControlStructures.Add(NewConStruct);
+                        if (NewVar.VarName == "[DNM]")
+                            NewVar.VarName = null;
+                        else if (NewVar.VarValue == "[DNM]")
+                            NewVar.VarValue = null;
+
+                        NewMarkScheme.AssignedVariables.Add(NewVar);
+                    }
+                }
+
+                private static void GetExExprs(XmlDocument XML)
+                {
+                    XmlNodeList ExprsNode = XML.SelectNodes("/MarkScheme/Expressions");
+
+                    foreach (XmlNode Node in ExprsNode)
+                    {
+                        ExMarkScheme.Expression NewExpr = new ExMarkScheme.Expression();
+
+                        NewExpr.ExpressionStr = Node.InnerText;
+                        NewExpr.ExpressionType = Node.Attributes.GetNamedItem("ExpressionType").Value;
+
+                        if (NewExpr.ExpressionStr == "[DNM]")
+                            NewExpr.ExpressionStr = null;
+                        else if (NewExpr.ExpressionType == "[DNM]")
+                            NewExpr.ExpressionType = null;
+
+                        NewMarkScheme.Expressions.Add(NewExpr);
+                    }
+                }
+
+                private static void GetExConStructs(XmlDocument XML)
+                {
+                    XmlNodeList ConStructsNode = XML.SelectNodes("/MarkScheme/ControlStructures");
+
+                    foreach (XmlNode Node in ConStructsNode)
+                    {
+                        ExMarkScheme.ControlStructure NewConStruct = new ExMarkScheme.ControlStructure();
+
+                        NewConStruct.StructureCondition = Node.InnerText;
+                        NewConStruct.StructureType = Node.Attributes.GetNamedItem("StructType").Value;
+
+                        if (NewConStruct.StructureCondition == "[DNM]")
+                            NewConStruct.StructureCondition = null;
+                        else if (NewConStruct.StructureType == "[DNM]")
+                            NewConStruct.StructureType = null;
+
+                        NewMarkScheme.ControlStructures.Add(NewConStruct);
+                    }
                 }
             }
         }

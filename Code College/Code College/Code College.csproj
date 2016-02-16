@@ -180,6 +180,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AddExerciseController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\ExerciseController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -240,6 +241,7 @@
       <BrowseToURL>~/SignUp</BrowseToURL>
     </Content>
     <Content Include="Scripts\jquery-1.11.2.min.map" />
+    <Content Include="Views\AddExercise\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -248,7 +250,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\Exercises\" />
     <Folder Include="Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
