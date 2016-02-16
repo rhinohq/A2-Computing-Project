@@ -1,7 +1,8 @@
-﻿using Marker;
-using System;
+﻿using System;
 using System.IO;
 using System.Xml;
+
+using Marker;
 
 namespace Code_College.Models
 {
@@ -20,12 +21,15 @@ namespace Code_College.Models
             NewExercise.ExDescription = ExParsing.GetExDescription(File);
             NewExercise.ExCodeTemplate = ExParsing.GetExCodeTemplate(File);
             NewExercise.ExAppendCode = ExParsing.GetExAppendCode(File);
-            NewExercise.ExMarkSchemeXML = ExParsing.GetExMarkSchemeXML(File);
 
-            NewMarkScheme.Output = XMLParsing.GetExOutput(NewExercise.ExMarkSchemeXML);
+            XMLParsing.ParseXML(ExParsing.GetExMarkSchemeXML(File));
+
+            NewExercise.ExMarkScheme = NewMarkScheme;
+
+            ExDB.SaveChangesAsync();
         }
 
-        private class ExParsing
+        private static class ExParsing
         {
             public static int GetExID(StreamReader File)
             {
@@ -127,11 +131,79 @@ namespace Code_College.Models
             }
         }
 
-        private class XMLParsing
+        private static class XMLParsing
         {
-            public static string GetExOutput(XmlDocument XML)
+            public static void ParseXML(XmlDocument XML)
             {
-                return XML.SelectSingleNode("MarkScheme/Output").InnerText;
+                NewMarkScheme.Output = GetExOutput(XML);
+                GetExVars(XML);
+                GetExExprs(XML);
+                GetExConStructs(XML);
+            }
+
+            private static string GetExOutput(XmlDocument XML)
+            {
+                return XML.SelectSingleNode("/MarkScheme/Output").InnerText;
+            }
+
+            private static void GetExVars(XmlDocument XML)
+            {
+                XmlNodeList VariablesNode = XML.SelectNodes("/MarkScheme/Variables");
+
+                foreach (XmlNode Node in VariablesNode)
+                {
+                    ExMarkScheme.Variable NewVar = new ExMarkScheme.Variable();
+
+                    NewVar.VarName = Node.InnerText;
+                    NewVar.VarValue = Node.Attributes.GetNamedItem("VarValue").Value;
+
+                    if (NewVar.VarName == "[DNM]")
+                        NewVar.VarName = null;
+                    else if (NewVar.VarValue == "[DNM]")
+                        NewVar.VarValue = null;
+
+                    NewMarkScheme.AssignedVariables.Add(NewVar);
+                }
+            }
+
+            private static void GetExExprs(XmlDocument XML)
+            {
+                XmlNodeList ExprsNode = XML.SelectNodes("/MarkScheme/Expressions");
+
+                foreach (XmlNode Node in ExprsNode)
+                {
+                    ExMarkScheme.Expression NewExpr = new ExMarkScheme.Expression();
+
+                    NewExpr.ExpressionStr = Node.InnerText;
+                    NewExpr.ExpressionType = Node.Attributes.GetNamedItem("ExpressionType").Value;
+
+                    if (NewExpr.ExpressionStr == "[DNM]")
+                        NewExpr.ExpressionStr = null;
+                    else if (NewExpr.ExpressionType == "[DNM]")
+                        NewExpr.ExpressionType = null;
+
+                    NewMarkScheme.Expressions.Add(NewExpr);
+                }
+            }
+
+            private static void GetExConStructs(XmlDocument XML)
+            {
+                XmlNodeList ConStructsNode = XML.SelectNodes("/MarkScheme/ControlStructures");
+
+                foreach (XmlNode Node in ConStructsNode)
+                {
+                    ExMarkScheme.ControlStructure NewConStruct = new ExMarkScheme.ControlStructure();
+
+                    NewConStruct.StructureCondition = Node.InnerText;
+                    NewConStruct.StructureType = Node.Attributes.GetNamedItem("StructType").Value;
+
+                    if (NewConStruct.StructureCondition == "[DNM]")
+                        NewConStruct.StructureCondition = null;
+                    else if (NewConStruct.StructureType == "[DNM]")
+                        NewConStruct.StructureType = null;
+
+                    NewMarkScheme.ControlStructures.Add(NewConStruct);
+                }
             }
         }
     }

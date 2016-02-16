@@ -8,7 +8,6 @@ namespace Marker
         public class Variable : IEquatable<Variable>
         {
             public string VarName { get; set; }
-            public string VarType { get; set; }
             public string VarValue { get; set; }
 
             public bool Equals(Variable other)
@@ -31,7 +30,7 @@ namespace Marker
         public class ControlStructure : IEquatable<ControlStructure>
         {
             public string StructureType { get; set; }
-            public string StrutureCondition { get; set; }
+            public string StructureCondition { get; set; }
 
             public bool Equals(ControlStructure other)
             {
@@ -68,7 +67,6 @@ namespace Marker
         public class Variable : IEquatable<Variable>
         {
             public string VarName { get; set; }
-            public string VarType { get; set; }
             public string VarValue { get; set; }
 
             public bool Equals(Variable other)
@@ -91,7 +89,7 @@ namespace Marker
         public class ControlStructure : IEquatable<ControlStructure>
         {
             public string StructureType { get; set; }
-            public string StrutureCondition { get; set; }
+            public string StructureCondition { get; set; }
 
             public bool Equals(ControlStructure other)
             {

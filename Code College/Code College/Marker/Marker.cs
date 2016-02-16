@@ -4,11 +4,11 @@ using Language.Lua;
 
 namespace Marker
 {
-    public class Marker
+    public static class Marker
     {
-        public ExMarkScheme MarkScheme { get; set; }
+        public static ExMarkScheme MarkScheme { get; set; }
 
-        public bool MarkOutput()
+        public static bool MarkOutput()
         {
             if (MarkScheme.Output == LuaInterpreter.CodeReport.Output)
             {
@@ -20,11 +20,11 @@ namespace Marker
             }
         }
 
-        public bool MarkVars()
+        public static bool MarkVars()
         {
             foreach (UserCode.Variable Var in LuaInterpreter.CodeReport.AssignedVariables)
             {
-                if (MarkScheme.AssignedVariables.Contains(new ExMarkScheme.Variable { VarName = Var.VarName, VarType = Var.VarType, VarValue = Var.VarValue }))
+                if (MarkScheme.AssignedVariables.Contains(new ExMarkScheme.Variable { VarName = Var.VarName, VarValue = Var.VarValue }))
                 {
                     return true;
                 }
@@ -33,7 +33,7 @@ namespace Marker
             return false;
         }
 
-        public bool MarkExprs()
+        public static bool MarkExprs()
         {
             foreach (UserCode.Expression Expr in LuaInterpreter.CodeReport.Expressions)
             {
@@ -46,11 +46,11 @@ namespace Marker
             return false;
         }
 
-        public bool MarkControlStructs()
+        public static bool MarkControlStructs()
         {
             foreach (UserCode.ControlStructure ConStruct in LuaInterpreter.CodeReport.ControlStructures)
             {
-                if (MarkScheme.ControlStructures.Contains(new ExMarkScheme.ControlStructure { StructureType = ConStruct.StructureType, StrutureCondition = ConStruct.StrutureCondition }))
+                if (MarkScheme.ControlStructures.Contains(new ExMarkScheme.ControlStructure { StructureType = ConStruct.StructureType, StructureCondition = ConStruct.StructureCondition }))
                 {
                     return true;
                 }
@@ -59,7 +59,7 @@ namespace Marker
             return false;
         }
 
-        public bool FullMark()
+        public static bool FullMark()
         {
             List<bool> MarkList = new List<bool>();
 

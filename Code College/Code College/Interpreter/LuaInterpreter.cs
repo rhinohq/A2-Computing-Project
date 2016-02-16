@@ -13,7 +13,7 @@ namespace Language.Lua
             return Interpreter(UserCode);
         }
 
-        public static LuaValue RunFile(string UserCode, LuaTable Enviroment)
+        public static LuaValue RunCode(string UserCode, LuaTable Enviroment)
         {
             return Interpreter(UserCode, Enviroment);
         }
@@ -62,16 +62,6 @@ namespace Language.Lua
             global.SetNameValue("_G", global);
 
             return global;
-        }
-
-        public static bool Mark(UserCode UserCode, ExMarkScheme MarkScheme)
-        {
-            Marker.Marker Marker = new Marker.Marker();
-
-            CodeReport = UserCode;
-            Marker.MarkScheme = MarkScheme;
-
-            return Marker.FullMark();
         }
     }
 }

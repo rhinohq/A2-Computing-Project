@@ -4,9 +4,12 @@
 @{
     HttpCookie Cookie = Request.Cookies["UserAuth"];
 
-    if (Account.VerifyCookie(Cookie))
+    if (Cookie != null)
     {
-        Response.Redirect("/Dashboard");
+        if (Account.VerifyCookie(Cookie))
+        {
+            Response.Redirect("/Dashboard");
+        }
     }
 
     if (IsPost)

@@ -203,7 +203,7 @@ namespace Language.Lua.Library
         {
             LuaString file = values[0] as LuaString;
             LuaTable enviroment = values[1] as LuaTable;
-            return LuaInterpreter.RunFile(file.Text, enviroment);
+            return LuaInterpreter.RunCode(file.Text, enviroment);
         }
 
         public static LuaValue loadstring(LuaValue[] values)

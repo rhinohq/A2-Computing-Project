@@ -1,6 +1,19 @@
-﻿@{
-    Layout = null;
-    ViewBag.Title = "Dash - Code College";
+﻿@using Code_College.Models;
+@using System.Web.Optimization;
+
+@using Language.Lua
+@using Marker
+
+@{
+    HttpCookie Cookie = Request.Cookies["UserAuth"];
+
+    if (Cookie != null)
+    {
+        if (!Account.VerifyCookie(Cookie))
+        {
+            Response.Redirect("/Login");
+        }
+    }
 }
 
 <!DOCTYPE html>
@@ -8,7 +21,10 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+    <title>Dash - Code College</title>
+
+    @*@Styles.Render("~/bundles/css")*@
+    @Scripts.Render("~/bundles/js")
 </head>
 <body>
     <div>

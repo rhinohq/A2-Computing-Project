@@ -5,6 +5,15 @@
 @{
     ExDBEntities ExDB = new ExDBEntities();
     UserDBEntities UserDB = new UserDBEntities();
+    HttpCookie Cookie = Request.Cookies["UserAuth"];
+
+    if (Cookie != null)
+    {
+        if (!Account.VerifyCookie(Cookie))
+        {
+            Response.Redirect("/Login");
+        }
+    }
 }
 
 <!DOCTYPE html>
@@ -12,8 +21,9 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    @Styles.Render()
-    @Scripts.Render()
+    <title>@ViewBag.Title</title>
+    @*@Styles.Render("~/bundles/css")*@
+    @Scripts.Render("~/bundles/js")
 
     <script type="text/javascript">
         $(function () {
