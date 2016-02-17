@@ -22,6 +22,7 @@ namespace Code_College.Controllers
             Exercise CurrentExercise = ExDB.Exercises.Where(x => x.ExID == ID).FirstOrDefault();
 
             ViewBag.Title = CurrentExercise.ExTitle + " - Code College";
+            ViewBag.ExerciseTitle = CurrentExercise.ExTitle;
             ViewBag.Desc = CurrentExercise.ExDescription;
             ViewBag.CodeTemplate = CurrentExercise.ExCodeTemplate;
             ViewBag.Exercise = CurrentExercise;

@@ -16,8 +16,12 @@ namespace Code_College.Models
     public class Exercise
     {
         [Key]
+        public int DBID { get; set; }
+        [Required]
         public int ExID { get; set; }
+        [Required]
         public string ExTitle { get; set; }
+        [Required]
         public string ExDescription { get; set; }
         public string ExCodeTemplate { get; set; }
         public string ExAppendCode { get; set; }

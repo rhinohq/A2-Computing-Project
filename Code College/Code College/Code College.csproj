@@ -157,7 +157,6 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Properties\PublishProfiles\LocalIIS.pubxml" />
     <None Include="Properties\PublishProfiles\WinWebServer.pubxml" />
-    <None Include="Resources\DefaultPP.png" />
     <Content Include="Global.asax" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\style.css" />
@@ -241,7 +240,9 @@
       <BrowseToURL>~/SignUp</BrowseToURL>
     </Content>
     <Content Include="Scripts\jquery-1.11.2.min.map" />
-    <Content Include="Views\AddExercise\Index.cshtml" />
+    <Content Include="Views\AddExercise\Index.cshtml">
+      <BrowseToURL>~/AddExercise</BrowseToURL>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -258,6 +259,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

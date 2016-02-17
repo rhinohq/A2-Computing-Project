@@ -36,6 +36,7 @@ namespace Code_College.Models
 
             NewExercise.ExMarkScheme = NewMarkScheme;
 
+            ExDB.Exercises.Add(NewExercise);
             ExDB.SaveChangesAsync();
         }
 
@@ -60,7 +61,7 @@ namespace Code_College.Models
                 {
                     string Line = File.ReadLine();
 
-                    if (Line.StartsWith("[Title]") && Line != "")
+                    if (Line.StartsWith("[ExTitle]") && Line != "")
                         return File.ReadLine();
                 }
 
@@ -82,7 +83,7 @@ namespace Code_College.Models
                             Line = File.ReadLine();
 
                             if (!Line.StartsWith("[ExCodeTemplate]"))
-                                Entry = " " + Line;
+                                Entry = Entry + " " + Line;
                             else
                                 return Entry;
                         }
@@ -107,7 +108,7 @@ namespace Code_College.Models
                             Line = File.ReadLine();
 
                             if (!Line.StartsWith("[ExAppendCode]"))
-                                Entry = " " + Line;
+                                Entry = Entry + " " + Line;
                             else
                                 return Entry;
                         }
@@ -132,7 +133,7 @@ namespace Code_College.Models
                             Line = File.ReadLine();
 
                             if (!Line.StartsWith("[ExMarkScheme]"))
-                                Entry = " " + Line;
+                                Entry = Entry + " " + Line;
                             else
                                 return Entry;
                         }
