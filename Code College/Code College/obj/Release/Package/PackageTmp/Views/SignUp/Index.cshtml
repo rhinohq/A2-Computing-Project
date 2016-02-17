@@ -1,0 +1,72 @@
+﻿@using System.Web.Optimization;
+@using Code_College.Models;
+
+@{
+    HttpCookie Cookie = Request.Cookies["UserAuth"];
+
+    if (Cookie != null)
+    {
+        if (Account.VerifyCookie(Cookie))
+        {
+            Response.Redirect("/Dashboard");
+        }
+    }
+
+    if (IsPost)
+    {
+        if (Request.Form["Password"] == Request.Form["RetypePassword"])
+        {
+            string Name = Request.Form["Name"];
+            string Email = Request.Form["Email"];
+            string Username = Request.Form["Username"];
+            string Password = Account.HashCredentials(Username, Request.Form["Password"]);
+
+            if (Account.Validation(Name, 'n') && Account.Validation(Email, 'e') && Account.Validation(Username, 'u'))
+            {
+                Account.CreateNewUser(Name, Email, Username, Password, Response);
+            }
+        }
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Code College, Sign Up, Learn Programming, Learn Lua, Lua, Development, Code" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <title>Sign Up - Code College</title>
+
+    @Styles.Render("~/bundles/css")
+    @Scripts.Render("~/bundles/js")
+</head>
+
+<body id="login">
+    <div class="login-logo">
+        <a href="index.html">Code College</a>
+    </div>
+    <h2 class="form-heading">Register</h2>
+    <form class="form-signin app-cam" action="/SignUp" method="post">
+        <p>Enter your personal details below:</p>
+        @Html.TextBox("Name", null, new { placeholder = "Name" })
+        @Html.TextBox("Email", null, new { placeholder = "Email" })
+        <p>Enter your account details below:</p>
+        @Html.TextBox("Username", null, new { placeholder = "Username" })
+        @Html.Password("Password", null, new { placeholder = "Password" })
+        @Html.Password("RetypePassword", null, new { placeholder = "Re-Type Password" })
+        <button class="btn btn-lg btn-success1 btn-block" type="submit">Submit</button>
+        <div class="registration">
+            Already Registered?
+            <a class="" href="/Login">
+                Login
+            </a>
+        </div>
+    </form>
+    <div class="copy_layout login register">
+        <p>Copyright &copy; 2015 Code College. All Rights Reserved | Design by <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
+    </div>
+</body>
+</html>

@@ -42,6 +42,8 @@ namespace Code_College.Controllers
             if (Correct)
             {
                 ConsoleHub.UpdateConsole(LuaInterpreter.CodeReport.Output);
+
+                Account.LevelUp(ViewBag.Username);
             }
             else
             {

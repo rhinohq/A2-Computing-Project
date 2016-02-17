@@ -1,0 +1,64 @@
+﻿@using System.Web.Optimization;
+@using Code_College.Models;
+
+@{
+    HttpCookie Cookie = Request.Cookies["UserAuth"];
+
+    if (Cookie != null)
+    {
+        if (Account.VerifyCookie(Cookie))
+        {
+            Response.Redirect("/Dashboard");
+        }
+    }
+
+    if (IsPost)
+    {
+        ViewBag.Username = Request.Form["Username"];
+        ViewBag.Password = Account.HashCredentials(ViewBag.Username, Request.Form["Password"]);
+
+        if (Account.VerifyUser(ViewBag.Username, ViewBag.Password))
+        {
+            Account.AddCookie(ViewBag.Username, ViewBag.Password, Response);
+
+            Response.Redirect("~/Dashboard");
+        }
+    }
+}
+
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Code College, Login, Learn Programming, Learn Lua, Lua, Development, Code" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <title>Login - Code College</title>
+
+    @Styles.Render("~/bundles/css")
+    @Scripts.Render("~/bundles/js")
+</head>
+
+<body id="login">
+    <div class="login-logo">
+        <a href="http://ryankendrick.co.uk/">Code College</a>
+    </div>
+    <h2 class="form-heading">Login</h2>
+    <div class="app-cam">
+        <form method="post">
+            @Html.TextBox("Username", null, new { placeholder = "Username" })
+            @Html.Password("Password", null, new { placeholder = "Password" })
+            <div class="submit"><input type="submit" value="Login"></div>
+            <ul class="new">
+                <li class="new_left"><p><a href="#">Forgot Password?</a></p></li>
+                <li class="new_right"><p class="sign">New here? <a href="/SignUp">Sign Up</a></p></li>
+                <div class="clearfix"></div>
+            </ul>
+        </form>
+    </div>
+    <div class="copy_layout login">
+        <p>Copyright &copy; 2015 Code College All Rights Reserved | Design by <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
+    </div>
+</body>
+</html>
