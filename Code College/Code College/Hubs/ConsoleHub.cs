@@ -1,19 +1,18 @@
 ﻿using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
+using Code_College.Controllers;
+
 namespace Code_College.Hubs
 {
     [HubName("Console")]
     public class ConsoleHub : Hub
     {
-        public void Hello()
+        public void GetConnectionID(string ID)
         {
-            Clients.All.hello();
-        }
-
-        public void UpdateConsole(string ConsoleOutput)
-        {
-            Clients.Caller.ChangeConsoleContents(ConsoleOutput);
+            ExerciseController.ConnectionID = ID;
         }
     }
+
+    
 }

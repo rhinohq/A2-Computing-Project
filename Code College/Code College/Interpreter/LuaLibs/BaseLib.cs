@@ -28,7 +28,7 @@ namespace Language.Lua.Library
 
         public static LuaValue print(LuaValue[] values)
         {
-            LuaInterpreter.CodeReport.Output = LuaInterpreter.CodeReport.Output + string.Join<LuaValue>("    ", values);
+            LuaInterpreter.CodeReport.Output += string.Join<LuaValue>("    ", values);
 
             return null;
         }

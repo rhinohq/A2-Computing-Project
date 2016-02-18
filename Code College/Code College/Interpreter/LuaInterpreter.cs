@@ -10,6 +10,8 @@ namespace Language.Lua
 
         public static LuaValue RunCode(string UserCode)
         {
+            CodeReport = new UserCode();
+
             return Interpreter(UserCode);
         }
 

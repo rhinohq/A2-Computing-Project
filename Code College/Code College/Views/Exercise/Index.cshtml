@@ -1,4 +1,5 @@
 ﻿@using System.Web.Optimization;
+@using Code_College.Controllers;
 @using Code_College.Models;
 
 @{
@@ -15,6 +16,11 @@
             ViewBag.Username = Cookie.Values["Username"];
         }
     }
+
+    if (IsPost)
+    {
+        ExerciseController.SubmitCode(Request.Form["Code"], ViewBag.Exercise, ViewBag.Username);
+    }
 }
 
 <!DOCTYPE html>
@@ -27,27 +33,52 @@
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
     <title>@ViewBag.Title</title>
 
-    @Styles.Render("~/bundles/css")
-    @Scripts.Render("~/bundles/js")
+    @Styles.Render("~/bundles/editorcss")
+    @Scripts.Render("~/bundles/editorjs")
 
     <script type="text/javascript">
         $(function () {
             var Console = $.connection.ConsoleHub;
 
             Console.client.UpdateConsole = function (ConsoleOutput) {
-
+                doc.getElementById("Console").Value = ConsoleOutput;
             };
 
             $.connection.hub.start().done(function () {
-
+                Console.server.GetConnectionID($.connection.hub.id);
             });
         });
     </script>
 </head>
 
 <body>
-    <div id="wrapper">
-        
-       </div>
+    <div>
+        @ViewBag.ExerciseTitle
+    </div>
+
+    <div>
+        @ViewBag.Desc
+    </div>
+
+    <div>
+        <form method="post">
+            <textarea id="code" name="code">
+                @ViewBag.CodeTemplate
+            </textarea>
+            <div class="submit"><input type="submit" value="Submit"></div>
+        </form>
+     </div>
+
+    <div>
+        @Html.TextBox("Console")
+    </div>
+
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+            mode: "lua",
+            matchBrackets: true,
+            theme: "night"
+        });
+    </script>
 </body>
 </html>

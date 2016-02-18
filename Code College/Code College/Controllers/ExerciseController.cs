@@ -1,10 +1,12 @@
 ﻿using Code_College.Models;
 using Code_College.Hubs;
 
+using System;
 using System.Linq;
 using System.Web.Mvc;
 
 using Language.Lua;
+using Microsoft.AspNet.SignalR;
 
 namespace Code_College.Controllers
 {
@@ -12,7 +14,7 @@ namespace Code_College.Controllers
     {
         private static ExDBEntities ExDB = new ExDBEntities();
         private static UserDBEntities UserDB = new UserDBEntities();
-        private static ConsoleHub ConsoleHub = new ConsoleHub();
+        public static string ConnectionID { get; set; }
 
         public static int ID = 1;
 
@@ -24,31 +26,40 @@ namespace Code_College.Controllers
             ViewBag.Title = CurrentExercise.ExTitle + " - Code College";
             ViewBag.ExerciseTitle = CurrentExercise.ExTitle;
             ViewBag.Desc = CurrentExercise.ExDescription;
-            ViewBag.CodeTemplate = CurrentExercise.ExCodeTemplate;
+            ViewBag.CodeTemplate = CurrentExercise.ExCodeTemplate ?? "";
             ViewBag.Exercise = CurrentExercise;
 
             return View();
         }
         
-        public void SubmitCode(string Code, Exercise CurrentExercise)
+        public static void SubmitCode(string Code, Exercise CurrentExercise, string Username)
         {
             bool Correct;
 
-            Code = Code + CurrentExercise.ExAppendCode;
+            Code = Code + CurrentExercise.ExAppendCode ?? "";
+
+            Marker.Marker.MarkScheme = CurrentExercise.ExMarkScheme;
 
             LuaInterpreter.RunCode(Code);
             Correct = Marker.Marker.FullMark();
 
             if (Correct)
             {
-                ConsoleHub.UpdateConsole(LuaInterpreter.CodeReport.Output);
+                UpdateConsole(LuaInterpreter.CodeReport.Output);
 
-                Account.LevelUp(ViewBag.Username);
+                Account.LevelUp(Username);
             }
             else
             {
-                ConsoleHub.UpdateConsole("Sorry, that was incorrect. Please, read the task and try again.");
+                UpdateConsole("Sorry, that was incorrect. Please, read the task and try again.");
             }
+        }
+
+        public static void UpdateConsole(string ConsoleOutput)
+        {
+            IHubContext HubContext = GlobalHost.ConnectionManager.GetHubContext<ConsoleHub>();
+
+            HubContext.Clients.Client(ConnectionID).UpdateConsole(ConsoleOutput);
         }
     }
 }
