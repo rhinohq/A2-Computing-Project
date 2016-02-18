@@ -1,12 +1,9 @@
-﻿using Code_College.Models;
-using Code_College.Hubs;
-
-using System;
-using System.Linq;
-using System.Web.Mvc;
-
+﻿using Code_College.Hubs;
+using Code_College.Models;
 using Language.Lua;
 using Microsoft.AspNet.SignalR;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Code_College.Controllers
 {
@@ -31,7 +28,7 @@ namespace Code_College.Controllers
 
             return View();
         }
-        
+
         public static void SubmitCode(string Code, Exercise CurrentExercise, string Username)
         {
             bool Correct;

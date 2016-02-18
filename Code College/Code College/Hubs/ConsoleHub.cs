@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNet.SignalR;
+﻿using Code_College.Controllers;
+using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
-
-using Code_College.Controllers;
 
 namespace Code_College.Hubs
 {
@@ -13,6 +12,4 @@ namespace Code_College.Hubs
             ExerciseController.ConnectionID = ID;
         }
     }
-
-    
 }

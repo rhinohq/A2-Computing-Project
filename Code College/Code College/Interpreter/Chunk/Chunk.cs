@@ -1,6 +1,5 @@
-﻿using System;
-
-using Marker;
+﻿using Marker;
+using System;
 
 namespace Language.Lua
 {

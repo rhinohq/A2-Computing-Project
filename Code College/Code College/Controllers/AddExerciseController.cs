@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Code_College.Models;
 using System.IO;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
-using Code_College.Models;
 
 namespace Code_College.Controllers
 {
@@ -20,7 +16,6 @@ namespace Code_College.Controllers
         [HttpPost]
         public ActionResult Index(HttpPostedFileBase File)
         {
-
             if (File.ContentLength > 0)
             {
                 string FileName = Path.GetFileName(File.FileName);
