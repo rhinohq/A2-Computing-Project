@@ -55,7 +55,7 @@ namespace Code_College.Models
             {
                 return false;
             }
-            else if (user.PasswordHash == HashCredentials(Username, HashCredentials(user.Email, Password)))
+            else if (user.PasswordHash == HashCredentials(user.Email, Password))
             {
                 return true;
             }

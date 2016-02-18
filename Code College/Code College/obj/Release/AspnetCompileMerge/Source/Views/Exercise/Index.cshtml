@@ -1,5 +1,7 @@
 ﻿@using System.Web.Optimization;
+@using Code_College.Controllers;
 @using Code_College.Models;
+@using System.Text.RegularExpressions
 
 @{
     HttpCookie Cookie = Request.Cookies["UserAuth"];
@@ -10,6 +12,23 @@
         {
             Response.Redirect("/Login");
         }
+        else
+        {
+            ViewBag.Username = Cookie.Values["Username"];
+        }
+    }
+
+    Regex Regex = new Regex("[a-zA-Z0-9'-_.]", RegexOptions.Compiled);
+
+    if (!Regex.IsMatch(ViewBag.CodeTemplate))
+    {
+        ViewBag.CodeTemplate = "";
+    }
+
+    if (IsPost)
+    {
+        ViewBag.CodeTemplate = Request.Form["code"];
+        ViewBag.ConsoleOutput = ExerciseController.SubmitCode(Request.Form["Code"], ViewBag.Exercise, ViewBag.Username);
     }
 }
 
@@ -23,39 +42,64 @@
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
     <title>@ViewBag.Title</title>
 
-    @Styles.Render("~/bundles/css")
+    @Styles.Render("~/bundles/editorcss")
+    @Scripts.Render("~/bundles/editorjs")
+
+    @Scripts.Render("~/bundles/signalrjs")
     @Scripts.Render("~/bundles/js")
 
+    <script src="/signalr/hubs"></script>
     <script type="text/javascript">
         $(function () {
             var Console = $.connection.ConsoleHub;
 
             Console.client.UpdateConsole = function (ConsoleOutput) {
-
+                $("#Console").Val() = ConsoleOutput;
             };
 
             $.connection.hub.start().done(function () {
-
+                
             });
+
+            function UpdateConsole()
+            {
+                var code = HTMLBodyElement.getElementById("#code");
+
+                Console.server.UpdateConsole(code, @ViewBag.ExerciseID, "@ViewBag.Username");
+            }
         });
+    </script>
+
+    <script>
+        var xhttp = new XMLHttpRequest();
     </script>
 </head>
 
 <body>
-    <div id="wrapper">
-        <!-- Navigation -->
-        <nav class="top1 navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">Modern</a>
-            </div>
-            <!-- /.navbar-header -->
-        </nav>
-       </div>
+    <div>
+        @ViewBag.ExerciseTitle
+    </div>
+
+    <div>
+        @ViewBag.Desc
+    </div>
+
+    <div>
+        <form method="post">
+            <textarea id="code" name="code" value="">@ViewBag.CodeTemplate</textarea>
+            <div class="submit"><input type="submit" value="Submit" onclick="UpdateConsole()"></div>
+        </form>
+     </div>
+
+    <div>
+        @Html.TextBox("Console")
+    </div>
+
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+            mode: "lua",
+            theme: "night"
+        });
+    </script>
 </body>
 </html>
