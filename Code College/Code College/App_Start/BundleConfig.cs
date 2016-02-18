@@ -14,6 +14,8 @@ namespace Code_College.App_Start
             ScriptBundle EditorScripts = new ScriptBundle("~/bundles/editorjs");
             StyleBundle EditorStyles = new StyleBundle("~/bundles/editorcss");
 
+            ScriptBundle SignalRScripts = new ScriptBundle("~/bundles/signalrjs");
+
             ScriptBundle.IncludeDirectory("~/Scripts/", "*.js");
             StyleBundle.IncludeDirectory("~/Content/", "*.css");
 
@@ -21,11 +23,15 @@ namespace Code_College.App_Start
             EditorStyles.IncludeDirectory("~/Content/Editor/", "*.css");
             EditorStyles.IncludeDirectory("~/Content/Editor/Themes/", "*.css");
 
+            SignalRScripts.IncludeDirectory("~/Scripts/SignalR", "*js");
+
             Bundles.Add(ScriptBundle);
             Bundles.Add(StyleBundle);
 
             Bundles.Add(EditorScripts);
             Bundles.Add(EditorStyles);
+
+            Bundles.Add(SignalRScripts);
         }
     }
 }

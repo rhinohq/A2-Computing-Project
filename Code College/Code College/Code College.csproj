@@ -209,6 +209,7 @@
     <Content Include="Images\bg.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\logo.png" />
     <Content Include="Interpreter\Lua.Grammar.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -218,10 +219,10 @@
     <Content Include="Scripts\Editor\matchbrackets.js" />
     <Content Include="Scripts\jquery-1.11.2.js" />
     <Content Include="Scripts\jquery-1.11.2.min.js" />
-    <Content Include="Scripts\jquery.signalR-2.2.0.js" />
-    <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
     <Content Include="Scripts\Editor\lua.js" />
     <Content Include="Scripts\npm.js" />
+    <Content Include="Scripts\SignalR\jquery.signalR-2.2.0.js" />
+    <Content Include="Scripts\SignalR\jquery.signalR-2.2.0.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

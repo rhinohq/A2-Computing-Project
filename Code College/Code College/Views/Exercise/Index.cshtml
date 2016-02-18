@@ -1,6 +1,7 @@
 ﻿@using System.Web.Optimization;
 @using Code_College.Controllers;
 @using Code_College.Models;
+@using System.Text.RegularExpressions
 
 @{
     HttpCookie Cookie = Request.Cookies["UserAuth"];
@@ -17,9 +18,17 @@
         }
     }
 
+    Regex Regex = new Regex("[a-zA-Z0-9'-_.]", RegexOptions.Compiled);
+
+    if (!Regex.IsMatch(ViewBag.CodeTemplate))
+    {
+        ViewBag.CodeTemplate = "";
+    }
+
     if (IsPost)
     {
-        ExerciseController.SubmitCode(Request.Form["Code"], ViewBag.Exercise, ViewBag.Username);
+        ViewBag.CodeTemplate = Request.Form["code"];
+        ViewBag.ConsoleOutput = ExerciseController.SubmitCode(Request.Form["Code"], ViewBag.Exercise, ViewBag.Username);
     }
 }
 
@@ -36,18 +45,33 @@
     @Styles.Render("~/bundles/editorcss")
     @Scripts.Render("~/bundles/editorjs")
 
+    @Scripts.Render("~/bundles/signalrjs")
+    @Scripts.Render("~/bundles/js")
+
+    <script src="/signalr/hubs"></script>
     <script type="text/javascript">
         $(function () {
             var Console = $.connection.ConsoleHub;
 
             Console.client.UpdateConsole = function (ConsoleOutput) {
-                doc.getElementById("Console").Value = ConsoleOutput;
+                $("#Console").Val() = ConsoleOutput;
             };
 
             $.connection.hub.start().done(function () {
-                Console.server.GetConnectionID($.connection.hub.id);
+                
             });
+
+            function UpdateConsole()
+            {
+                var code = HTMLBodyElement.getElementById("#code");
+
+                Console.server.UpdateConsole(code, @ViewBag.ExerciseID, "@ViewBag.Username");
+            }
         });
+    </script>
+
+    <script>
+        var xhttp = new XMLHttpRequest();
     </script>
 </head>
 
@@ -62,10 +86,8 @@
 
     <div>
         <form method="post">
-            <textarea id="code" name="code">
-                @ViewBag.CodeTemplate
-            </textarea>
-            <div class="submit"><input type="submit" value="Submit"></div>
+            <textarea id="code" name="code" value="">@ViewBag.CodeTemplate</textarea>
+            <div class="submit"><input type="submit" value="Submit" onclick="UpdateConsole()"></div>
         </form>
      </div>
 
@@ -76,7 +98,6 @@
     <script>
         var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
             mode: "lua",
-            matchBrackets: true,
             theme: "night"
         });
     </script>
