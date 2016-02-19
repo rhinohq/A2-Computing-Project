@@ -147,7 +147,7 @@ namespace Code_College.Models
 
             if (user == null)
                 return false;
-            else if (user.PasswordHash == HashCredentials(Username, Cryptography.Decrypt(Password, Username)))
+            else if (user.PasswordHash == HashCredentials(user.Email, Cryptography.Decrypt(Password, Username)))
                 return true;
             else
                 return false;
@@ -174,7 +174,7 @@ namespace Code_College.Models
             UserDB.SaveChangesAsync();
         }
 
-        public class Cryptography
+        public static class Cryptography
         {
             private const int Keysize = 256;
             private const int DerivationIterations = 1000;

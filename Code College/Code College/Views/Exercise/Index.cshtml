@@ -15,8 +15,16 @@
         else
         {
             ViewBag.Username = Cookie.Values["Username"];
+            ViewBag.Password = Cookie.Values["Password"];
         }
     }
+    else
+    {
+        // TODO: Redirect to Login
+    }
+
+    ViewBag.Username = "rhinohq";
+    ViewBag.Password = "PqLxCIe3SVJo+kCks2HJVQANP+v8xaycNULXnRgdkLtZqLENb+b7dFRdX/7rQoEh2Zx++atmERxqv4NkdQTc30WGU3HJAj0C8GQlsqPYISYHDCdQKTNqEjIgcuNdyieHAPWsFM2BWyaqaqpFiKLgKsZ6s65WBkQ2rv1ps+6w50TrN2JeGirT/RM9NT9wrlmU8JRSqdKuOQzX3Nla9pj0gQ==";
 
     Regex Regex = new Regex("[a-zA-Z0-9'-_.]", RegexOptions.Compiled);
 
@@ -25,11 +33,11 @@
         ViewBag.CodeTemplate = "";
     }
 
-    if (IsPost)
-    {
-        ViewBag.CodeTemplate = Request.Form["code"];
-        ViewBag.ConsoleOutput = ExerciseController.SubmitCode(Request.Form["Code"], ViewBag.Exercise, ViewBag.Username);
-    }
+    //if (IsPost)
+    //{
+    //    ViewBag.CodeTemplate = Request.Form["code"];
+    //    ViewBag.ConsoleOutput = ExerciseController.SubmitCode(Request.Form["Code"], ViewBag.Exercise, ViewBag.Username);
+    //}
 }
 
 <!DOCTYPE html>
@@ -45,39 +53,66 @@
     @Styles.Render("~/bundles/editorcss")
     @Scripts.Render("~/bundles/editorjs")
 
-    @Scripts.Render("~/bundles/signalrjs")
     @Scripts.Render("~/bundles/js")
 
-    <script src="/signalr/hubs"></script>
     <script type="text/javascript">
-        $(function () {
-            var Console = $.connection.ConsoleHub;
+        function UpdateConsole() {
+            var xhttp;
+            var code = $("#code").val();
+            var id = "@ViewBag.ExerciseID";
+            var username = "@ViewBag.Username";
+            var password = "@ViewBag.Password";
 
-            Console.client.UpdateConsole = function (ConsoleOutput) {
-                $("#Console").Val() = ConsoleOutput;
+            try {
+                xhttp = new XMLHttpRequest();
+            } catch (e) {
+                xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+
+            xhttp.onreadystatechange = function () {
+                if (xhttp.readyState == 4 && xhttp.status == 200) {
+                    document.getElementById("#Console").innerHTML = xhttp.responseText;
+                }
             };
 
-            $.connection.hub.start().done(function () {
-                
-            });
-
-            function UpdateConsole()
-            {
-                var code = HTMLBodyElement.getElementById("#code");
-
-                Console.server.UpdateConsole(code, @ViewBag.ExerciseID, "@ViewBag.Username");
-            }
-        });
+            xhttp.open("GET", "/api/Code/" + id + "/" + username + "/" + password + "/" + code, true);
+            xhttp.send();
+        }
     </script>
 
     <script>
-        var xhttp = new XMLHttpRequest();
+        function ChangeConsole ()
+        {
+            var Submission = new Object();
+
+            Submission.id = @ViewBag.ExerciseID;
+            Submission.username = "@ViewBag.Username";
+            Submission.password = "@ViewBag.Password";
+            Submission.code = $("#code").val();
+
+            $.ajax({
+                url: '/api/code',
+                type: 'GET',
+                dataType: 'json',
+                data: Submission,
+                success: function (data, textStatus, xhr) {
+                    console.log(data);
+                    document.getElementById("#Console").innerHTML = data;
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Error in Operation');
+                    console.log(xhr);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                }
+            });
+        }
     </script>
 </head>
 
 <body>
     <div>
-        @ViewBag.ExerciseTitle
+        <h1>@ViewBag.ExerciseTitle</h1>
     </div>
 
     <div>
@@ -85,19 +120,20 @@
     </div>
 
     <div>
-        <form method="post">
-            <textarea id="code" name="code" value="">@ViewBag.CodeTemplate</textarea>
-            <div class="submit"><input type="submit" value="Submit" onclick="UpdateConsole()"></div>
-        </form>
-     </div>
+        <textarea id="code" name="code" value="">@ViewBag.CodeTemplate</textarea>
+        <div class="submit"><input type="button" value="Submit" onclick="ChangeConsole()"></div>
+    </div>
 
     <div>
         @Html.TextBox("Console")
     </div>
 
+    <div id="Console"></div>
+
     <script>
         var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
             mode: "lua",
+            matchBrackets: true,
             theme: "night"
         });
     </script>

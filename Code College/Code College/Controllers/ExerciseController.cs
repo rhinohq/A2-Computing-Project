@@ -9,7 +9,6 @@ namespace Code_College.Controllers
     {
         private static ExDBEntities ExDB = new ExDBEntities();
         private static UserDBEntities UserDB = new UserDBEntities();
-        public static string ConnectionID { get; set; }
 
         public static int ID = 1;
 

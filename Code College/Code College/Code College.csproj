@@ -230,6 +230,7 @@
     <Content Include="Scripts\Editor\codemirror.js" />
     <Content Include="Content\Editor\docs.css" />
     <Content Include="Scripts\Editor\matchbrackets.js" />
+    <Content Include="Scripts\Get.js" />
     <Content Include="Scripts\jquery-1.11.2.js" />
     <Content Include="Scripts\jquery-1.11.2.min.js" />
     <Content Include="Scripts\Editor\lua.js" />
@@ -243,8 +244,11 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AddExerciseController.cs" />
-    <Compile Include="Controllers\CodeController.cs" />
+    <Compile Include="Controllers\CodeController.cs">
+      <BrowseToURL>~/api/submission</BrowseToURL>
+    </Compile>
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\ExerciseController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -282,11 +286,6 @@
     <Compile Include="Models\ExerciseParser.cs" />
     <Compile Include="Models\UserDBEntities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -319,13 +318,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Exercises\" />
     <Folder Include="Views\Shared\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
