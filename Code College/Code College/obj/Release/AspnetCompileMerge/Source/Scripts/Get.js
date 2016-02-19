@@ -6,7 +6,7 @@
         person.surname = $('#surname').val();
 
         $.ajax({
-            url: '/api/submission',
+            url: '/api/Code',
             type: 'POST',
             dataType: 'json',
             data: person,

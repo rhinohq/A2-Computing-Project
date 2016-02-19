@@ -230,7 +230,6 @@
     <Content Include="Scripts\Editor\codemirror.js" />
     <Content Include="Content\Editor\docs.css" />
     <Content Include="Scripts\Editor\matchbrackets.js" />
-    <Content Include="Scripts\Get.js" />
     <Content Include="Scripts\jquery-1.11.2.js" />
     <Content Include="Scripts\jquery-1.11.2.min.js" />
     <Content Include="Scripts\Editor\lua.js" />
