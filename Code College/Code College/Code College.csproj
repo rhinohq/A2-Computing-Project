@@ -207,6 +207,7 @@
     <Content Include="Content\Editor\Themes\xq-light.css" />
     <Content Include="Content\Editor\Themes\yeti.css" />
     <Content Include="Content\Editor\Themes\zenburn.css" />
+    <Content Include="Exercises\ExercisePlaceholder.txt" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -310,7 +311,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Exercises\" />
     <Folder Include="Views\Shared\" />
   </ItemGroup>
   <PropertyGroup>

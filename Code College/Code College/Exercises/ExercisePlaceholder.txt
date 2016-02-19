@@ -1,0 +1,5 @@
+﻿This is a placeholder text file.
+
+This directory is used for storing uploaded exercise files.
+
+This file is added so that Web Deploy automatically publishes this directory.
