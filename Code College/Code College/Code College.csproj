@@ -235,8 +235,6 @@
     <Content Include="Scripts\jquery-1.11.2.min.js" />
     <Content Include="Scripts\Editor\lua.js" />
     <Content Include="Scripts\npm.js" />
-    <Content Include="Scripts\SignalR\jquery.signalR-2.2.0.js" />
-    <Content Include="Scripts\SignalR\jquery.signalR-2.2.0.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -246,9 +244,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AddExerciseController.cs" />
-    <Compile Include="Controllers\CodeController.cs">
-      <BrowseToURL>~/api/submission</BrowseToURL>
-    </Compile>
+    <Compile Include="Controllers\CodeController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\ExerciseController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -256,7 +252,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Hubs\ConsoleHub.cs" />
     <Compile Include="Interpreter\Chunk\Chunk.cs" />
     <Compile Include="Interpreter\Expr\Expr.cs" />
     <Compile Include="Interpreter\LuaInterpreter.cs" />

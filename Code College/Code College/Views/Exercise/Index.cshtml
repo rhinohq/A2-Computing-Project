@@ -55,49 +55,24 @@
 
     @Scripts.Render("~/bundles/js")
 
-    <script type="text/javascript">
-        function UpdateConsole() {
-            var xhttp;
-            var code = $("#code").val();
-            var id = "@ViewBag.ExerciseID";
-            var username = "@ViewBag.Username";
-            var password = "@ViewBag.Password";
-
-            try {
-                xhttp = new XMLHttpRequest();
-            } catch (e) {
-                xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-
-            xhttp.onreadystatechange = function () {
-                if (xhttp.readyState == 4 && xhttp.status == 200) {
-                    document.getElementById("#Console").innerHTML = xhttp.responseText;
-                }
-            };
-
-            xhttp.open("GET", "/api/Code/" + id + "/" + username + "/" + password + "/" + code, true);
-            xhttp.send();
-        }
-    </script>
-
     <script>
-        function ChangeConsole ()
+        function UpdateConsole ()
         {
             var Submission = new Object();
 
             Submission.id = @ViewBag.ExerciseID;
             Submission.username = "@ViewBag.Username";
             Submission.password = "@ViewBag.Password";
-            Submission.code = $("#code").val();
+            Submission.code = document.getElementById("code").value;
 
             $.ajax({
                 url: '/api/code',
-                type: 'GET',
+                type: 'POST',
                 dataType: 'json',
                 data: Submission,
                 success: function (data, textStatus, xhr) {
                     console.log(data);
-                    document.getElementById("#Console").innerHTML = data;
+                    document.getElementById("console").value = data;
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     console.log('Error in Operation');
@@ -121,11 +96,11 @@
 
     <div>
         <textarea id="code" name="code" value="">@ViewBag.CodeTemplate</textarea>
-        <div class="submit"><input type="button" value="Submit" onclick="ChangeConsole()"></div>
+        <div class="submit"><input type="button" value="Submit" onclick="UpdateConsole()"></div>
     </div>
 
     <div>
-        @Html.TextBox("Console")
+        @Html.TextBox("console", null, new { id = "console" })
     </div>
 
     <div id="Console"></div>
@@ -133,6 +108,7 @@
     <script>
         var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
             mode: "lua",
+            lineNumbers: true,
             matchBrackets: true,
             theme: "night"
         });
