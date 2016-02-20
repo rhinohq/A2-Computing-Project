@@ -1,5 +1,4 @@
 ﻿@using System.Web.Optimization;
-@using Code_College.Controllers;
 @using Code_College.Models;
 @using System.Text.RegularExpressions
 
@@ -32,12 +31,6 @@
     {
         ViewBag.CodeTemplate = "";
     }
-
-    //if (IsPost)
-    //{
-    //    ViewBag.CodeTemplate = Request.Form["code"];
-    //    ViewBag.ConsoleOutput = ExerciseController.SubmitCode(Request.Form["Code"], ViewBag.Exercise, ViewBag.Username);
-    //}
 }
 
 <!DOCTYPE html>
@@ -47,6 +40,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="Code College, Exercise, Learn Programming, Learn Lua, Lua, Development, Code, @ViewBag.ExerciseTitle" />
+    <meta name="description" content="This is the Exercise page. @ViewBag.Desc" />
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
     <title>@ViewBag.Title</title>
 

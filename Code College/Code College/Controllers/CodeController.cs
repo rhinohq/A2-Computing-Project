@@ -9,7 +9,6 @@ namespace Code_College.Controllers
     {
         private static UserDBEntities UserDB = new UserDBEntities();
         private static ExDBEntities ExDB = new ExDBEntities();
-        private string URL;
 
         // GET api/<controller>/5
         [HttpGet]
@@ -23,11 +22,9 @@ namespace Code_College.Controllers
             if (CurrentExercise == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            string console = ExerciseController.SubmitCode(Submission.code, CurrentExercise, Submission.username);
-
-            return console;
+            return ExerciseController.SubmitCode(Submission.code, CurrentExercise, Submission.username);
         }
-        
+
         // POST api/<controller>
         [HttpPost]
         public string PostSubmission(Submission Submission)
@@ -40,9 +37,7 @@ namespace Code_College.Controllers
             if (CurrentExercise == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            string console = ExerciseController.SubmitCode(Submission.code, CurrentExercise, Submission.username);
-
-            return console;
+            return ExerciseController.SubmitCode(Submission.code, CurrentExercise, Submission.username);
         }
 
         private bool Authenticate(string Username, string Password)
@@ -60,7 +55,7 @@ namespace Code_College.Controllers
     {
         public int id { get; set; }
         public string username { get; set; }
-        public string password { get; set;}
+        public string password { get; set; }
         public string code { get; set; }
     }
 }
