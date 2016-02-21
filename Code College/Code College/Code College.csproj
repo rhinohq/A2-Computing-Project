@@ -281,7 +281,6 @@
     <Compile Include="Models\ExerciseParser.cs" />
     <Compile Include="Models\UserDBEntities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
