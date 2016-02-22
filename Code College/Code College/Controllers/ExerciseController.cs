@@ -2,6 +2,7 @@
 using Language.Lua;
 using System.Linq;
 using System.Web.Mvc;
+using System.Text.RegularExpressions;
 
 namespace Code_College.Controllers
 {
@@ -9,6 +10,7 @@ namespace Code_College.Controllers
     {
         private static ExDBEntities ExDB = new ExDBEntities();
         private static UserDBEntities UserDB = new UserDBEntities();
+        Regex Regex = new Regex("[a-zA-Z0-9'-_.]", RegexOptions.Compiled);
 
         public static int ID = 1;
 
@@ -23,6 +25,11 @@ namespace Code_College.Controllers
             ViewBag.ExerciseID = CurrentExercise.ExID;
             ViewBag.CodeTemplate = CurrentExercise.ExCodeTemplate ?? "";
             ViewBag.Exercise = CurrentExercise;
+
+            if (!Regex.IsMatch(ViewBag.CodeTemplate))
+            {
+                ViewBag.CodeTemplate = "";
+            }
 
             return View();
         }

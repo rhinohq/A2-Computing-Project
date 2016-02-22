@@ -42,9 +42,7 @@ namespace Code_College.Models
                 AddCookie(NewUser.Username, Password, Response);
             }
             else
-            {
                 Response.Write("Account taken");
-            }
         }
 
         public static bool VerifyUser(string Username, string Password)
@@ -52,17 +50,11 @@ namespace Code_College.Models
             User user = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
 
             if (user == null)
-            {
                 return false;
-            }
             else if (user.PasswordHash == HashCredentials(user.Email, Password))
-            {
                 return true;
-            }
             else
-            {
                 return false;
-            }
         }
 
         public static void AddCookie(string Username, string Password, HttpResponseBase Response)
@@ -103,9 +95,7 @@ namespace Code_College.Models
             HttpCookie Cookie = Request.Cookies["UserAuth"];
 
             if (Cookie != null)
-            {
                 Cookie.Expires.AddYears(-2);
-            }
         }
 
         public static bool Validation(string Data, char FieldType)

@@ -43,13 +43,9 @@ namespace Language.Lua
             Chunk Chunk = Parser.ParseChunk(new TextInput(UserCode), out Success);
 
             if (Success)
-            {
                 return Chunk;
-            }
             else
-            {
                 throw new ArgumentException("Code has syntax errors:\r\n" + Parser.GetErrorMessages());
-            }
         }
 
         public static LuaTable CreateGlobalEnviroment()

@@ -150,9 +150,7 @@ namespace Code_College.Models
                 string Line = "";
 
                 while (!Line.StartsWith("[ExMarkScheme]"))
-                {
                     Line = File.ReadLine();
-                }
 
                 while (!File.EndOfStream)
                 {
