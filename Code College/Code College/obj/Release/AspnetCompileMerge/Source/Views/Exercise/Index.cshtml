@@ -1,6 +1,5 @@
 ﻿@using System.Web.Optimization;
 @using Code_College.Models;
-@using System.Text.RegularExpressions
 
 @{
     HttpCookie Cookie = Request.Cookies["UserAuth"];
@@ -24,13 +23,6 @@
 
     ViewBag.Username = "rhinohq";
     ViewBag.Password = "PqLxCIe3SVJo+kCks2HJVQANP+v8xaycNULXnRgdkLtZqLENb+b7dFRdX/7rQoEh2Zx++atmERxqv4NkdQTc30WGU3HJAj0C8GQlsqPYISYHDCdQKTNqEjIgcuNdyieHAPWsFM2BWyaqaqpFiKLgKsZ6s65WBkQ2rv1ps+6w50TrN2JeGirT/RM9NT9wrlmU8JRSqdKuOQzX3Nla9pj0gQ==";
-
-    Regex Regex = new Regex("[a-zA-Z0-9'-_.]", RegexOptions.Compiled);
-
-    if (!Regex.IsMatch(ViewBag.CodeTemplate))
-    {
-        ViewBag.CodeTemplate = "";
-    }
 }
 
 <!DOCTYPE html>
@@ -50,6 +42,9 @@
     @Scripts.Render("~/bundles/js")
 
     <script>
+
+        editor.getDoc().setValue('@ViewBag.CodeTemplate');
+
         function UpdateConsole ()
         {
             var Submission = new Object();
@@ -57,7 +52,7 @@
             Submission.id = @ViewBag.ExerciseID;
             Submission.username = "@ViewBag.Username";
             Submission.password = "@ViewBag.Password";
-            Submission.code = document.getElementById("code").value;
+            Submission.code = editor.getValue();
 
             $.ajax({
                 url: '/api/code',
@@ -89,7 +84,7 @@
     </div>
 
     <div>
-        <textarea id="code" name="code" value="">@ViewBag.CodeTemplate</textarea>
+        <textarea id="code" name="code" value=""></textarea>
         <div class="submit"><input type="button" value="Submit" onclick="UpdateConsole()"></div>
     </div>
 

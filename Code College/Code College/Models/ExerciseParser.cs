@@ -1,7 +1,7 @@
 ﻿using Marker;
-
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace Code_College.Models
@@ -178,10 +178,19 @@ namespace Code_College.Models
                 {
                     try
                     {
-                        return XML.SelectSingleNode("/MarkScheme/Output").InnerText;
+                        string Output = XML.SelectSingleNode("/MarkScheme/Output").InnerText;
+
+                        Output.Replace("\t", "");
+                        Output = Regex.Unescape(Output);
+
+                        NewMarkScheme.CheckOutput = true;
+
+                        return Output;
                     }
                     catch
                     {
+                        NewMarkScheme.CheckOutput = false;
+
                         return null;
                     }
                 }
@@ -191,6 +200,8 @@ namespace Code_College.Models
                     try
                     {
                         XmlNodeList VariablesNode = XML.SelectNodes("/MarkScheme/Variables");
+
+                        NewMarkScheme.CheckVars = true;
 
                         foreach (XmlNode Node in VariablesNode)
                         {
@@ -211,6 +222,8 @@ namespace Code_College.Models
                     {
                         ExMarkScheme.Variable NewVar = new ExMarkScheme.Variable();
 
+                        NewMarkScheme.CheckVars = false;
+
                         NewVar.VarName = null;
                         NewVar.VarValue = null;
 
@@ -223,6 +236,8 @@ namespace Code_College.Models
                     try
                     {
                         XmlNodeList ExprsNode = XML.SelectNodes("/MarkScheme/Expressions");
+
+                        NewMarkScheme.CheckExprs = true;
 
                         foreach (XmlNode Node in ExprsNode)
                         {
@@ -243,6 +258,8 @@ namespace Code_College.Models
                     {
                         ExMarkScheme.Expression NewExpr = new ExMarkScheme.Expression();
 
+                        NewMarkScheme.CheckExprs = false;
+
                         NewExpr.ExpressionStr = null;
                         NewExpr.ExpressionType = null;
 
@@ -255,6 +272,8 @@ namespace Code_College.Models
                     try
                     {
                         XmlNodeList ConStructsNode = XML.SelectNodes("/MarkScheme/ControlStructures");
+
+                        NewMarkScheme.CheckConStruct = true;
 
                         foreach (XmlNode Node in ConStructsNode)
                         {
@@ -274,6 +293,8 @@ namespace Code_College.Models
                     catch
                     {
                         ExMarkScheme.ControlStructure NewConStruct = new ExMarkScheme.ControlStructure();
+
+                        NewMarkScheme.CheckConStruct = false;
 
                         NewConStruct.StructureCondition = null;
                         NewConStruct.StructureType = null;
