@@ -1,0 +1,41 @@
+﻿@using Code_College.Models;
+@using System.Web.Optimization;
+
+@{
+    HttpCookie Cookie = Request.Cookies["UserAuth"];
+
+    if (Cookie != null)
+    {
+        if (!Account.VerifyCookie(Cookie))
+        {
+            Response.Redirect("/Login");
+        }
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Code College, Dashboard, Learn Programming, Learn Lua, Lua, Development, Code" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <title>Dash - Code College</title>
+
+    @*@Styles.Render("~/bundles/css")*@
+    @Scripts.Render("~/bundles/js")
+    <meta name="description" content="The description of my page" />
+</head>
+<body>
+    <div>
+        This section, Dashboard, is under construction. Please, go to another section instead.
+        <ul>
+            <li><a href="~/Login">Login</a></li>
+            <li><a href="~/SignUp">Sign Up</a></li>
+            <li><a href="~/Exercise">Exercise</a></li>
+            <li><a href="~/AddExercise">Add Exercise (Admin Only)</a></li>
+        </ul>
+    </div>
+</body>
+</html>

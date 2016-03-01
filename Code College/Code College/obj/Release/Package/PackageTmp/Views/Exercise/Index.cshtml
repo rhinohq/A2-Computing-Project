@@ -1,0 +1,106 @@
+﻿@using System.Web.Optimization;
+@using Code_College.Models;
+
+@{
+    HttpCookie Cookie = Request.Cookies["UserAuth"];
+
+    if (Cookie != null)
+    {
+        if (!Account.VerifyCookie(Cookie))
+        {
+            // TODO: Redirect to Login
+        }
+        else
+        {
+            ViewBag.Username = Cookie.Values["Username"];
+            ViewBag.Password = Cookie.Values["Password"];
+        }
+    }
+    else
+    {
+        // TODO: Redirect to Login
+    }
+
+    ViewBag.Username = "rhinohq";
+    ViewBag.Password = "PqLxCIe3SVJo+kCks2HJVQANP+v8xaycNULXnRgdkLtZqLENb+b7dFRdX/7rQoEh2Zx++atmERxqv4NkdQTc30WGU3HJAj0C8GQlsqPYISYHDCdQKTNqEjIgcuNdyieHAPWsFM2BWyaqaqpFiKLgKsZ6s65WBkQ2rv1ps+6w50TrN2JeGirT/RM9NT9wrlmU8JRSqdKuOQzX3Nla9pj0gQ==";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Code College, Exercise, Learn Programming, Learn Lua, Lua, Development, Code, @ViewBag.ExerciseTitle" />
+    <meta name="description" content="This is the Exercise page. @ViewBag.Desc" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <title>@ViewBag.Title</title>
+
+    @Styles.Render("~/bundles/editorcss")
+    @Scripts.Render("~/bundles/editorjs")
+
+    @Scripts.Render("~/bundles/js")
+
+    <script>
+
+        editor.getDoc().setValue('@ViewBag.CodeTemplate');
+
+        function UpdateConsole ()
+        {
+            var Submission = new Object();
+
+            Submission.id = @ViewBag.ExerciseID;
+            Submission.username = "@ViewBag.Username";
+            Submission.password = "@ViewBag.Password";
+            Submission.code = editor.getValue();
+
+            $.ajax({
+                url: '/api/code',
+                type: 'POST',
+                dataType: 'json',
+                data: Submission,
+                success: function (data, textStatus, xhr) {
+                    console.log(data);
+                    document.getElementById("console").value = data;
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Error in Operation');
+                    console.log(xhr);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <h1>@ViewBag.ExerciseTitle</h1>
+    </div>
+
+    <div>
+        @ViewBag.Desc
+    </div>
+
+    <div>
+        <textarea id="code" name="code" value=""></textarea>
+        <div class="submit"><input type="button" value="Submit" onclick="UpdateConsole()"></div>
+    </div>
+
+    <div>
+        @Html.TextBox("console", null, new { id = "console" })
+    </div>
+
+    <div id="Console"></div>
+
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+            mode: "lua",
+            lineNumbers: true,
+            matchBrackets: true,
+            theme: "night"
+        });
+    </script>
+</body>
+</html>
