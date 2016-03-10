@@ -22,7 +22,7 @@ print(string.format("name = {0}", name))
 print(string.format("age = {0}", age))
 
 [ExMarkScheme]
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <MarkScheme>
 	<Variables>
 		<Variable VarValue="[DNM]">name</Variable>

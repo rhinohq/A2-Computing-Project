@@ -17,9 +17,7 @@ In the code editor, try printing 'Hello world!' to the console.
 [ExAppendCode]
 
 [ExMarkScheme]
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <MarkScheme>
-	<Output>
-		Hello world!
-	</Output>
+	<Output>Hello world!</Output>
 </MarkScheme>
