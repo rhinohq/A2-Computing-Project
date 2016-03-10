@@ -62,6 +62,7 @@
                 success: function (data, textStatus, xhr) {
                     console.log(data);
                     document.getElementById("console").value = data;
+                    var IsCorrect = CodeCorrect(data);
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     console.log('Error in Operation');
@@ -71,6 +72,17 @@
                 }
             });
         }
+
+        function CodeCorrect (ConsoleOutput)
+        {
+            if (ConsoleOutput === "Sorry, that was incorrect. Please, read the task and try again.") {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
     </script>
 </head>
 

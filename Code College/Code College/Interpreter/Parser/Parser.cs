@@ -604,6 +604,9 @@ namespace Language.Lua
 
             if (success) { ClearError(errorCount); }
             ParsingResults[reskey] = new Tuple<object, bool, int>(ifStmt, success, position);
+            
+            LuaInterpreter.AddConStructToCodeReport("IF", ifStmt.Condition.ToString());
+
             return ifStmt;
         }
 
@@ -670,6 +673,9 @@ namespace Language.Lua
 
             if (success) { ClearError(errorCount); }
             ParsingResults[reskey] = new Tuple<object, bool, int>(elseifBlock, success, position);
+
+            LuaInterpreter.AddConStructToCodeReport("ELSEIF", elseifBlock.Condition.ToString());
+
             return elseifBlock;
         }
 
@@ -808,6 +814,9 @@ namespace Language.Lua
 
             if (success) { ClearError(errorCount); }
             ParsingResults[reskey] = new Tuple<object, bool, int>(forStmt, success, position);
+
+            LuaInterpreter.AddConStructToCodeReport("FOR", forStmt.Start.ToString()); // TODO: Add rest of condition.
+
             return forStmt;
         }
 
@@ -1004,6 +1013,9 @@ namespace Language.Lua
 
             if (success) { ClearError(errorCount); }
             ParsingResults[reskey] = new Tuple<object, bool, int>(whileStmt, success, position);
+
+            LuaInterpreter.AddConStructToCodeReport("WHILE", whileStmt.Condition.ToString());
+
             return whileStmt;
         }
 
@@ -1070,6 +1082,9 @@ namespace Language.Lua
 
             if (success) { ClearError(errorCount); }
             ParsingResults[reskey] = new Tuple<object, bool, int>(repeatStmt, success, position);
+
+            LuaInterpreter.AddConStructToCodeReport("REPEAT", repeatStmt.Condition.ToString());
+
             return repeatStmt;
         }
 

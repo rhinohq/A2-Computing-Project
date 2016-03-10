@@ -9,5 +9,11 @@ namespace Code_College.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public static RedirectResult Dash()
+        {
+            return new RedirectResult("~/Dash");
+        }
     }
 }

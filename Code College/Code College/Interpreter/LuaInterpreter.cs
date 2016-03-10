@@ -61,5 +61,10 @@ namespace Language.Lua
 
             return global;
         }
+
+        public static void AddConStructToCodeReport(string Type, string Condition)
+        {
+            CodeReport.ControlStructures.Add(new UserCode.ControlStructure { StructureType = Type, StructureCondition = Condition });
+        }
     }
 }

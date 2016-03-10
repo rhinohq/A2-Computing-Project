@@ -10,12 +10,14 @@
     {
         if (Account.VerifyCookie(Cookie))
         {
-            // TODO: Redirect to Dash
+            // TODO: Redirect to Dash.
         }
     }
 
     if (IsPost)
     {
+        LoginController.Dash();
+
         string Username = Request.Form["Username"];
         string Password = Account.HashCredentials(Username, Request.Form["Password"]);
 
@@ -23,7 +25,7 @@
         {
             Account.AddCookie(Username, Password, Response);
 
-            // TODO: Redirect to Dash
+            // GOTO: Redirect to Dash.
         }
     }
 }
@@ -61,6 +63,7 @@
     </div>
     <div class="copy_layout login">
         <p>Copyright &copy; 2015 Code College All Rights Reserved | Design by <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
+        @Html.ActionLink("Test", "Index", "Dashboard");
     </div>
 </body>
 </html>

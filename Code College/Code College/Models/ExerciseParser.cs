@@ -1,7 +1,6 @@
 ﻿using Marker;
 using System;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace Code_College.Models
@@ -159,7 +158,8 @@ namespace Code_College.Models
                     Entry += Line;
                 }
 
-                XML.LoadXml(Entry);
+                if (Entry != "")
+                    XML.LoadXml(Entry);
 
                 return XML;
             }
@@ -180,9 +180,6 @@ namespace Code_College.Models
                     {
                         string Output = XML.SelectSingleNode("/MarkScheme/Output").InnerText;
 
-                        Output.Replace("\t", "");
-                        Output = Regex.Unescape(Output);
-
                         NewMarkScheme.CheckOutput = true;
 
                         return Output;
@@ -201,10 +198,10 @@ namespace Code_College.Models
                     {
                         XmlNodeList VariablesNode = XML.SelectNodes("/MarkScheme/Variables");
 
-                        NewMarkScheme.CheckVars = true;
-
                         foreach (XmlNode Node in VariablesNode)
                         {
+                            NewMarkScheme.CheckVars = true;
+
                             ExMarkScheme.Variable NewVar = new ExMarkScheme.Variable();
 
                             NewVar.VarName = Node.InnerText;
@@ -237,10 +234,10 @@ namespace Code_College.Models
                     {
                         XmlNodeList ExprsNode = XML.SelectNodes("/MarkScheme/Expressions");
 
-                        NewMarkScheme.CheckExprs = true;
-
                         foreach (XmlNode Node in ExprsNode)
                         {
+                            NewMarkScheme.CheckExprs = true;
+
                             ExMarkScheme.Expression NewExpr = new ExMarkScheme.Expression();
 
                             NewExpr.ExpressionStr = Node.InnerText;
@@ -273,10 +270,10 @@ namespace Code_College.Models
                     {
                         XmlNodeList ConStructsNode = XML.SelectNodes("/MarkScheme/ControlStructures");
 
-                        NewMarkScheme.CheckConStruct = true;
-
                         foreach (XmlNode Node in ConStructsNode)
                         {
+                            NewMarkScheme.CheckConStruct = true;
+
                             ExMarkScheme.ControlStructure NewConStruct = new ExMarkScheme.ControlStructure();
 
                             NewConStruct.StructureCondition = Node.InnerText;
