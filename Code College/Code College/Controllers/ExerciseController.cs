@@ -12,7 +12,7 @@ namespace Code_College.Controllers
         private static UserDBEntities UserDB = new UserDBEntities();
         private Regex Regex = new Regex("[a-zA-Z0-9'-_.]", RegexOptions.Compiled);
 
-        public static int ID = 1;
+        public static int ID = 2;
 
         // GET: Exercise
         public ActionResult Index()

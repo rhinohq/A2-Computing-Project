@@ -10,11 +10,13 @@ namespace Language.Lua
         {
             SetInput(input);
             Chunk chunk = ParseChunk(out success);
+
             if (Position < input.Length)
             {
                 success = false;
                 Error("Failed to parse remaining input.");
             }
+
             return chunk;
         }
 
@@ -24,8 +26,10 @@ namespace Language.Lua
             if (ParsingResults.ContainsKey(reskey))
             {
                 var parsingResult = ParsingResults[reskey];
+
                 success = parsingResult.Item2;
                 position = parsingResult.Item3;
+
                 return parsingResult.Item1 as Chunk;
             }
 
@@ -41,6 +45,7 @@ namespace Language.Lua
                 {
                     int seq_start_position1 = position;
                     Statement statement = ParseStatement(out success);
+
                     if (success) { chunk.Statements.Add(statement); }
                     else { break; }
 
@@ -48,12 +53,14 @@ namespace Language.Lua
                     {
                         int seq_start_position2 = position;
                         MatchTerminal(';', out success);
+
                         if (!success) { break; }
 
                         ParseSpOpt(out success);
                         break;
                     }
                     success = true;
+
                     break;
                 }
                 if (!success) { break; }
@@ -61,6 +68,7 @@ namespace Language.Lua
             success = true;
 
             ParsingResults[reskey] = new Tuple<object, bool, int>(chunk, success, position);
+
             return chunk;
         }
 
@@ -70,8 +78,10 @@ namespace Language.Lua
             if (ParsingResults.ContainsKey(reskey))
             {
                 var parsingResult = ParsingResults[reskey];
+
                 success = parsingResult.Item2;
                 position = parsingResult.Item3;
+
                 return parsingResult.Item1 as Statement;
             }
 
@@ -224,8 +234,10 @@ namespace Language.Lua
             if (ParsingResults.ContainsKey(reskey))
             {
                 var parsingResult = ParsingResults[reskey];
+
                 success = parsingResult.Item2;
                 position = parsingResult.Item3;
+
                 return parsingResult.Item1 as LocalVar;
             }
 
@@ -499,8 +511,10 @@ namespace Language.Lua
             if (ParsingResults.ContainsKey(reskey))
             {
                 var parsingResult = ParsingResults[reskey];
+
                 success = parsingResult.Item2;
                 position = parsingResult.Item3;
+
                 return parsingResult.Item1 as IfStmt;
             }
 
@@ -558,6 +572,7 @@ namespace Language.Lua
             while (true)
             {
                 ElseifBlock elseifBlock = ParseElseifBlock(out success);
+
                 if (success) { ifStmt.ElseifBlocks.Add(elseifBlock); }
                 else { break; }
             }
@@ -604,7 +619,7 @@ namespace Language.Lua
 
             if (success) { ClearError(errorCount); }
             ParsingResults[reskey] = new Tuple<object, bool, int>(ifStmt, success, position);
-            
+
             LuaInterpreter.AddConStructToCodeReport("IF", ifStmt.Condition.ToString());
 
             return ifStmt;

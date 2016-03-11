@@ -27,7 +27,7 @@ namespace Language.Lua
 
             if (this is LuaTable && other is LuaTable)
             {
-                return object.ReferenceEquals(this, other);
+                return ReferenceEquals(this, other);
             }
 
             return Value.Equals(other.Value);
@@ -54,14 +54,17 @@ namespace Language.Lua
             else
             {
                 LuaUserdata userdata = baseValue as LuaUserdata;
+
                 if (userdata != null)
                 {
                     if (userdata.MetaTable != null)
                     {
                         LuaValue index = userdata.MetaTable.GetValue("__index");
+
                         if (index != null)
                         {
                             LuaFunction func = index as LuaFunction;
+
                             if (func != null)
                             {
                                 return func.Invoke(new LuaValue[] { baseValue, key });

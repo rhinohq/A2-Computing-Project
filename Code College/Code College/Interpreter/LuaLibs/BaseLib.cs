@@ -71,13 +71,16 @@ namespace Language.Lua.Library
         {
             LuaTable table = values[0] as LuaTable;
             LuaTable metatable = values[1] as LuaTable;
+
             table.MetaTable = metatable;
+
             return null;
         }
 
         public static LuaValue getmetatable(LuaValue[] values)
         {
             LuaTable table = values[0] as LuaTable;
+
             return table.MetaTable;
         }
 
@@ -85,6 +88,7 @@ namespace Language.Lua.Library
         {
             LuaTable table = values[0] as LuaTable;
             LuaValue index = values[1];
+
             return table.RawGetValue(index);
         }
 
@@ -93,13 +97,16 @@ namespace Language.Lua.Library
             LuaTable table = values[0] as LuaTable;
             LuaValue index = values[1];
             LuaValue value = values[2];
+
             table.SetKeyValue(index, value);
+
             return null;
         }
 
         public static LuaValue ipairs(LuaValue[] values)
         {
             LuaTable table = values[0] as LuaTable;
+
             LuaFunction func = new LuaFunction(
                 (LuaValue[] args) =>
                 {
@@ -125,6 +132,7 @@ namespace Language.Lua.Library
         {
             LuaTable table = values[0] as LuaTable;
             LuaFunction func = new LuaFunction(next);
+
             return new LuaMultiValue(new LuaValue[] { func, table, LuaNil.Nil });
         }
 
@@ -135,13 +143,16 @@ namespace Language.Lua.Library
 
             LuaValue prevKey = LuaNil.Nil;
             LuaValue nextIndex = LuaNil.Nil;
+
             foreach (var key in table.Keys)
             {
                 if (prevKey.Equals(index))
                 {
                     nextIndex = key;
+
                     break;
                 }
+
                 prevKey = key;
             }
 
@@ -152,6 +163,7 @@ namespace Language.Lua.Library
         {
             bool condition = values[0].GetBooleanValue();
             LuaString message = values.Length > 1 ? values[1] as LuaString : null;
+
             if (message != null)
             {
                 throw new LuaError(message.Text);
@@ -183,10 +195,12 @@ namespace Language.Lua.Library
             {
                 int index = (int)number.Number;
                 LuaValue[] args = new LuaValue[values.Length - index];
+
                 for (int i = 0; i < args.Length; i++)
                 {
                     args[i] = values[index + i];
                 }
+
                 return new LuaMultiValue(args);
             }
 
@@ -203,6 +217,7 @@ namespace Language.Lua.Library
         {
             LuaString file = values[0] as LuaString;
             LuaTable enviroment = values[1] as LuaTable;
+
             return LuaInterpreter.RunCode(file.Text, enviroment);
         }
 
@@ -216,6 +231,7 @@ namespace Language.Lua.Library
             (LuaValue[] args) =>
             {
                 chunk.Enviroment = enviroment;
+
                 return chunk.Execute();
             }
             );
@@ -237,6 +253,7 @@ namespace Language.Lua.Library
             {
                 section[i] = table.GetValue(start + i);
             }
+
             return new LuaMultiValue(section);
         }
 
@@ -250,7 +267,9 @@ namespace Language.Lua.Library
                 {
                     args[i] = values[i + 1];
                 }
+
                 LuaValue result = func.Invoke(args);
+
                 return new LuaMultiValue(LuaMultiValue.UnWrapLuaValues(new LuaValue[] { LuaBoolean.True, result }));
             }
             catch (Exception error)

@@ -15,6 +15,7 @@ namespace Language.Lua
 
             LineBreaks = new List<int>();
             LineBreaks.Add(0);
+
             for (int index = 0; index < InputText.Length; index++)
             {
                 if (InputText[index] == '\n')
@@ -22,6 +23,7 @@ namespace Language.Lua
                     LineBreaks.Add(index + 1);
                 }
             }
+
             LineBreaks.Add(InputText.Length);
         }
 
@@ -53,6 +55,7 @@ namespace Language.Lua
             int col;
             GetLineColumnNumber(position, out line, out col);
             string ch = HasInput(position) ? "'" + GetInputSymbol(position) + "'" : null;
+
             return String.Format("Line {0}, Col {1} {2}: {3}", line, col, ch, message);
         }
 
@@ -61,6 +64,7 @@ namespace Language.Lua
         public void GetLineColumnNumber(int pos, out int line, out int col)
         {
             col = 1;
+
             for (line = 1; line < LineBreaks.Count; line++)
             {
                 if (LineBreaks[line] > pos)
@@ -76,6 +80,7 @@ namespace Language.Lua
                             col++;
                         }
                     }
+
                     break;
                 }
             }
