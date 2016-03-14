@@ -1,14 +1,17 @@
 ﻿@using System.Web.Optimization;
+@using Code_College.Controllers;
 @using Code_College.Models;
 
 @{
-    HttpCookie Cookie = Request.Cookies["UserAuth"];
+    LoginController LoginCon = new LoginController();
 
-    if (Cookie != null)
+    if (Request.Cookies.AllKeys.Contains("CCUserAuth"))
     {
+        HttpCookie Cookie = Request.Cookies["CCUserAuth"];
+
         if (!Account.VerifyCookie(Cookie))
         {
-            // TODO: Redirect to Login
+            LoginCon.Index();
         }
         else
         {
@@ -18,11 +21,8 @@
     }
     else
     {
-        // TODO: Redirect to Login
+        LoginCon.Index();
     }
-
-    ViewBag.Username = "rhinohq";
-    ViewBag.Password = "PqLxCIe3SVJo+kCks2HJVQANP+v8xaycNULXnRgdkLtZqLENb+b7dFRdX/7rQoEh2Zx++atmERxqv4NkdQTc30WGU3HJAj0C8GQlsqPYISYHDCdQKTNqEjIgcuNdyieHAPWsFM2BWyaqaqpFiKLgKsZ6s65WBkQ2rv1ps+6w50TrN2JeGirT/RM9NT9wrlmU8JRSqdKuOQzX3Nla9pj0gQ==";
 }
 
 <!DOCTYPE html>

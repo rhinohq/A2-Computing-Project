@@ -13,7 +13,7 @@
         confirm("This page is for use by admins only.");
 
     function Submit() {
-        alert("Submitting file...");
+        document.getElementById("Message").innerHTML = "Submitting file...";
     }
     </script>
 </head>
@@ -25,5 +25,6 @@
 
         <input type="submit" onclick="Submit()" />
     </form>
+    <p id="Message">Upload an exercise.</p>
 </body>
 </html>

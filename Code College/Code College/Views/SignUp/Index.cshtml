@@ -1,14 +1,17 @@
 ﻿@using System.Web.Optimization;
+@using Code_College.Controllers;
 @using Code_College.Models;
 
 @{
-    HttpCookie Cookie = Request.Cookies["UserAuth"];
+    DashboardController DashCon = new DashboardController();
 
-    if (Cookie != null)
+    if (Request.Cookies.AllKeys.Contains("CCUserAuth"))
     {
+        HttpCookie Cookie = Request.Cookies["CCUserAuth"];
+
         if (Account.VerifyCookie(Cookie))
         {
-            // TODO: Redirect to Dash
+            DashCon.Index();
         }
     }
 

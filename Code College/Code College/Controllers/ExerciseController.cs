@@ -45,14 +45,12 @@ namespace Code_College.Controllers
 
             if (Correct)
             {
-                Account.LevelUp(Username);
+                Account.LevelUp(Username, CurrentExercise);
 
                 return LuaInterpreter.CodeReport.Output;
             }
             else
-            {
                 return "Sorry, that was incorrect. Please, read the task and try again.";
-            }
         }
     }
 }

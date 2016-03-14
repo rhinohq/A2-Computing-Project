@@ -59,7 +59,7 @@ namespace Code_College.Models
 
         public static void AddCookie(string Username, string Password, HttpResponseBase Response)
         {
-            HttpCookie LoginCookie = new HttpCookie("UserAuth");
+            HttpCookie LoginCookie = new HttpCookie("CCUserAuth");
             LoginCookie.Values["Username"] = Username;
             LoginCookie.Values["Password"] = Cryptography.Encrypt(Password, Username);
 
@@ -92,7 +92,7 @@ namespace Code_College.Models
 
         public static void RemoveCookie(HttpRequest Request)
         {
-            HttpCookie Cookie = Request.Cookies["UserAuth"];
+            HttpCookie Cookie = Request.Cookies["CCUserAuth"];
 
             if (Cookie != null)
                 Cookie.Expires.AddYears(-2);
@@ -155,13 +155,16 @@ namespace Code_College.Models
                 return null;
         }
 
-        public static void LevelUp(string Username)
+        public static void LevelUp(string Username, Exercise Exercise)
         {
-            User user = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
+            User User = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
 
-            user.UserLevel++;
+            if (User.UserLevel <= Exercise.ExID)
+            {
+                User.UserLevel++;
 
-            UserDB.SaveChangesAsync();
+                UserDB.SaveChangesAsync();
+            }
         }
 
         public static class Cryptography

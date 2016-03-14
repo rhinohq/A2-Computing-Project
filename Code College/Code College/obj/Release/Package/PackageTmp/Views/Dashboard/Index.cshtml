@@ -1,15 +1,27 @@
-﻿@using Code_College.Models;
+﻿@using Code_College.Controllers;
+@using Code_College.Models;
 @using System.Web.Optimization;
 
 @{
-    HttpCookie Cookie = Request.Cookies["UserAuth"];
+    LoginController LoginCon = new LoginController();
 
-    if (Cookie != null)
+    if (Request.Cookies.AllKeys.Contains("CCUserAuth"))
     {
+        HttpCookie Cookie = Request.Cookies["CCUserAuth"];
+
         if (!Account.VerifyCookie(Cookie))
         {
-            Response.Redirect("/Login");
+            LoginCon.Index();
         }
+        else
+        {
+            ViewBag.Username = Cookie.Values["Username"];
+            ViewBag.Password = Cookie.Values["Password"];
+        }
+    }
+    else
+    {
+        LoginCon.Index();
     }
 }
 
