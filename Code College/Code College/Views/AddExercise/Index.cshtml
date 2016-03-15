@@ -1,4 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@using Code_College.Controllers
+@using Code_College.Models
+
+@{ 
+    ExDBEntities ExDB = new ExDBEntities();
+
+    foreach (Exercise Exercise in ExDB.Exercises)
+    {
+        AddExerciseController.ExerciseRows.Add(new AddExerciseController.ExRow { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle });
+    }
+}
+
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -25,6 +37,28 @@
 
         <input type="submit" onclick="Submit()" />
     </form>
+
     <p id="Message">Upload an exercise.</p>
+
+    <div class="Exercises">
+        <script>
+            var Count = 0;
+            var ExerciseTable = "<table cellpadding=\"0\" cellspacing=\"0\"><tbody><tr>";
+            @ViewBag.Count = 0
+
+            while (Count <= @AddExerciseController.ExerciseRows.Count) {
+                Count++;
+
+                ExerciseTable += "<td>[" + "@AddExerciseController.ExerciseRows.ElementAt(this, Convert.ToInt32(ViewBag.Count))" + "]</td>";
+                ExerciseTable += "<td>[" + i + "]</td>";
+
+                @ViewBag.Count++;
+            }
+
+            ExerciseTable += "</tr></tbody></table>";
+
+            document.write(ExerciseTable);
+        </script>
+    </div>
 </body>
 </html>

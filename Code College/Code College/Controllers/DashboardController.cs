@@ -9,25 +9,9 @@ namespace Code_College.Controllers
     {
         public static List<ExTile> ExerciseTiles = new List<ExTile>();
 
-        private static ExDBEntities ExDB = new ExDBEntities();
-        private static UserDBEntities UserDB = new UserDBEntities();
-
         // GET: Dashboard
         public ActionResult Index()
         {
-            foreach (Exercise Exercise in ExDB.Exercises)
-            {
-                ExerciseTiles.Add(new ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = false });
-
-                // TODO: Get Logged in user and have the exercises create dynamically.
-                //if (Exercise.ExID >= User.UserLevel)
-                //    ExerciseTiles.Add(new ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = false });
-                //else if (Exercise.ExID < User.UserLevel)
-                //    ExerciseTiles.Add(new ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = true });
-                //else
-                //    ExerciseTiles.Add(new ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = false });
-            }
-
             return View();
         }
 

@@ -24,6 +24,7 @@ namespace Code_College.Controllers
             ViewBag.Desc = CurrentExercise.ExDescription;
             ViewBag.ExerciseID = CurrentExercise.ExID;
             ViewBag.CodeTemplate = CurrentExercise.ExCodeTemplate ?? "";
+            ViewBag.AppendCode = CurrentExercise.ExAppendCode ?? "";
             ViewBag.Exercise = CurrentExercise;
 
             if (!Regex.IsMatch(ViewBag.CodeTemplate))

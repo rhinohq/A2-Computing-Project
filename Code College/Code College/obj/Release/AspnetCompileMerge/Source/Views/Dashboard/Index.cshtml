@@ -4,6 +4,9 @@
 
 @{
     LoginController LoginCon = new LoginController();
+    ExDBEntities ExDB = new ExDBEntities();
+    UserDBEntities UserDB = new UserDBEntities();
+    User User;
 
     if (Request.Cookies.AllKeys.Contains("CCUserAuth"))
     {
@@ -17,6 +20,24 @@
         {
             ViewBag.Username = Cookie.Values["Username"];
             ViewBag.Password = Cookie.Values["Password"];
+
+            User = UserDB.Users.Where(x => x.Username == Cookie.Values["Username"]).FirstOrDefault();
+
+            foreach (Exercise Exercise in ExDB.Exercises)
+            {
+                if (Exercise.ExID >= User.UserLevel)
+                {
+                    DashboardController.ExerciseTiles.Add(new DashboardController.ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = false });
+                }
+                else if (Exercise.ExID < User.UserLevel)
+                {
+                    DashboardController.ExerciseTiles.Add(new DashboardController.ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = true });
+                }
+                else
+                {
+                    DashboardController.ExerciseTiles.Add(new DashboardController.ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = false });
+                }
+            }
         }
     }
     else

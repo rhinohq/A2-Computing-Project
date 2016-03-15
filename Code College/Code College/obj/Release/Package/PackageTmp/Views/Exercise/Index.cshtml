@@ -15,8 +15,11 @@
         }
         else
         {
-            ViewBag.Username = Cookie.Values["Username"];
-            ViewBag.Password = Cookie.Values["Password"];
+            string Username = Cookie.Values["Username"];
+            string Password = Cookie.Values["Password"];
+
+            ViewBag.Username = Username;
+            ViewBag.Password = Password;
         }
     }
     else
@@ -52,7 +55,7 @@
             Submission.id = @ViewBag.ExerciseID;
             Submission.username = "@ViewBag.Username";
             Submission.password = "@ViewBag.Password";
-            Submission.code = editor.getValue();
+            Submission.code = editor.getValue() + "@ViewBag.AppendCode";
 
             $.ajax({
                 url: '/api/code',
@@ -63,6 +66,13 @@
                     console.log(data);
                     document.getElementById("console").value = data;
                     var IsCorrect = CodeCorrect(data);
+
+                    if (IsCorrect) {
+                        document.getElementById("Message") = "Correct";
+                    }
+                    else {
+                        document.getElementById("Message") = "Incorrect";
+                    }
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     console.log('Error in Operation');
@@ -103,7 +113,7 @@
         @Html.TextBox("console", null, new { id = "console" })
     </div>
 
-    <div id="Console"></div>
+    <div id="Message"></div>
 
     <script>
         var editor = CodeMirror.fromTextArea(document.getElementById("code"), {

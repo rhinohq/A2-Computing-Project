@@ -1,4 +1,6 @@
 ﻿using Code_College.Models;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
@@ -7,6 +9,8 @@ namespace Code_College.Controllers
 {
     public class AddExerciseController : Controller
     {
+        public static List<ExRow> ExerciseRows = new List<ExRow>();
+
         // GET: AddExercise
         public ActionResult Index()
         {
@@ -29,6 +33,17 @@ namespace Code_College.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        public class ExRow : IEquatable<ExRow>
+        {
+            public int ExID { get; set; }
+            public string ExTitle { get; set; }
+
+            public bool Equals(ExRow other)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
