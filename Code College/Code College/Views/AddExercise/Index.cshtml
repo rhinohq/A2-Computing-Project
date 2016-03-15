@@ -1,12 +1,15 @@
 ﻿@using Code_College.Controllers
 @using Code_College.Models
 
-@{ 
+@{
+    int Index = 0;
     ExDBEntities ExDB = new ExDBEntities();
 
     foreach (Exercise Exercise in ExDB.Exercises)
     {
-        AddExerciseController.ExerciseRows.Add(new AddExerciseController.ExRow { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle });
+        AddExerciseController.ExerciseRows[Index] = new AddExerciseController.ExRow { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle };
+
+        Index++;
     }
 }
 
@@ -21,15 +24,16 @@
     <title>Admin - Add Exercise - Code College</title>
 
     <script type="text/javascript">
-
         confirm("This page is for use by admins only.");
 
-    function Submit() {
-        document.getElementById("Message").innerHTML = "Submitting file...";
-    }
+        function Submit() {
+            document.getElementById("Message").innerHTML = "Submitting file...";
+        }
     </script>
 </head>
 <body>
+    <h1>Add Exercise</h1>
+
     <form action="" method="post" enctype="multipart/form-data">
 
         <label for="file">Exercise File:</label>
@@ -41,24 +45,16 @@
     <p id="Message">Upload an exercise.</p>
 
     <div class="Exercises">
-        <script>
-            var Count = 0;
-            var ExerciseTable = "<table cellpadding=\"0\" cellspacing=\"0\"><tbody><tr>";
-            @ViewBag.Count = 0
+        <h3>Exercises:</h3>
 
-            while (Count <= @AddExerciseController.ExerciseRows.Count) {
-                Count++;
+        <ul>
+            @foreach (AddExerciseController.ExRow ExerciseRow in AddExerciseController.ExerciseRows)
+            {
+                string ExRecord = String.Format("{0} | {1}", ExerciseRow.ExID.ToString(), ExerciseRow.ExTitle);
 
-                ExerciseTable += "<td>[" + "@AddExerciseController.ExerciseRows.ElementAt(this, Convert.ToInt32(ViewBag.Count))" + "]</td>";
-                ExerciseTable += "<td>[" + i + "]</td>";
-
-                @ViewBag.Count++;
+                <li>@ExRecord</li>
             }
-
-            ExerciseTable += "</tr></tbody></table>";
-
-            document.write(ExerciseTable);
-        </script>
+        </ul>
     </div>
 </body>
 </html>

@@ -3,6 +3,7 @@
 @using System.Web.Optimization;
 
 @{
+    int Index = 0;
     LoginController LoginCon = new LoginController();
     ExDBEntities ExDB = new ExDBEntities();
     UserDBEntities UserDB = new UserDBEntities();
@@ -30,16 +31,18 @@
             {
                 if (Exercise.ExID >= User.UserLevel)
                 {
-                    DashboardController.ExerciseTiles.Add(new DashboardController.ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = false });
+                    DashboardController.ExerciseTiles[Index] = new DashboardController.ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = false };
                 }
                 else if (Exercise.ExID < User.UserLevel)
                 {
-                    DashboardController.ExerciseTiles.Add(new DashboardController.ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = true });
+                    DashboardController.ExerciseTiles[Index] = new DashboardController.ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = true };
                 }
                 else
                 {
-                    DashboardController.ExerciseTiles.Add(new DashboardController.ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = false });
+                    DashboardController.ExerciseTiles[Index] = new DashboardController.ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = false };
                 }
+
+                Index++;
             }
         }
     }

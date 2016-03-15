@@ -16,8 +16,6 @@ namespace Code_College
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            //  TODO: Check exercise database for entries.
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Code_College.Models;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
@@ -9,11 +8,19 @@ namespace Code_College.Controllers
 {
     public class AddExerciseController : Controller
     {
-        public static List<ExRow> ExerciseRows = new List<ExRow>();
+        public static ExRow[] ExerciseRows;
+        private static ExDBEntities ExDB = new ExDBEntities();
 
         // GET: AddExercise
         public ActionResult Index()
         {
+            int NoOfExercises = 0;
+
+            foreach (Exercise Exercise in ExDB.Exercises)
+                NoOfExercises++;
+
+            ExerciseRows = new ExRow[NoOfExercises];
+
             return View();
         }
 

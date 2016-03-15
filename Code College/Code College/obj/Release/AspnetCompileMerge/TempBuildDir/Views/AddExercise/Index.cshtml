@@ -1,4 +1,21 @@
-﻿<!DOCTYPE html>
+﻿@using Code_College.Controllers
+@using Code_College.Models
+
+@{ 
+    int Index = 0;
+    ExDBEntities ExDB = new ExDBEntities();
+
+    foreach (Exercise Exercise in ExDB.Exercises)
+    {
+        AddExerciseController.ExerciseRows[Index] = new AddExerciseController.ExRow { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle };
+
+        Index++;
+    }
+
+    Index = 0;
+}
+
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -9,15 +26,16 @@
     <title>Admin - Add Exercise - Code College</title>
 
     <script type="text/javascript">
-
         confirm("This page is for use by admins only.");
 
-    function Submit() {
-        document.getElementById("Message").innerHTML = "Submitting file...";
-    }
+        function Submit() {
+            document.getElementById("Message").innerHTML = "Submitting file...";
+        }
     </script>
 </head>
 <body>
+    <h1>Add Exercise</h1>
+
     <form action="" method="post" enctype="multipart/form-data">
 
         <label for="file">Exercise File:</label>
@@ -25,6 +43,20 @@
 
         <input type="submit" onclick="Submit()" />
     </form>
+
     <p id="Message">Upload an exercise.</p>
+
+    <div class="Exercises">
+        <h3>Exercises:</h3>
+
+        <ul>
+            @foreach (AddExerciseController.ExRow ExerciseRow in AddExerciseController.ExerciseRows)
+            {
+                string ExRecord = String.Format("{0} | {1}", ExerciseRow.ExID.ToString(), ExerciseRow.ExTitle);
+
+                <li>@ExRecord</li>
+            }
+        </ul>
+    </div>
 </body>
 </html>

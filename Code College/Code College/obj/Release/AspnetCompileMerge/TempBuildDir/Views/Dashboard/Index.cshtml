@@ -18,10 +18,13 @@
         }
         else
         {
-            ViewBag.Username = Cookie.Values["Username"];
-            ViewBag.Password = Cookie.Values["Password"];
+            string Username = Cookie.Values["Username"];
+            string Password = Cookie.Values["Password"];
 
-            User = UserDB.Users.Where(x => x.Username == Cookie.Values["Username"]).FirstOrDefault();
+            ViewBag.Username = Username;
+            ViewBag.Password = Password;
+
+            User = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
 
             foreach (Exercise Exercise in ExDB.Exercises)
             {
