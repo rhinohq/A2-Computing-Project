@@ -7,30 +7,48 @@ namespace Marker
     {
         public static ExMarkScheme MarkScheme { get; set; }
 
-        public static bool MarkOutput()
+        public static bool FullMark()
         {
-            if (MarkScheme.Output == LuaInterpreter.CodeReport.Output)
-                return true;
+            List<bool> MarkList = new List<bool>();
+
+            if (MarkScheme.CheckOutput)
+                MarkList.Add(MarkOutput());
+            else if (MarkScheme.CheckVars)
+                MarkList.Add(MarkVars());
+            else if (MarkScheme.CheckExprs)
+                MarkList.Add(MarkExprs());
+            else if (MarkScheme.CheckConStruct)
+                MarkList.Add(MarkControlStructs());
             else
                 return false;
+
+            bool[] Marks = MarkList.ToArray();
+
+            foreach (bool Mark in Marks)
+            {
+                if (!Mark)
+                    return false;
+            }
+
+            return true;
         }
 
-        public static bool MarkVars()
+        public static bool MarkControlStructs()
         {
-            if (MarkScheme.AssignedVariables.Contains(new ExMarkScheme.Variable { VarName = null, VarValue = null }))
+            if (MarkScheme.ControlStructures.Contains(new ExMarkScheme.ControlStructure { StructureType = null, StructureCondition = null }))
                 return true;
 
             bool Contains, DNM = false;
             List<bool> MarkList = new List<bool>();
             bool[] Marks;
 
-            foreach (UserCode.Variable Var in LuaInterpreter.CodeReport.AssignedVariables)
+            foreach (UserCode.ControlStructure ConStruct in LuaInterpreter.CodeReport.ControlStructures)
             {
-                Contains = MarkScheme.AssignedVariables.Contains(new ExMarkScheme.Variable { VarName = Var.VarName, VarValue = Var.VarValue });
+                Contains = MarkScheme.ControlStructures.Contains(new ExMarkScheme.ControlStructure { StructureType = ConStruct.StructureType, StructureCondition = ConStruct.StructureCondition });
 
-                if (MarkScheme.AssignedVariables.Contains(new ExMarkScheme.Variable { VarName = Var.VarName, VarValue = null }))
+                if (MarkScheme.ControlStructures.Contains(new ExMarkScheme.ControlStructure { StructureType = ConStruct.StructureType, StructureCondition = null }))
                     DNM = true;
-                else if (MarkScheme.AssignedVariables.Contains(new ExMarkScheme.Variable { VarName = null, VarValue = Var.VarValue }))
+                else if (MarkScheme.ControlStructures.Contains(new ExMarkScheme.ControlStructure { StructureType = null, StructureCondition = ConStruct.StructureCondition }))
                     DNM = true;
 
                 if (Contains || DNM)
@@ -85,22 +103,30 @@ namespace Marker
             return true;
         }
 
-        public static bool MarkControlStructs()
+        public static bool MarkOutput()
         {
-            if (MarkScheme.ControlStructures.Contains(new ExMarkScheme.ControlStructure { StructureType = null, StructureCondition = null }))
+            if (MarkScheme.Output == LuaInterpreter.CodeReport.Output)
+                return true;
+            else
+                return false;
+        }
+
+        public static bool MarkVars()
+        {
+            if (MarkScheme.AssignedVariables.Contains(new ExMarkScheme.Variable { VarName = null, VarValue = null }))
                 return true;
 
             bool Contains, DNM = false;
             List<bool> MarkList = new List<bool>();
             bool[] Marks;
 
-            foreach (UserCode.ControlStructure ConStruct in LuaInterpreter.CodeReport.ControlStructures)
+            foreach (UserCode.Variable Var in LuaInterpreter.CodeReport.AssignedVariables)
             {
-                Contains = MarkScheme.ControlStructures.Contains(new ExMarkScheme.ControlStructure { StructureType = ConStruct.StructureType, StructureCondition = ConStruct.StructureCondition });
+                Contains = MarkScheme.AssignedVariables.Contains(new ExMarkScheme.Variable { VarName = Var.VarName, VarValue = Var.VarValue });
 
-                if (MarkScheme.ControlStructures.Contains(new ExMarkScheme.ControlStructure { StructureType = ConStruct.StructureType, StructureCondition = null }))
+                if (MarkScheme.AssignedVariables.Contains(new ExMarkScheme.Variable { VarName = Var.VarName, VarValue = null }))
                     DNM = true;
-                else if (MarkScheme.ControlStructures.Contains(new ExMarkScheme.ControlStructure { StructureType = null, StructureCondition = ConStruct.StructureCondition }))
+                else if (MarkScheme.AssignedVariables.Contains(new ExMarkScheme.Variable { VarName = null, VarValue = Var.VarValue }))
                     DNM = true;
 
                 if (Contains || DNM)
@@ -110,32 +136,6 @@ namespace Marker
             }
 
             Marks = MarkList.ToArray();
-
-            foreach (bool Mark in Marks)
-            {
-                if (!Mark)
-                    return false;
-            }
-
-            return true;
-        }
-
-        public static bool FullMark()
-        {
-            List<bool> MarkList = new List<bool>();
-
-            if (MarkScheme.CheckOutput)
-                MarkList.Add(MarkOutput());
-            else if (MarkScheme.CheckVars)
-                MarkList.Add(MarkVars());
-            else if (MarkScheme.CheckExprs)
-                MarkList.Add(MarkExprs());
-            else if (MarkScheme.CheckConStruct)
-                MarkList.Add(MarkControlStructs());
-            else
-                return false;
-
-            bool[] Marks = MarkList.ToArray();
 
             foreach (bool Mark in Marks)
             {

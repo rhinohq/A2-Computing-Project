@@ -6,43 +6,6 @@ namespace Language.Lua
     {
         public abstract object Value { get; }
 
-        public abstract string GetTypeCode();
-
-        public virtual bool GetBooleanValue()
-        {
-            return true;
-        }
-
-        public bool Equals(LuaValue other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-
-            if (this is LuaNil)
-            {
-                return other is LuaNil;
-            }
-
-            if (this is LuaTable && other is LuaTable)
-            {
-                return ReferenceEquals(this, other);
-            }
-
-            return Value.Equals(other.Value);
-        }
-
-        public override int GetHashCode()
-        {
-            if (this is LuaNumber || this is LuaString)
-            {
-                return Value.GetHashCode();
-            }
-
-            return base.GetHashCode();
-        }
-
         public static LuaValue GetKeyValue(LuaValue baseValue, LuaValue key)
         {
             LuaTable table = baseValue as LuaTable;
@@ -80,5 +43,42 @@ namespace Language.Lua
                 throw new Exception(string.Format("Access field '{0}' from not a table.", key.Value));
             }
         }
+
+        public bool Equals(LuaValue other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+
+            if (this is LuaNil)
+            {
+                return other is LuaNil;
+            }
+
+            if (this is LuaTable && other is LuaTable)
+            {
+                return ReferenceEquals(this, other);
+            }
+
+            return Value.Equals(other.Value);
+        }
+
+        public virtual bool GetBooleanValue()
+        {
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            if (this is LuaNumber || this is LuaString)
+            {
+                return Value.GetHashCode();
+            }
+
+            return base.GetHashCode();
+        }
+
+        public abstract string GetTypeCode();
     }
 }

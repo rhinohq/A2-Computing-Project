@@ -8,9 +8,9 @@ namespace Code_College.Models
     public static class ExerciseParser
     {
         private static ExDBEntities ExDB = new ExDBEntities();
+        private static StreamReader File;
         private static Exercise NewExercise = new Exercise();
         private static ExMarkScheme NewMarkScheme = new ExMarkScheme();
-        private static StreamReader File;
 
         public static void ParseExFile(string Filename)
         {
@@ -41,33 +41,7 @@ namespace Code_College.Models
 
         private static class ExParsing
         {
-            public static int GetExID()
-            {
-                while (!File.EndOfStream)
-                {
-                    string Line = File.ReadLine();
-
-                    if (!Line.StartsWith("[") && Line != "")
-                        return Convert.ToInt32(Line);
-                }
-
-                return 0;
-            }
-
-            public static string GetExTitle()
-            {
-                while (!File.EndOfStream)
-                {
-                    string Line = File.ReadLine();
-
-                    if (Line.StartsWith("[ExTitle]") && Line != "")
-                        return File.ReadLine();
-                }
-
-                return null;
-            }
-
-            public static string GetExDescription()
+            public static string GetExAppendCode()
             {
                 string Entry = "";
 
@@ -75,13 +49,13 @@ namespace Code_College.Models
                 {
                     string Line = File.ReadLine();
 
-                    if (Line.StartsWith("[ExDescription]"))
+                    if (Line.StartsWith("[ExAppendCode]"))
                     {
                         while (true)
                         {
                             Line = File.ReadLine();
 
-                            if (!Line.StartsWith("[ExCodeTemplate]"))
+                            if (!Line.StartsWith("[ExMarkScheme]"))
                                 Entry = Entry + " " + Line;
                             else
                                 return Entry;
@@ -117,7 +91,7 @@ namespace Code_College.Models
                 return null;
             }
 
-            public static string GetExAppendCode()
+            public static string GetExDescription()
             {
                 string Entry = "";
 
@@ -125,13 +99,13 @@ namespace Code_College.Models
                 {
                     string Line = File.ReadLine();
 
-                    if (Line.StartsWith("[ExAppendCode]"))
+                    if (Line.StartsWith("[ExDescription]"))
                     {
                         while (true)
                         {
                             Line = File.ReadLine();
 
-                            if (!Line.StartsWith("[ExMarkScheme]"))
+                            if (!Line.StartsWith("[ExCodeTemplate]"))
                                 Entry = Entry + " " + Line;
                             else
                                 return Entry;
@@ -140,6 +114,19 @@ namespace Code_College.Models
                 }
 
                 return null;
+            }
+
+            public static int GetExID()
+            {
+                while (!File.EndOfStream)
+                {
+                    string Line = File.ReadLine();
+
+                    if (!Line.StartsWith("[") && Line != "")
+                        return Convert.ToInt32(Line);
+                }
+
+                return 0;
             }
 
             public static XmlDocument GetExMarkSchemeXML()
@@ -164,6 +151,19 @@ namespace Code_College.Models
                 return XML;
             }
 
+            public static string GetExTitle()
+            {
+                while (!File.EndOfStream)
+                {
+                    string Line = File.ReadLine();
+
+                    if (Line.StartsWith("[ExTitle]") && Line != "")
+                        return File.ReadLine();
+                }
+
+                return null;
+            }
+
             public static class XMLParsing
             {
                 public static void ParseXML(XmlDocument XML)
@@ -172,6 +172,78 @@ namespace Code_College.Models
                     GetExVars(XML);
                     GetExExprs(XML);
                     GetExConStructs(XML);
+                }
+
+                private static void GetExConStructs(XmlDocument XML)
+                {
+                    try
+                    {
+                        XmlNodeList ConStructsNode = XML.SelectNodes("/MarkScheme/ControlStructures");
+
+                        foreach (XmlNode Node in ConStructsNode)
+                        {
+                            NewMarkScheme.CheckConStruct = true;
+
+                            ExMarkScheme.ControlStructure NewConStruct = new ExMarkScheme.ControlStructure();
+
+                            NewConStruct.StructureCondition = Node.InnerText;
+                            NewConStruct.StructureType = Node.Attributes.GetNamedItem("StructType").Value;
+
+                            if (NewConStruct.StructureCondition == "[DNM]")
+                                NewConStruct.StructureCondition = null;
+                            else if (NewConStruct.StructureType == "[DNM]")
+                                NewConStruct.StructureType = null;
+
+                            NewMarkScheme.ControlStructures.Add(NewConStruct);
+                        }
+                    }
+                    catch
+                    {
+                        ExMarkScheme.ControlStructure NewConStruct = new ExMarkScheme.ControlStructure();
+
+                        NewMarkScheme.CheckConStruct = false;
+
+                        NewConStruct.StructureCondition = null;
+                        NewConStruct.StructureType = null;
+
+                        NewMarkScheme.ControlStructures.Add(NewConStruct);
+                    }
+                }
+
+                private static void GetExExprs(XmlDocument XML)
+                {
+                    try
+                    {
+                        XmlNodeList ExprsNode = XML.SelectNodes("/MarkScheme/Expressions");
+
+                        foreach (XmlNode Node in ExprsNode)
+                        {
+                            NewMarkScheme.CheckExprs = true;
+
+                            ExMarkScheme.Expression NewExpr = new ExMarkScheme.Expression();
+
+                            NewExpr.ExpressionStr = Node.InnerText;
+                            NewExpr.ExpressionType = Node.Attributes.GetNamedItem("ExpressionType").Value;
+
+                            if (NewExpr.ExpressionStr == "[DNM]")
+                                NewExpr.ExpressionStr = null;
+                            else if (NewExpr.ExpressionType == "[DNM]")
+                                NewExpr.ExpressionType = null;
+
+                            NewMarkScheme.Expressions.Add(NewExpr);
+                        }
+                    }
+                    catch
+                    {
+                        ExMarkScheme.Expression NewExpr = new ExMarkScheme.Expression();
+
+                        NewMarkScheme.CheckExprs = false;
+
+                        NewExpr.ExpressionStr = null;
+                        NewExpr.ExpressionType = null;
+
+                        NewMarkScheme.Expressions.Add(NewExpr);
+                    }
                 }
 
                 private static string GetExOutput(XmlDocument XML)
@@ -225,78 +297,6 @@ namespace Code_College.Models
                         NewVar.VarValue = null;
 
                         NewMarkScheme.AssignedVariables.Add(NewVar);
-                    }
-                }
-
-                private static void GetExExprs(XmlDocument XML)
-                {
-                    try
-                    {
-                        XmlNodeList ExprsNode = XML.SelectNodes("/MarkScheme/Expressions");
-
-                        foreach (XmlNode Node in ExprsNode)
-                        {
-                            NewMarkScheme.CheckExprs = true;
-
-                            ExMarkScheme.Expression NewExpr = new ExMarkScheme.Expression();
-
-                            NewExpr.ExpressionStr = Node.InnerText;
-                            NewExpr.ExpressionType = Node.Attributes.GetNamedItem("ExpressionType").Value;
-
-                            if (NewExpr.ExpressionStr == "[DNM]")
-                                NewExpr.ExpressionStr = null;
-                            else if (NewExpr.ExpressionType == "[DNM]")
-                                NewExpr.ExpressionType = null;
-
-                            NewMarkScheme.Expressions.Add(NewExpr);
-                        }
-                    }
-                    catch
-                    {
-                        ExMarkScheme.Expression NewExpr = new ExMarkScheme.Expression();
-
-                        NewMarkScheme.CheckExprs = false;
-
-                        NewExpr.ExpressionStr = null;
-                        NewExpr.ExpressionType = null;
-
-                        NewMarkScheme.Expressions.Add(NewExpr);
-                    }
-                }
-
-                private static void GetExConStructs(XmlDocument XML)
-                {
-                    try
-                    {
-                        XmlNodeList ConStructsNode = XML.SelectNodes("/MarkScheme/ControlStructures");
-
-                        foreach (XmlNode Node in ConStructsNode)
-                        {
-                            NewMarkScheme.CheckConStruct = true;
-
-                            ExMarkScheme.ControlStructure NewConStruct = new ExMarkScheme.ControlStructure();
-
-                            NewConStruct.StructureCondition = Node.InnerText;
-                            NewConStruct.StructureType = Node.Attributes.GetNamedItem("StructType").Value;
-
-                            if (NewConStruct.StructureCondition == "[DNM]")
-                                NewConStruct.StructureCondition = null;
-                            else if (NewConStruct.StructureType == "[DNM]")
-                                NewConStruct.StructureType = null;
-
-                            NewMarkScheme.ControlStructures.Add(NewConStruct);
-                        }
-                    }
-                    catch
-                    {
-                        ExMarkScheme.ControlStructure NewConStruct = new ExMarkScheme.ControlStructure();
-
-                        NewMarkScheme.CheckConStruct = false;
-
-                        NewConStruct.StructureCondition = null;
-                        NewConStruct.StructureType = null;
-
-                        NewMarkScheme.ControlStructures.Add(NewConStruct);
                     }
                 }
             }

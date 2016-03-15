@@ -5,9 +5,8 @@ namespace Language.Lua
 {
     public class LuaTable : LuaValue
     {
-        private List<LuaValue> list;
-
         private Dictionary<LuaValue, LuaValue> dict;
+        private List<LuaValue> list;
 
         public LuaTable()
         {
@@ -18,33 +17,6 @@ namespace Language.Lua
             MetaTable = new LuaTable();
             MetaTable.SetNameValue("__index", parent);
             MetaTable.SetNameValue("__newindex", parent);
-        }
-
-        public LuaTable MetaTable { get; set; }
-
-        public override object Value
-        {
-            get { return this; }
-        }
-
-        public override string GetTypeCode()
-        {
-            return "table";
-        }
-
-        public int Length
-        {
-            get
-            {
-                if (list == null)
-                {
-                    return 0;
-                }
-                else
-                {
-                    return list.Count;
-                }
-            }
         }
 
         public int Count
@@ -60,25 +32,6 @@ namespace Language.Lua
                     return dict.Count;
                 }
             }
-        }
-
-        public override string ToString()
-        {
-            if (MetaTable != null)
-            {
-                LuaFunction function = MetaTable.GetValue("__tostring") as LuaFunction;
-                if (function != null)
-                {
-                    return function.Invoke(new LuaValue[] { this }).ToString();
-                }
-            }
-
-            return "Table " + GetHashCode();
-        }
-
-        public IEnumerable<LuaValue> ListValues
-        {
-            get { return list; }
         }
 
         public IEnumerable<LuaValue> Keys
@@ -108,6 +61,43 @@ namespace Language.Lua
             get { return dict; }
         }
 
+        public int Length
+        {
+            get
+            {
+                if (list == null)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return list.Count;
+                }
+            }
+        }
+
+        public IEnumerable<LuaValue> ListValues
+        {
+            get { return list; }
+        }
+
+        public LuaTable MetaTable { get; set; }
+
+        public override object Value
+        {
+            get { return this; }
+        }
+
+        public void AddValue(LuaValue value)
+        {
+            if (list == null)
+            {
+                list = new List<LuaValue>();
+            }
+
+            list.Add(value);
+        }
+
         public bool ContainsKey(LuaValue key)
         {
             if (dict != null)
@@ -130,14 +120,88 @@ namespace Language.Lua
             return false;
         }
 
-        public void AddValue(LuaValue value)
+        public LuaValue GetKey(string key)
         {
-            if (list == null)
+            if (dict == null) return LuaNil.Nil;
+
+            foreach (LuaValue value in dict.Keys)
             {
-                list = new List<LuaValue>();
+                LuaString str = value as LuaString;
+
+                if (str != null && string.Equals(str.Text, key, StringComparison.Ordinal))
+                {
+                    return value;
+                }
             }
 
-            list.Add(value);
+            return LuaNil.Nil;
+        }
+
+        public override string GetTypeCode()
+        {
+            return "table";
+        }
+
+        public LuaValue GetValue(int index)
+        {
+            if (index > 0 && index <= Length)
+            {
+                return list[index - 1];
+            }
+
+            return LuaNil.Nil;
+        }
+
+        public LuaValue GetValue(string name)
+        {
+            LuaValue key = GetKey(name);
+
+            if (key == LuaNil.Nil)
+            {
+                if (MetaTable != null)
+                {
+                    return GetValueFromMetaTable(name);
+                }
+
+                return LuaNil.Nil;
+            }
+            else
+            {
+                return dict[key];
+            }
+        }
+
+        public LuaValue GetValue(LuaValue key)
+        {
+            if (key == LuaNil.Nil)
+            {
+                return LuaNil.Nil;
+            }
+            else
+            {
+                LuaNumber number = key as LuaNumber;
+
+                if (number != null && number.Number == (int)number.Number)
+                {
+                    int index = (int)number.Number;
+
+                    if (index > 0 && index <= Length)
+                    {
+                        return list[index - 1];
+                    }
+                }
+
+                if (dict != null && dict.ContainsKey(key))
+                {
+                    return dict[key];
+                }
+                else if (MetaTable != null)
+                {
+                    return GetValueFromMetaTable(key);
+                }
+
+                return LuaNil.Nil;
+            }
         }
 
         public void InsertValue(int index, LuaValue value)
@@ -152,6 +216,40 @@ namespace Language.Lua
             }
         }
 
+        public LuaValue RawGetValue(LuaValue key)
+        {
+            if (dict != null && dict.ContainsKey(key))
+            {
+                return dict[key];
+            }
+
+            return LuaNil.Nil;
+        }
+
+        public void RawSetValue(string name, LuaValue value)
+        {
+            LuaValue key = GetKey(name);
+
+            if (key == LuaNil.Nil)
+            {
+                key = new LuaString(name);
+            }
+
+            if (dict == null)
+            {
+                dict = new Dictionary<LuaValue, LuaValue>();
+            }
+
+            dict[key] = value;
+        }
+
+        public LuaFunction Register(string name, LuaFunc function)
+        {
+            LuaFunction luaFunc = new LuaFunction(function);
+            SetNameValue(name, luaFunc);
+            return luaFunc;
+        }
+
         public bool Remove(LuaValue item)
         {
             return list.Remove(item);
@@ -160,6 +258,53 @@ namespace Language.Lua
         public void RemoveAt(int index)
         {
             list.RemoveAt(index - 1);
+        }
+
+        public void SetKeyValue(LuaValue key, LuaValue value)
+        {
+            LuaNumber number = key as LuaNumber;
+
+            if (number != null && number.Number == (int)number.Number)
+            {
+                int index = (int)number.Number;
+
+                if (index == Length + 1)
+                {
+                    AddValue(value);
+                    return;
+                }
+
+                if (index > 0 && index <= Length)
+                {
+                    list[index - 1] = value;
+                    return;
+                }
+            }
+
+            if (value == LuaNil.Nil)
+            {
+                RemoveKey(key);
+                return;
+            }
+
+            if (dict == null)
+            {
+                dict = new Dictionary<LuaValue, LuaValue>();
+            }
+
+            dict[key] = value;
+        }
+
+        public void SetNameValue(string name, LuaValue value)
+        {
+            if (value == LuaNil.Nil)
+            {
+                RemoveKey(name);
+            }
+            else
+            {
+                RawSetValue(name, value);
+            }
         }
 
         public void Sort()
@@ -201,148 +346,18 @@ namespace Language.Lua
                 });
         }
 
-        public LuaValue GetValue(int index)
+        public override string ToString()
         {
-            if (index > 0 && index <= Length)
+            if (MetaTable != null)
             {
-                return list[index - 1];
-            }
-
-            return LuaNil.Nil;
-        }
-
-        public LuaValue GetValue(string name)
-        {
-            LuaValue key = GetKey(name);
-
-            if (key == LuaNil.Nil)
-            {
-                if (MetaTable != null)
+                LuaFunction function = MetaTable.GetValue("__tostring") as LuaFunction;
+                if (function != null)
                 {
-                    return GetValueFromMetaTable(name);
-                }
-
-                return LuaNil.Nil;
-            }
-            else
-            {
-                return dict[key];
-            }
-        }
-
-        public LuaValue GetKey(string key)
-        {
-            if (dict == null) return LuaNil.Nil;
-
-            foreach (LuaValue value in dict.Keys)
-            {
-                LuaString str = value as LuaString;
-
-                if (str != null && string.Equals(str.Text, key, StringComparison.Ordinal))
-                {
-                    return value;
+                    return function.Invoke(new LuaValue[] { this }).ToString();
                 }
             }
 
-            return LuaNil.Nil;
-        }
-
-        public void SetNameValue(string name, LuaValue value)
-        {
-            if (value == LuaNil.Nil)
-            {
-                RemoveKey(name);
-            }
-            else
-            {
-                RawSetValue(name, value);
-            }
-        }
-
-        private void RemoveKey(string name)
-        {
-            LuaValue key = GetKey(name);
-
-            if (key != LuaNil.Nil)
-            {
-                dict.Remove(key);
-            }
-        }
-
-        public void SetKeyValue(LuaValue key, LuaValue value)
-        {
-            LuaNumber number = key as LuaNumber;
-
-            if (number != null && number.Number == (int)number.Number)
-            {
-                int index = (int)number.Number;
-
-                if (index == Length + 1)
-                {
-                    AddValue(value);
-                    return;
-                }
-
-                if (index > 0 && index <= Length)
-                {
-                    list[index - 1] = value;
-                    return;
-                }
-            }
-
-            if (value == LuaNil.Nil)
-            {
-                RemoveKey(key);
-                return;
-            }
-
-            if (dict == null)
-            {
-                dict = new Dictionary<LuaValue, LuaValue>();
-            }
-
-            dict[key] = value;
-        }
-
-        private void RemoveKey(LuaValue key)
-        {
-            if (key != LuaNil.Nil && dict != null && dict.ContainsKey(key))
-            {
-                dict.Remove(key);
-            }
-        }
-
-        public LuaValue GetValue(LuaValue key)
-        {
-            if (key == LuaNil.Nil)
-            {
-                return LuaNil.Nil;
-            }
-            else
-            {
-                LuaNumber number = key as LuaNumber;
-
-                if (number != null && number.Number == (int)number.Number)
-                {
-                    int index = (int)number.Number;
-
-                    if (index > 0 && index <= Length)
-                    {
-                        return list[index - 1];
-                    }
-                }
-
-                if (dict != null && dict.ContainsKey(key))
-                {
-                    return dict[key];
-                }
-                else if (MetaTable != null)
-                {
-                    return GetValueFromMetaTable(key);
-                }
-
-                return LuaNil.Nil;
-            }
+            return "Table " + GetHashCode();
         }
 
         private LuaValue GetValueFromMetaTable(string name)
@@ -387,38 +402,22 @@ namespace Language.Lua
             return LuaNil.Nil;
         }
 
-        public LuaFunction Register(string name, LuaFunc function)
-        {
-            LuaFunction luaFunc = new LuaFunction(function);
-            SetNameValue(name, luaFunc);
-            return luaFunc;
-        }
-
-        public LuaValue RawGetValue(LuaValue key)
-        {
-            if (dict != null && dict.ContainsKey(key))
-            {
-                return dict[key];
-            }
-
-            return LuaNil.Nil;
-        }
-
-        public void RawSetValue(string name, LuaValue value)
+        private void RemoveKey(string name)
         {
             LuaValue key = GetKey(name);
 
-            if (key == LuaNil.Nil)
+            if (key != LuaNil.Nil)
             {
-                key = new LuaString(name);
+                dict.Remove(key);
             }
+        }
 
-            if (dict == null)
+        private void RemoveKey(LuaValue key)
+        {
+            if (key != LuaNil.Nil && dict != null && dict.ContainsKey(key))
             {
-                dict = new Dictionary<LuaValue, LuaValue>();
+                dict.Remove(key);
             }
-
-            dict[key] = value;
         }
     }
 }

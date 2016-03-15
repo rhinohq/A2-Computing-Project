@@ -34,9 +34,14 @@ namespace Language.Lua
             get { return InputText.Length; }
         }
 
-        public bool HasInput(int pos)
+        public string FormErrorMessage(int position, string message)
         {
-            return pos < InputText.Length;
+            int line;
+            int col;
+            GetLineColumnNumber(position, out line, out col);
+            string ch = HasInput(position) ? "'" + GetInputSymbol(position) + "'" : null;
+
+            return String.Format("Line {0}, Col {1} {2}: {3}", line, col, ch, message);
         }
 
         public char GetInputSymbol(int pos)
@@ -49,14 +54,9 @@ namespace Language.Lua
             return InputText.Substring(position, length).ToCharArray();
         }
 
-        public string FormErrorMessage(int position, string message)
+        public bool HasInput(int pos)
         {
-            int line;
-            int col;
-            GetLineColumnNumber(position, out line, out col);
-            string ch = HasInput(position) ? "'" + GetInputSymbol(position) + "'" : null;
-
-            return String.Format("Line {0}, Col {1} {2}: {3}", line, col, ch, message);
+            return pos < InputText.Length;
         }
 
         #endregion ParserInput<char> Members

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Code_College.Models;
+using System;
 using System.Web.Mvc;
-using Code_College.Models;
 
 namespace Code_College.Controllers
 {
@@ -25,9 +24,9 @@ namespace Code_College.Controllers
 
         public class ExTile : IEquatable<ExTile>
         {
+            public bool CompletedByUser { get; set; }
             public int ExID { get; set; }
             public string ExTitle { get; set; }
-            public bool CompletedByUser { get; set; }
 
             public bool Equals(ExTile other)
             {

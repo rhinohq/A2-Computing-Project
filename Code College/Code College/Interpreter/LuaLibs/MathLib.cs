@@ -5,44 +5,7 @@ namespace Language.Lua.Library
 {
     public static class MathLib
     {
-        public static void RegisterModule(LuaTable enviroment)
-        {
-            LuaTable module = new LuaTable();
-            RegisterFunctions(module);
-            enviroment.SetNameValue("math", module);
-        }
-
-        public static void RegisterFunctions(LuaTable module)
-        {
-            module.SetNameValue("huge", new LuaNumber(double.MaxValue));
-            module.SetNameValue("pi", new LuaNumber(Math.PI));
-            module.Register("abs", abs);
-            module.Register("acos", acos);
-            module.Register("asin", asin);
-            module.Register("atan", atan);
-            module.Register("atan2", atan2);
-            module.Register("ceil", ceil);
-            module.Register("cos", cos);
-            module.Register("cosh", cosh);
-            module.Register("deg", deg);
-            module.Register("exp", exp);
-            module.Register("floor", floor);
-            module.Register("fmod", fmod);
-            module.Register("log", log);
-            module.Register("log10", log10);
-            module.Register("max", max);
-            module.Register("min", min);
-            module.Register("modf", modf);
-            module.Register("pow", pow);
-            module.Register("rad", rad);
-            module.Register("random", random);
-            module.Register("randomseed", randomseed);
-            module.Register("sin", sin);
-            module.Register("sinh", sinh);
-            module.Register("sqrt", sqrt);
-            module.Register("tan", tan);
-            module.Register("tanh", tanh);
-        }
+        private static Random randomGenerator = new Random();
 
         public static LuaValue abs(LuaValue[] values)
         {
@@ -162,8 +125,6 @@ namespace Language.Lua.Library
             return new LuaNumber(number.Number * Math.PI / 180);
         }
 
-        private static Random randomGenerator = new Random();
-
         public static LuaValue random(LuaValue[] values)
         {
             if (values.Length == 0)
@@ -187,6 +148,45 @@ namespace Language.Lua.Library
             LuaNumber number = CheckArgs(values);
             randomGenerator = new Random((int)number.Number);
             return number;
+        }
+
+        public static void RegisterFunctions(LuaTable module)
+        {
+            module.SetNameValue("huge", new LuaNumber(double.MaxValue));
+            module.SetNameValue("pi", new LuaNumber(Math.PI));
+            module.Register("abs", abs);
+            module.Register("acos", acos);
+            module.Register("asin", asin);
+            module.Register("atan", atan);
+            module.Register("atan2", atan2);
+            module.Register("ceil", ceil);
+            module.Register("cos", cos);
+            module.Register("cosh", cosh);
+            module.Register("deg", deg);
+            module.Register("exp", exp);
+            module.Register("floor", floor);
+            module.Register("fmod", fmod);
+            module.Register("log", log);
+            module.Register("log10", log10);
+            module.Register("max", max);
+            module.Register("min", min);
+            module.Register("modf", modf);
+            module.Register("pow", pow);
+            module.Register("rad", rad);
+            module.Register("random", random);
+            module.Register("randomseed", randomseed);
+            module.Register("sin", sin);
+            module.Register("sinh", sinh);
+            module.Register("sqrt", sqrt);
+            module.Register("tan", tan);
+            module.Register("tanh", tanh);
+        }
+
+        public static void RegisterModule(LuaTable enviroment)
+        {
+            LuaTable module = new LuaTable();
+            RegisterFunctions(module);
+            enviroment.SetNameValue("math", module);
         }
 
         public static LuaValue sin(LuaValue[] values)

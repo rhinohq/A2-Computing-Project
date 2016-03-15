@@ -5,26 +5,6 @@ namespace Language.Lua.Library
 {
     public static class StringLib
     {
-        public static void RegisterModule(LuaTable enviroment)
-        {
-            LuaTable module = new LuaTable();
-            RegisterFunctions(module);
-            enviroment.SetNameValue("string", module);
-        }
-
-        public static void RegisterFunctions(LuaTable module)
-        {
-            module.Register("byte", @byte);
-            module.Register("char", @char);
-            module.Register("format", format);
-            module.Register("len", len);
-            module.Register("sub", sub);
-            module.Register("lower", lower);
-            module.Register("upper", upper);
-            module.Register("rep", rep);
-            module.Register("reverse", reverse);
-        }
-
         public static LuaValue @byte(LuaValue[] values)
         {
             LuaString str = values[0] as LuaString;
@@ -67,25 +47,36 @@ namespace Language.Lua.Library
             return new LuaString(string.Format(format.Text, args));
         }
 
-        public static LuaValue sub(LuaValue[] values)
+        public static LuaValue len(LuaValue[] values)
         {
             LuaString str = values[0] as LuaString;
-            LuaNumber startNumber = values[1] as LuaNumber;
-            LuaNumber endNumber = values.Length > 2 ? values[2] as LuaNumber : null;
+            return new LuaNumber(str.Text.Length);
+        }
 
-            int start = (int)startNumber.Number;
-            int end = endNumber == null ? -1 : (int)endNumber.Number;
+        public static LuaValue lower(LuaValue[] values)
+        {
+            LuaString str = values[0] as LuaString;
+            return new LuaString(str.Text.ToLower());
+        }
 
-            if (start < 0)
-            {
-                start = str.Text.Length + start + 1;
-            }
-            if (end < 0)
-            {
-                end = str.Text.Length + end + 1;
-            }
+        public static void RegisterFunctions(LuaTable module)
+        {
+            module.Register("byte", @byte);
+            module.Register("char", @char);
+            module.Register("format", format);
+            module.Register("len", len);
+            module.Register("sub", sub);
+            module.Register("lower", lower);
+            module.Register("upper", upper);
+            module.Register("rep", rep);
+            module.Register("reverse", reverse);
+        }
 
-            return new LuaString(str.Text.Substring(start - 1, end - start + 1));
+        public static void RegisterModule(LuaTable enviroment)
+        {
+            LuaTable module = new LuaTable();
+            RegisterFunctions(module);
+            enviroment.SetNameValue("string", module);
         }
 
         public static LuaValue rep(LuaValue[] values)
@@ -108,16 +99,25 @@ namespace Language.Lua.Library
             return new LuaString(new string(chars));
         }
 
-        public static LuaValue len(LuaValue[] values)
+        public static LuaValue sub(LuaValue[] values)
         {
             LuaString str = values[0] as LuaString;
-            return new LuaNumber(str.Text.Length);
-        }
+            LuaNumber startNumber = values[1] as LuaNumber;
+            LuaNumber endNumber = values.Length > 2 ? values[2] as LuaNumber : null;
 
-        public static LuaValue lower(LuaValue[] values)
-        {
-            LuaString str = values[0] as LuaString;
-            return new LuaString(str.Text.ToLower());
+            int start = (int)startNumber.Number;
+            int end = endNumber == null ? -1 : (int)endNumber.Number;
+
+            if (start < 0)
+            {
+                start = str.Text.Length + start + 1;
+            }
+            if (end < 0)
+            {
+                end = str.Text.Length + end + 1;
+            }
+
+            return new LuaString(str.Text.Substring(start - 1, end - start + 1));
         }
 
         public static LuaValue upper(LuaValue[] values)

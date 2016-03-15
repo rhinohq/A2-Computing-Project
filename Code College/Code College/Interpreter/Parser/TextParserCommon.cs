@@ -6,7 +6,20 @@ namespace Language.Lua
 {
     public partial class Parser
     {
+        public List<Tuple<int, string>> Errors = new List<Tuple<int, string>>();
+        private Stack<int> ErrorStack = new Stack<int>();
+        private ParserInput<char> Input;
+
+        /// <summary>
+        /// Memories parsing results, key is (PositionStart, Noterminal), value is (SyntacticElement, success, PostionAfter).
+        /// </summary>
+        private Dictionary<Tuple<int, string>, Tuple<object, bool, int>> ParsingResults = new Dictionary<Tuple<int, string>, Tuple<object, bool, int>>();
+
         private int position;
+
+        public Parser()
+        {
+        }
 
         public int Position
         {
@@ -14,18 +27,17 @@ namespace Language.Lua
             set { position = value; }
         }
 
-        private ParserInput<char> Input;
-
-        public List<Tuple<int, string>> Errors = new List<Tuple<int, string>>();
-        private Stack<int> ErrorStack = new Stack<int>();
-
-        /// <summary>
-        /// Memories parsing results, key is (PositionStart, Noterminal), value is (SyntacticElement, success, PostionAfter).
-        /// </summary>
-        private Dictionary<Tuple<int, string>, Tuple<object, bool, int>> ParsingResults = new Dictionary<Tuple<int, string>, Tuple<object, bool, int>>();
-
-        public Parser()
+        public string GetErrorMessages()
         {
+            StringBuilder text = new StringBuilder();
+
+            foreach (Tuple<int, string> msg in Errors)
+            {
+                text.Append(Input.FormErrorMessage(msg.Item1, msg.Item2));
+                text.AppendLine();
+            }
+
+            return text.ToString();
         }
 
         public void SetInput(ParserInput<char> input)
@@ -35,28 +47,16 @@ namespace Language.Lua
             ParsingResults.Clear();
         }
 
-        private bool TerminalMatch(char terminal)
+        private void ClearError(int count)
         {
-            if (Input.HasInput(position))
-            {
-                char symbol = Input.GetInputSymbol(position);
-
-                return terminal == symbol;
-            }
-
-            return false;
+            Errors.RemoveRange(count, Errors.Count - count);
         }
 
-        private bool TerminalMatch(char terminal, int pos)
+        private int Error(string message)
         {
-            if (Input.HasInput(pos))
-            {
-                char symbol = Input.GetInputSymbol(pos);
+            Errors.Add(new Tuple<int, string>(position, message));
 
-                return terminal == symbol;
-            }
-
-            return false;
+            return Errors.Count;
         }
 
         private char MatchTerminal(char terminal, out bool success)
@@ -141,29 +141,28 @@ namespace Language.Lua
             return terminalString;
         }
 
-        private int Error(string message)
+        private bool TerminalMatch(char terminal)
         {
-            Errors.Add(new Tuple<int, string>(position, message));
-
-            return Errors.Count;
-        }
-
-        private void ClearError(int count)
-        {
-            Errors.RemoveRange(count, Errors.Count - count);
-        }
-
-        public string GetErrorMessages()
-        {
-            StringBuilder text = new StringBuilder();
-
-            foreach (Tuple<int, string> msg in Errors)
+            if (Input.HasInput(position))
             {
-                text.Append(Input.FormErrorMessage(msg.Item1, msg.Item2));
-                text.AppendLine();
+                char symbol = Input.GetInputSymbol(position);
+
+                return terminal == symbol;
             }
 
-            return text.ToString();
+            return false;
+        }
+
+        private bool TerminalMatch(char terminal, int pos)
+        {
+            if (Input.HasInput(pos))
+            {
+                char symbol = Input.GetInputSymbol(pos);
+
+                return terminal == symbol;
+            }
+
+            return false;
         }
     }
 }

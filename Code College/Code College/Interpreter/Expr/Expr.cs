@@ -4,6 +4,13 @@ using System.Globalization;
 
 namespace Language.Lua
 {
+    public enum Associativity
+    {
+        NonAssociative,
+        LeftAssociative,
+        RightAssociative
+    }
+
     public abstract partial class Access
     {
         public abstract LuaValue Evaluate(LuaValue baseValue, LuaTable enviroment);
@@ -219,10 +226,8 @@ namespace Language.Lua
     /// </summary>
     public partial class Operation : Term
     {
-        public string Operator;
-
         public Term LeftOperand;
-
+        public string Operator;
         public Term RightOperand;
 
         public Operation(string oper)
@@ -253,51 +258,47 @@ namespace Language.Lua
             }
         }
 
-        private LuaValue PrefixUnaryOperation(string Operator, Term RightOperand, LuaTable enviroment)
+        private static int? Compare(LuaValue leftValue, LuaValue rightValue)
         {
-            LuaValue rightValue = RightOperand.Evaluate(enviroment);
-
-            switch (Operator)
+            LuaNumber left = leftValue as LuaNumber;
+            LuaNumber right = rightValue as LuaNumber;
+            if (left != null && right != null)
             {
-                case "-":
-                    var number = rightValue as LuaNumber;
-                    if (number != null)
-                    {
-                        return new LuaNumber(-number.Number);
-                    }
-                    else
-                    {
-                        LuaFunction func = GetMetaFunction("__unm", rightValue, null);
-                        if (func != null)
-                        {
-                            return func.Invoke(new LuaValue[] { rightValue });
-                        }
-                    }
-                    break;
-
-                case "#":
-                    var table = rightValue as LuaTable;
-                    if (table != null)
-                    {
-                        return new LuaNumber(table.Length);
-                    }
-                    var str = rightValue as LuaString;
-                    if (str != null)
-                    {
-                        return new LuaNumber(str.Text.Length);
-                    }
-                    break;
-
-                case "not":
-                    var rightBool = rightValue as LuaBoolean;
-                    if (rightBool != null)
-                    {
-                        return LuaBoolean.From(!rightBool.BoolValue);
-                    }
-                    break;
+                return left.Number.CompareTo(right.Number);
             }
 
-            return LuaNil.Nil;
+            LuaString leftString = leftValue as LuaString;
+            LuaString rightString = rightValue as LuaString;
+            if (leftString != null && rightString != null)
+            {
+                return StringComparer.Ordinal.Compare(leftString.Text, rightString.Text);
+            }
+
+            return null;
+        }
+
+        private static LuaFunction GetMetaFunction(string name, LuaValue leftValue, LuaValue rightValue)
+        {
+            LuaTable left = leftValue as LuaTable;
+
+            if (left != null)
+            {
+                LuaFunction func = left.GetValue(name) as LuaFunction;
+
+                if (func != null)
+                {
+                    return func;
+                }
+            }
+
+            LuaTable right = rightValue as LuaTable;
+
+            if (right != null)
+            {
+                return right.GetValue(name) as LuaFunction;
+            }
+
+            return null;
         }
 
         private LuaValue InfixBinaryOperation(Term LeftOperand, string Operator, Term RightOperand, LuaTable enviroment)
@@ -522,47 +523,51 @@ namespace Language.Lua
             return null;
         }
 
-        private static int? Compare(LuaValue leftValue, LuaValue rightValue)
+        private LuaValue PrefixUnaryOperation(string Operator, Term RightOperand, LuaTable enviroment)
         {
-            LuaNumber left = leftValue as LuaNumber;
-            LuaNumber right = rightValue as LuaNumber;
-            if (left != null && right != null)
+            LuaValue rightValue = RightOperand.Evaluate(enviroment);
+
+            switch (Operator)
             {
-                return left.Number.CompareTo(right.Number);
+                case "-":
+                    var number = rightValue as LuaNumber;
+                    if (number != null)
+                    {
+                        return new LuaNumber(-number.Number);
+                    }
+                    else
+                    {
+                        LuaFunction func = GetMetaFunction("__unm", rightValue, null);
+                        if (func != null)
+                        {
+                            return func.Invoke(new LuaValue[] { rightValue });
+                        }
+                    }
+                    break;
+
+                case "#":
+                    var table = rightValue as LuaTable;
+                    if (table != null)
+                    {
+                        return new LuaNumber(table.Length);
+                    }
+                    var str = rightValue as LuaString;
+                    if (str != null)
+                    {
+                        return new LuaNumber(str.Text.Length);
+                    }
+                    break;
+
+                case "not":
+                    var rightBool = rightValue as LuaBoolean;
+                    if (rightBool != null)
+                    {
+                        return LuaBoolean.From(!rightBool.BoolValue);
+                    }
+                    break;
             }
 
-            LuaString leftString = leftValue as LuaString;
-            LuaString rightString = rightValue as LuaString;
-            if (leftString != null && rightString != null)
-            {
-                return StringComparer.Ordinal.Compare(leftString.Text, rightString.Text);
-            }
-
-            return null;
-        }
-
-        private static LuaFunction GetMetaFunction(string name, LuaValue leftValue, LuaValue rightValue)
-        {
-            LuaTable left = leftValue as LuaTable;
-
-            if (left != null)
-            {
-                LuaFunction func = left.GetValue(name) as LuaFunction;
-
-                if (func != null)
-                {
-                    return func;
-                }
-            }
-
-            LuaTable right = rightValue as LuaTable;
-
-            if (right != null)
-            {
-                return right.GetValue(name) as LuaFunction;
-            }
-
-            return null;
+            return LuaNil.Nil;
         }
     }
 
@@ -607,6 +612,17 @@ namespace Language.Lua
             }
         }
 
+        public override LuaValue Evaluate(LuaTable enviroment)
+        {
+            Term term = BuildExpressionTree();
+            return term.Evaluate(enviroment);
+        }
+
+        public override Term Simplify()
+        {
+            return BuildExpressionTree().Simplify();
+        }
+
         // Operator-precedence parsing algorithm
         private static Term BuildExpressionTree(Term leftTerm, LinkedListNode<object> node)
         {
@@ -632,30 +648,12 @@ namespace Language.Lua
                 }
             }
         }
-
-        public override LuaValue Evaluate(LuaTable enviroment)
-        {
-            Term term = BuildExpressionTree();
-            return term.Evaluate(enviroment);
-        }
-
-        public override Term Simplify()
-        {
-            return BuildExpressionTree().Simplify();
-        }
-    }
-
-    public enum Associativity
-    {
-        NonAssociative,
-        LeftAssociative,
-        RightAssociative
     }
 
     public class OperTable
     {
-        private static Dictionary<string, int> precedence = new Dictionary<string, int>();
         private static Associativity[] associativity;
+        private static Dictionary<string, int> precedence = new Dictionary<string, int>();
 
         static OperTable()
         {

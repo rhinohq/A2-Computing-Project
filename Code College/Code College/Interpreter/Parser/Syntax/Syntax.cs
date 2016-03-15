@@ -17,9 +17,8 @@ namespace Language.Lua
 
     public partial class Assignment : Statement
     {
-        public List<Var> VarList = new List<Var>();
-
         public List<Expr> ExprList = new List<Expr>();
+        public List<Var> VarList = new List<Var>();
     }
 
     public partial class BaseExpr
@@ -68,38 +67,30 @@ namespace Language.Lua
 
     public partial class ForInStmt : Statement
     {
-        public List<string> NameList = new List<string>();
-
-        public List<Expr> ExprList = new List<Expr>();
-
         public Chunk Body;
+        public List<Expr> ExprList = new List<Expr>();
+        public List<string> NameList = new List<string>();
     }
 
     public partial class ForStmt : Statement
     {
-        public string VarName;
-
-        public Expr Start;
-
-        public Expr End;
-
-        public Expr Step;
-
         public Chunk Body;
+        public Expr End;
+        public Expr Start;
+        public Expr Step;
+        public string VarName;
     }
 
     public partial class Function : Statement
     {
-        public FunctionName Name;
-
         public FunctionBody Body;
+        public FunctionName Name;
     }
 
     public partial class FunctionBody
     {
-        public ParamList ParamList;
-
         public Chunk Chunk;
+        public ParamList ParamList;
     }
 
     public partial class FunctionCall : Access
@@ -128,11 +119,9 @@ namespace Language.Lua
     {
         public Expr Condition;
 
-        public Chunk ThenBlock;
-
-        public List<ElseifBlock> ElseifBlocks = new List<ElseifBlock>();
-
         public Chunk ElseBlock;
+        public List<ElseifBlock> ElseifBlocks = new List<ElseifBlock>();
+        public Chunk ThenBlock;
     }
 
     public partial class ItemValue : Field
@@ -151,23 +140,20 @@ namespace Language.Lua
 
     public partial class LocalFunc : Statement
     {
-        public string Name;
-
         public FunctionBody Body;
+        public string Name;
     }
 
     public partial class LocalVar : Statement
     {
-        public List<string> NameList = new List<string>();
-
         public List<Expr> ExprList = new List<Expr>();
+        public List<string> NameList = new List<string>();
     }
 
     public partial class MethodCall : Access
     {
-        public string Method;
-
         public Args Args;
+        public string Method;
     }
 
     public partial class NameAccess : Access
@@ -197,18 +183,15 @@ namespace Language.Lua
 
     public partial class ParamList
     {
-        public List<string> NameList = new List<string>();
-
         public bool HasVarArg;
-
         public string IsVarArg;
+        public List<string> NameList = new List<string>();
     }
 
     public partial class PrimaryExpr : Term
     {
-        public BaseExpr Base;
-
         public List<Access> Accesses = new List<Access>();
+        public BaseExpr Base;
     }
 
     public partial class RepeatStmt : Statement
@@ -243,9 +226,8 @@ namespace Language.Lua
 
     public partial class Var
     {
-        public BaseExpr Base;
-
         public List<Access> Accesses = new List<Access>();
+        public BaseExpr Base;
     }
 
     public partial class VariableArg : Term
@@ -260,8 +242,7 @@ namespace Language.Lua
 
     public partial class WhileStmt : Statement
     {
-        public Expr Condition;
-
         public Chunk Body;
+        public Expr Condition;
     }
 }

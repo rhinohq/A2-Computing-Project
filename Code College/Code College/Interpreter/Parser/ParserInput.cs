@@ -4,12 +4,12 @@ namespace Language.Lua
     {
         int Length { get; }
 
-        bool HasInput(int pos);
+        string FormErrorMessage(int position, string message);
 
         T GetInputSymbol(int pos);
 
         T[] GetSubSection(int position, int length);
 
-        string FormErrorMessage(int position, string message);
+        bool HasInput(int pos);
     }
 }

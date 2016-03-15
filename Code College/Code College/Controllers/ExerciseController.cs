@@ -8,30 +8,10 @@ namespace Code_College.Controllers
 {
     public class ExerciseController : Controller
     {
+        public static int ID = 2;
         private static ExDBEntities ExDB = new ExDBEntities();
         private static UserDBEntities UserDB = new UserDBEntities();
         private Regex Regex = new Regex("[a-zA-Z0-9'-_.]", RegexOptions.Compiled);
-
-        public static int ID = 2;
-
-        // GET: Exercise
-        public ActionResult Index()
-        {
-            Exercise CurrentExercise = ExDB.Exercises.Where(x => x.ExID == ID).FirstOrDefault();
-
-            ViewBag.Title = CurrentExercise.ExTitle + " - Code College";
-            ViewBag.ExerciseTitle = CurrentExercise.ExTitle;
-            ViewBag.Desc = CurrentExercise.ExDescription;
-            ViewBag.ExerciseID = CurrentExercise.ExID;
-            ViewBag.CodeTemplate = CurrentExercise.ExCodeTemplate ?? "";
-            ViewBag.AppendCode = CurrentExercise.ExAppendCode ?? "";
-            ViewBag.Exercise = CurrentExercise;
-
-            if (!Regex.IsMatch(ViewBag.CodeTemplate))
-                ViewBag.CodeTemplate = "";
-
-            return View();
-        }
 
         public static string SubmitCode(string Code, Exercise CurrentExercise, string Username)
         {
@@ -52,6 +32,25 @@ namespace Code_College.Controllers
             }
             else
                 return "Sorry, that was incorrect. Please, read the task and try again.";
+        }
+
+        // GET: Exercise
+        public ActionResult Index()
+        {
+            Exercise CurrentExercise = ExDB.Exercises.Where(x => x.ExID == ID).FirstOrDefault();
+
+            ViewBag.Title = CurrentExercise.ExTitle + " - Code College";
+            ViewBag.ExerciseTitle = CurrentExercise.ExTitle;
+            ViewBag.Desc = CurrentExercise.ExDescription;
+            ViewBag.ExerciseID = CurrentExercise.ExID;
+            ViewBag.CodeTemplate = CurrentExercise.ExCodeTemplate ?? "";
+            ViewBag.AppendCode = CurrentExercise.ExAppendCode ?? "";
+            ViewBag.Exercise = CurrentExercise;
+
+            if (!Regex.IsMatch(ViewBag.CodeTemplate))
+                ViewBag.CodeTemplate = "";
+
+            return View();
         }
     }
 }

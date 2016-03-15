@@ -4,23 +4,6 @@ namespace Language.Lua.Library
 {
     public static class TableLib
     {
-        public static void RegisterModule(LuaTable enviroment)
-        {
-            LuaTable module = new LuaTable();
-            RegisterFunctions(module);
-            enviroment.SetNameValue("table", module);
-        }
-
-        public static void RegisterFunctions(LuaTable module)
-        {
-            module.Register("concat", concat);
-            module.Register("insert", insert);
-            module.Register("remove", remove);
-            module.Register("removeitem", removeitem);
-            module.Register("maxn", maxn);
-            module.Register("sort", sort);
-        }
-
         public static LuaValue concat(LuaValue[] values)
         {
             LuaTable table = values[0] as LuaTable;
@@ -68,6 +51,41 @@ namespace Language.Lua.Library
             return null;
         }
 
+        public static LuaValue maxn(LuaValue[] values)
+        {
+            LuaTable table = values[0] as LuaTable;
+            double maxIndex = double.MinValue;
+            foreach (var key in table.Keys)
+            {
+                LuaNumber number = key as LuaNumber;
+                if (number != null && number.Number > 0)
+                {
+                    if (number.Number > maxIndex)
+                    {
+                        maxIndex = number.Number;
+                    }
+                }
+            }
+            return new LuaNumber(maxIndex);
+        }
+
+        public static void RegisterFunctions(LuaTable module)
+        {
+            module.Register("concat", concat);
+            module.Register("insert", insert);
+            module.Register("remove", remove);
+            module.Register("removeitem", removeitem);
+            module.Register("maxn", maxn);
+            module.Register("sort", sort);
+        }
+
+        public static void RegisterModule(LuaTable enviroment)
+        {
+            LuaTable module = new LuaTable();
+            RegisterFunctions(module);
+            enviroment.SetNameValue("table", module);
+        }
+
         public static LuaValue remove(LuaValue[] values)
         {
             LuaTable table = values[0] as LuaTable;
@@ -90,24 +108,6 @@ namespace Language.Lua.Library
 
             bool removed = table.Remove(item);
             return LuaBoolean.From(removed);
-        }
-
-        public static LuaValue maxn(LuaValue[] values)
-        {
-            LuaTable table = values[0] as LuaTable;
-            double maxIndex = double.MinValue;
-            foreach (var key in table.Keys)
-            {
-                LuaNumber number = key as LuaNumber;
-                if (number != null && number.Number > 0)
-                {
-                    if (number.Number > maxIndex)
-                    {
-                        maxIndex = number.Number;
-                    }
-                }
-            }
-            return new LuaNumber(maxIndex);
         }
 
         public static LuaValue sort(LuaValue[] values)

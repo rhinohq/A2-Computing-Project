@@ -4,77 +4,41 @@ namespace Language.Lua.Library
 {
     internal class BaseLib
     {
-        public static void RegisterFunctions(LuaTable module)
+        public static LuaValue assert(LuaValue[] values)
         {
-            module.Register("print", print);
-            module.Register("type", type);
-            module.Register("getmetatable", getmetatable);
-            module.Register("setmetatable", setmetatable);
-            module.Register("tostring", tostring);
-            module.Register("tonumber", tonumber);
-            module.Register("ipairs", ipairs);
-            module.Register("pairs", pairs);
-            module.Register("next", next);
-            module.Register("assert", assert);
-            module.Register("error", error);
-            module.Register("rawget", rawget);
-            module.Register("rawset", rawset);
-            module.Register("select", select);
-            module.Register("dofile", dofile);
-            module.Register("loadstring", loadstring);
-            module.Register("unpack", unpack);
-            module.Register("pcall", pcall);
-        }
+            bool condition = values[0].GetBooleanValue();
+            LuaString message = values.Length > 1 ? values[1] as LuaString : null;
 
-        public static LuaValue print(LuaValue[] values)
-        {
-            LuaInterpreter.CodeReport.Output += string.Join<LuaValue>("    ", values);
-
-            return null;
-        }
-
-        public static LuaValue type(LuaValue[] values)
-        {
-            if (values.Length > 0)
+            if (message != null)
             {
-                return new LuaString(values[0].GetTypeCode());
+                throw new LuaError(message.Text);
             }
             else
             {
-                throw new Exception("bad argument #1 to 'type' (value expected)");
+                throw new LuaError("assertion failed!");
             }
+            // return new LuaMultiValue { Values = values };
         }
 
-        public static LuaValue tostring(LuaValue[] values)
+        public static LuaValue dofile(LuaValue[] values)
         {
-            return new LuaString(values[0].ToString());
+            LuaString file = values[0] as LuaString;
+            LuaTable enviroment = values[1] as LuaTable;
+
+            return LuaInterpreter.RunCode(file.Text, enviroment);
         }
 
-        public static LuaValue tonumber(LuaValue[] values)
+        public static LuaValue error(LuaValue[] values)
         {
-            LuaString text = values[0] as LuaString;
-            if (text != null)
+            LuaString message = values[0] as LuaString;
+            if (message != null)
             {
-                return new LuaNumber(double.Parse(text.Text));
+                throw new LuaError(message.Text);
             }
-
-            LuaString number = values[0] as LuaString;
-            if (number != null)
+            else
             {
-                return number;
+                throw new LuaError("error raised!");
             }
-
-            return LuaNil.Nil;
-        }
-
-        public static LuaValue setmetatable(LuaValue[] values)
-        {
-            LuaTable table = values[0] as LuaTable;
-            LuaTable metatable = values[1] as LuaTable;
-
-            table.MetaTable = metatable;
-
-            return null;
         }
 
         public static LuaValue getmetatable(LuaValue[] values)
@@ -82,25 +46,6 @@ namespace Language.Lua.Library
             LuaTable table = values[0] as LuaTable;
 
             return table.MetaTable;
-        }
-
-        public static LuaValue rawget(LuaValue[] values)
-        {
-            LuaTable table = values[0] as LuaTable;
-            LuaValue index = values[1];
-
-            return table.RawGetValue(index);
-        }
-
-        public static LuaValue rawset(LuaValue[] values)
-        {
-            LuaTable table = values[0] as LuaTable;
-            LuaValue index = values[1];
-            LuaValue value = values[2];
-
-            table.SetKeyValue(index, value);
-
-            return null;
         }
 
         public static LuaValue ipairs(LuaValue[] values)
@@ -128,12 +73,22 @@ namespace Language.Lua.Library
             return new LuaMultiValue(new LuaValue[] { func, table, new LuaNumber(0) });
         }
 
-        public static LuaValue pairs(LuaValue[] values)
+        public static LuaValue loadstring(LuaValue[] values)
         {
-            LuaTable table = values[0] as LuaTable;
-            LuaFunction func = new LuaFunction(next);
+            LuaString code = values[0] as LuaString;
+            LuaTable enviroment = values[1] as LuaTable;
+            Chunk chunk = LuaInterpreter.Parse(code.Text);
 
-            return new LuaMultiValue(new LuaValue[] { func, table, LuaNil.Nil });
+            LuaFunction func = new LuaFunction(
+            (LuaValue[] args) =>
+            {
+                chunk.Enviroment = enviroment;
+
+                return chunk.Execute();
+            }
+            );
+
+            return func;
         }
 
         public static LuaValue next(LuaValue[] values)
@@ -159,33 +114,81 @@ namespace Language.Lua.Library
             return new LuaMultiValue(new LuaValue[] { nextIndex, table.GetValue(nextIndex) });
         }
 
-        public static LuaValue assert(LuaValue[] values)
+        public static LuaValue pairs(LuaValue[] values)
         {
-            bool condition = values[0].GetBooleanValue();
-            LuaString message = values.Length > 1 ? values[1] as LuaString : null;
+            LuaTable table = values[0] as LuaTable;
+            LuaFunction func = new LuaFunction(next);
 
-            if (message != null)
-            {
-                throw new LuaError(message.Text);
-            }
-            else
-            {
-                throw new LuaError("assertion failed!");
-            }
-            // return new LuaMultiValue { Values = values };
+            return new LuaMultiValue(new LuaValue[] { func, table, LuaNil.Nil });
         }
 
-        public static LuaValue error(LuaValue[] values)
+        public static LuaValue pcall(LuaValue[] values)
         {
-            LuaString message = values[0] as LuaString;
-            if (message != null)
+            LuaFunction func = values[0] as LuaFunction;
+            try
             {
-                throw new LuaError(message.Text);
+                LuaValue[] args = new LuaValue[values.Length - 1];
+                for (int i = 0; i < args.Length; i++)
+                {
+                    args[i] = values[i + 1];
+                }
+
+                LuaValue result = func.Invoke(args);
+
+                return new LuaMultiValue(LuaMultiValue.UnWrapLuaValues(new LuaValue[] { LuaBoolean.True, result }));
             }
-            else
+            catch (Exception error)
             {
-                throw new LuaError("error raised!");
+                return new LuaMultiValue(new LuaValue[] { LuaBoolean.False, new LuaString(error.Message) });
             }
+        }
+
+        public static LuaValue print(LuaValue[] values)
+        {
+            LuaInterpreter.CodeReport.Output += string.Join<LuaValue>("    ", values);
+
+            return null;
+        }
+
+        public static LuaValue rawget(LuaValue[] values)
+        {
+            LuaTable table = values[0] as LuaTable;
+            LuaValue index = values[1];
+
+            return table.RawGetValue(index);
+        }
+
+        public static LuaValue rawset(LuaValue[] values)
+        {
+            LuaTable table = values[0] as LuaTable;
+            LuaValue index = values[1];
+            LuaValue value = values[2];
+
+            table.SetKeyValue(index, value);
+
+            return null;
+        }
+
+        public static void RegisterFunctions(LuaTable module)
+        {
+            module.Register("print", print);
+            module.Register("type", type);
+            module.Register("getmetatable", getmetatable);
+            module.Register("setmetatable", setmetatable);
+            module.Register("tostring", tostring);
+            module.Register("tonumber", tonumber);
+            module.Register("ipairs", ipairs);
+            module.Register("pairs", pairs);
+            module.Register("next", next);
+            module.Register("assert", assert);
+            module.Register("error", error);
+            module.Register("rawget", rawget);
+            module.Register("rawset", rawset);
+            module.Register("select", select);
+            module.Register("dofile", dofile);
+            module.Register("loadstring", loadstring);
+            module.Register("unpack", unpack);
+            module.Register("pcall", pcall);
         }
 
         public static LuaValue select(LuaValue[] values)
@@ -213,30 +216,48 @@ namespace Language.Lua.Library
             return LuaNil.Nil;
         }
 
-        public static LuaValue dofile(LuaValue[] values)
+        public static LuaValue setmetatable(LuaValue[] values)
         {
-            LuaString file = values[0] as LuaString;
-            LuaTable enviroment = values[1] as LuaTable;
+            LuaTable table = values[0] as LuaTable;
+            LuaTable metatable = values[1] as LuaTable;
 
-            return LuaInterpreter.RunCode(file.Text, enviroment);
+            table.MetaTable = metatable;
+
+            return null;
         }
 
-        public static LuaValue loadstring(LuaValue[] values)
+        public static LuaValue tonumber(LuaValue[] values)
         {
-            LuaString code = values[0] as LuaString;
-            LuaTable enviroment = values[1] as LuaTable;
-            Chunk chunk = LuaInterpreter.Parse(code.Text);
-
-            LuaFunction func = new LuaFunction(
-            (LuaValue[] args) =>
+            LuaString text = values[0] as LuaString;
+            if (text != null)
             {
-                chunk.Enviroment = enviroment;
-
-                return chunk.Execute();
+                return new LuaNumber(double.Parse(text.Text));
             }
-            );
 
-            return func;
+            LuaString number = values[0] as LuaString;
+            if (number != null)
+            {
+                return number;
+            }
+
+            return LuaNil.Nil;
+        }
+
+        public static LuaValue tostring(LuaValue[] values)
+        {
+            return new LuaString(values[0].ToString());
+        }
+
+        public static LuaValue type(LuaValue[] values)
+        {
+            if (values.Length > 0)
+            {
+                return new LuaString(values[0].GetTypeCode());
+            }
+            else
+            {
+                throw new Exception("bad argument #1 to 'type' (value expected)");
+            }
         }
 
         public static LuaValue unpack(LuaValue[] values)
@@ -255,27 +276,6 @@ namespace Language.Lua.Library
             }
 
             return new LuaMultiValue(section);
-        }
-
-        public static LuaValue pcall(LuaValue[] values)
-        {
-            LuaFunction func = values[0] as LuaFunction;
-            try
-            {
-                LuaValue[] args = new LuaValue[values.Length - 1];
-                for (int i = 0; i < args.Length; i++)
-                {
-                    args[i] = values[i + 1];
-                }
-
-                LuaValue result = func.Invoke(args);
-
-                return new LuaMultiValue(LuaMultiValue.UnWrapLuaValues(new LuaValue[] { LuaBoolean.True, result }));
-            }
-            catch (Exception error)
-            {
-                return new LuaMultiValue(new LuaValue[] { LuaBoolean.False, new LuaString(error.Message) });
-            }
         }
     }
 }

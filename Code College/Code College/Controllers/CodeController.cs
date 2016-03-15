@@ -7,8 +7,8 @@ namespace Code_College.Controllers
 {
     public class CodeController : ApiController
     {
-        private static UserDBEntities UserDB = new UserDBEntities();
         private static ExDBEntities ExDB = new ExDBEntities();
+        private static UserDBEntities UserDB = new UserDBEntities();
 
         // GET api/<controller>/5
         [HttpGet]
@@ -53,9 +53,9 @@ namespace Code_College.Controllers
 
     public class Submission
     {
-        public int id { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
         public string code { get; set; }
+        public int id { get; set; }
+        public string password { get; set; }
+        public string username { get; set; }
     }
 }

@@ -15,12 +15,12 @@
             MetaTable = metatable;
         }
 
+        public LuaTable MetaTable { get; set; }
+
         public override object Value
         {
             get { return Object; }
         }
-
-        public LuaTable MetaTable { get; set; }
 
         public override string GetTypeCode()
         {

@@ -2,12 +2,12 @@
 {
     public class LuaString : LuaValue
     {
+        public static readonly LuaString Empty = new LuaString(string.Empty);
+
         public LuaString(string text)
         {
             Text = text;
         }
-
-        public static readonly LuaString Empty = new LuaString(string.Empty);
 
         public string Text { get; set; }
 

@@ -13,14 +13,14 @@
             get { return null; }
         }
 
-        public override string GetTypeCode()
-        {
-            return "nil";
-        }
-
         public override bool GetBooleanValue()
         {
             return false;
+        }
+
+        public override string GetTypeCode()
+        {
+            return "nil";
         }
 
         public override string ToString()

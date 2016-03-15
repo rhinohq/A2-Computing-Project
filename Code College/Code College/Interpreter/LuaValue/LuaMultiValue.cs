@@ -10,33 +10,12 @@ namespace Language.Lua
             Values = values;
         }
 
-        public LuaValue[] Values { get; set; }
-
         public override object Value
         {
             get { return Values; }
         }
 
-        public override string GetTypeCode()
-        {
-            throw new InvalidOperationException();
-        }
-
-        public static LuaValue WrapLuaValues(LuaValue[] values)
-        {
-            if (values == null || values.Length == 0)
-            {
-                return LuaNil.Nil;
-            }
-            else if (values.Length == 1)
-            {
-                return values[0];
-            }
-            else
-            {
-                return new LuaMultiValue(UnWrapLuaValues(values));
-            }
-        }
+        public LuaValue[] Values { get; set; }
 
         public static LuaValue[] UnWrapLuaValues(LuaValue[] values)
         {
@@ -80,6 +59,27 @@ namespace Language.Lua
             }
 
             return neatValues.ToArray();
+        }
+
+        public static LuaValue WrapLuaValues(LuaValue[] values)
+        {
+            if (values == null || values.Length == 0)
+            {
+                return LuaNil.Nil;
+            }
+            else if (values.Length == 1)
+            {
+                return values[0];
+            }
+            else
+            {
+                return new LuaMultiValue(UnWrapLuaValues(values));
+            }
+        }
+
+        public override string GetTypeCode()
+        {
+            throw new InvalidOperationException();
         }
 
         private static bool ContainsMultiValue(LuaValue[] values)
