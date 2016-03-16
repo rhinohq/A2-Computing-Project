@@ -8,8 +8,8 @@ namespace Code_College.Controllers
 {
     public class ExerciseController : Controller
     {
-        public static int ID = 2;
         private static ExDBEntities ExDB = new ExDBEntities();
+        private static int ExerciseID = 4;
         private static UserDBEntities UserDB = new UserDBEntities();
         private Regex Regex = new Regex("[a-zA-Z0-9'-_.]", RegexOptions.Compiled);
 
@@ -37,7 +37,7 @@ namespace Code_College.Controllers
         // GET: Exercise
         public ActionResult Index()
         {
-            Exercise CurrentExercise = ExDB.Exercises.Where(x => x.ExID == ID).FirstOrDefault();
+            Exercise CurrentExercise = ExDB.Exercises.Where(x => x.ExID == ExerciseID).FirstOrDefault();
 
             ViewBag.Title = CurrentExercise.ExTitle + " - Code College";
             ViewBag.ExerciseTitle = CurrentExercise.ExTitle;
@@ -51,6 +51,13 @@ namespace Code_College.Controllers
                 ViewBag.CodeTemplate = "";
 
             return View();
+        }
+
+        public void SelectExercise(int ID)
+        {
+            ExerciseID = ID;
+
+            Index();
         }
     }
 }

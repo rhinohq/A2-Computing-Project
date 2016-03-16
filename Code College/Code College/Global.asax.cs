@@ -8,8 +8,6 @@ namespace Code_College
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        private Models.ExDBEntities ExDB = new Models.ExDBEntities();
-
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();

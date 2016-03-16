@@ -25,6 +25,7 @@ namespace Code_College.Controllers
         public class ExTile : IEquatable<ExTile>
         {
             public bool CompletedByUser { get; set; }
+            public bool Locked { get; set; }
             public int ExID { get; set; }
             public string ExTitle { get; set; }
 

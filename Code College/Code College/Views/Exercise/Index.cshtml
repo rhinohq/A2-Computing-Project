@@ -45,9 +45,6 @@
     @Scripts.Render("~/bundles/js")
 
     <script>
-
-        editor.getDoc().setValue('@ViewBag.CodeTemplate');
-
         function UpdateConsole ()
         {
             var Submission = new Object();
@@ -68,10 +65,10 @@
                     var IsCorrect = CodeCorrect(data);
 
                     if (IsCorrect) {
-                        document.getElementById("Message") = "Correct";
+                        document.getElementById("Message").innerHTML = "Correct";
                     }
                     else {
-                        document.getElementById("Message") = "Incorrect";
+                        document.getElementById("Message").innerHTML = "Incorrect";
                     }
                 },
                 error: function (xhr, textStatus, errorThrown) {
@@ -116,12 +113,22 @@
     <div id="Message"></div>
 
     <script>
+        var CodeTemplate = "@ViewBag.CodeTemplate";
+        var Temp
         var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
             mode: "lua",
             lineNumbers: true,
             matchBrackets: true,
             theme: "night"
         });
+
+        while (CodeTemplate != Temp) {
+            Temp = CodeTemplate;
+
+            CodeTemplate = CodeTemplate.replace("&quot;", "\"");
+        }
+
+        editor.getDoc().setValue(CodeTemplate);
     </script>
 </body>
 </html>

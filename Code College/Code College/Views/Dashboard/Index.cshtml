@@ -5,6 +5,7 @@
 @{
     int Index = 0;
     LoginController LoginCon = new LoginController();
+    ExerciseController ExerCon = new ExerciseController();
     ExDBEntities ExDB = new ExDBEntities();
     UserDBEntities UserDB = new UserDBEntities();
     User User;
@@ -31,15 +32,19 @@
             {
                 if (Exercise.ExID >= User.UserLevel)
                 {
-                    DashboardController.ExerciseTiles[Index] = new DashboardController.ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = false };
+                    DashboardController.ExerciseTiles[Index] = new DashboardController.ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = false, Locked = false };
                 }
                 else if (Exercise.ExID < User.UserLevel)
                 {
-                    DashboardController.ExerciseTiles[Index] = new DashboardController.ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = true };
+                    DashboardController.ExerciseTiles[Index] = new DashboardController.ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = true, Locked = false };
+                }
+                else if (Exercise.ExID > User.UserLevel)
+                {
+                    DashboardController.ExerciseTiles[Index] = new DashboardController.ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = false, Locked = true };
                 }
                 else
                 {
-                    DashboardController.ExerciseTiles[Index] = new DashboardController.ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = false };
+                    DashboardController.ExerciseTiles[Index] = new DashboardController.ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = false, Locked = true };
                 }
 
                 Index++;
@@ -64,7 +69,6 @@
 
     @*@Styles.Render("~/bundles/css")*@
     @Scripts.Render("~/bundles/js")
-    <meta name="description" content="The description of my page" />
 </head>
 <body>
     <div>

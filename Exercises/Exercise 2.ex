@@ -7,7 +7,7 @@ Variables
 [ExDescription]
 In programming, we store data and values in variables for easy access. Variables are places in memory than can be read and written to.
 
-For Example, I can store my name in a 'name' variable like so:
+For example, I can store my name in a 'name' variable like so:
 name = "Bob"
 
 Then I can store my age in another variable like this:
