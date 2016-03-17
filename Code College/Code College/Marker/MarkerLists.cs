@@ -42,7 +42,6 @@ namespace Marker
 
         public bool CheckOutput { get; set; }
         public bool CheckVars { get; set; }
-        public bool CheckExprs { get; set; }
         public bool CheckConStruct { get; set; }
 
         public List<Variable> AssignedVariables = new List<Variable>();
