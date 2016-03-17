@@ -18,19 +18,19 @@ namespace Code_College.Models
         [Key]
         public int DBID { get; set; }
 
-        public string ExAppendCode { get; set; }
+        [Required]
+        public int ExID { get; set; }
 
-        public string ExCodeTemplate { get; set; }
+        [Required]
+        public string ExTitle { get; set; }
 
         [Required]
         public string ExDescription { get; set; }
 
-        [Required]
-        public int ExID { get; set; }
+        public string ExCodeTemplate { get; set; }
+
+        public string ExAppendCode { get; set; }
 
         public ExMarkScheme ExMarkScheme { get; set; }
-
-        [Required]
-        public string ExTitle { get; set; }
     }
 }
