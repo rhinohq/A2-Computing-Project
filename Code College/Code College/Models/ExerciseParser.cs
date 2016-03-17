@@ -170,7 +170,6 @@ namespace Code_College.Models
                 {
                     NewMarkScheme.Output = GetExOutput(XML);
                     GetExVars(XML);
-                    GetExExprs(XML);
                     GetExConStructs(XML);
                 }
 
@@ -207,42 +206,6 @@ namespace Code_College.Models
                         NewConStruct.StructureType = null;
 
                         NewMarkScheme.ControlStructures.Add(NewConStruct);
-                    }
-                }
-
-                private static void GetExExprs(XmlDocument XML)
-                {
-                    try
-                    {
-                        XmlNodeList ExprsNode = XML.SelectSingleNode("/MarkScheme/Expressions").ChildNodes;
-
-                        foreach (XmlNode Node in ExprsNode)
-                        {
-                            NewMarkScheme.CheckExprs = true;
-
-                            ExMarkScheme.Expression NewExpr = new ExMarkScheme.Expression();
-
-                            NewExpr.ExpressionStr = Node.InnerText;
-                            NewExpr.ExpressionType = Node.Attributes.GetNamedItem("ExpressionType").Value;
-
-                            if (NewExpr.ExpressionStr == "[DNM]")
-                                NewExpr.ExpressionStr = null;
-                            else if (NewExpr.ExpressionType == "[DNM]")
-                                NewExpr.ExpressionType = null;
-
-                            NewMarkScheme.Expressions.Add(NewExpr);
-                        }
-                    }
-                    catch
-                    {
-                        ExMarkScheme.Expression NewExpr = new ExMarkScheme.Expression();
-
-                        NewMarkScheme.CheckExprs = false;
-
-                        NewExpr.ExpressionStr = null;
-                        NewExpr.ExpressionType = null;
-
-                        NewMarkScheme.Expressions.Add(NewExpr);
                     }
                 }
 
