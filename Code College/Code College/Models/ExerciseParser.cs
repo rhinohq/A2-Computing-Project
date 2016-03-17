@@ -178,7 +178,7 @@ namespace Code_College.Models
                 {
                     try
                     {
-                        XmlNodeList ConStructsNode = XML.SelectNodes("/MarkScheme/ControlStructures");
+                        XmlNodeList ConStructsNode = XML.SelectSingleNode("/MarkScheme/ControlStructures").ChildNodes;
 
                         foreach (XmlNode Node in ConStructsNode)
                         {
@@ -214,7 +214,7 @@ namespace Code_College.Models
                 {
                     try
                     {
-                        XmlNodeList ExprsNode = XML.SelectNodes("/MarkScheme/Expressions");
+                        XmlNodeList ExprsNode = XML.SelectSingleNode("/MarkScheme/Expressions").ChildNodes;
 
                         foreach (XmlNode Node in ExprsNode)
                         {
@@ -268,7 +268,7 @@ namespace Code_College.Models
                 {
                     try
                     {
-                        XmlNodeList VariablesNode = XML.SelectNodes("/MarkScheme/Variables");
+                        XmlNodeList VariablesNode = XML.SelectSingleNode("/MarkScheme/Variables").ChildNodes;
 
                         foreach (XmlNode Node in VariablesNode)
                         {

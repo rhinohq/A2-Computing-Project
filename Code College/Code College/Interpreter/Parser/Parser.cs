@@ -1804,6 +1804,12 @@ namespace Language.Lua
 
             LuaInterpreter.AddConStructToCodeReport("IF", ifStmt.Condition.ToString());
 
+            foreach (ElseifBlock ElseIf in ifStmt.ElseifBlocks)
+                LuaInterpreter.AddConStructToCodeReport("ELSEIF", ElseIf.Condition.ToString());
+
+            if (ifStmt.ElseBlock != null)
+                LuaInterpreter.AddConStructToCodeReport("ELSE", "");
+
             return ifStmt;
         }
 
