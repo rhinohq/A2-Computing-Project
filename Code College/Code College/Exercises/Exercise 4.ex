@@ -18,5 +18,7 @@ num = 5 * 2\r\rif condition then\r\tprint("num is less than 15.")\rend
 <?xml version="1.0" encoding="utf-8"?>
 <MarkScheme>
 	<Output>num is less than 15.</Output>
-	<ControlStructures StructType="IF">num &lt; 15</ControlStructures>
+	<ControlStructures>
+		<ControlStructure StructType="IF">num &#60; 15</ControlStructure>
+	</ControlStructures>
 </MarkScheme>

@@ -64,21 +64,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="Code College, Dashboard, Learn Programming, Learn Lua, Lua, Development, Code" />
-    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>    <!----webfonts--->
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900' rel='stylesheet' type='text/css'>
     <title>Dash - Code College</title>
 
-    @*@Styles.Render("~/bundles/css")*@
+    @Styles.Render("~/bundles/css")
     @Scripts.Render("~/bundles/js")
+
+    <script type="text/javascript">
+        var Exercise = new Object();
+
+        Exercise.ID = 1;
+        Exercise.Title = "Printing";
+    </script>
 </head>
 <body>
-    <div>
-        This section, Dashboard, is under construction. Please, go to another section instead.
-        <ul>
-            <li><a href="~/Login">Login</a></li>
-            <li><a href="~/SignUp">Sign Up</a></li>
-            <li><a href="~/Exercise">Exercise</a></li>
-            <li><a href="~/AddExercise">Add Exercise (Admin Only)</a></li>
-        </ul>
+    <!-- Navigation -->
+    <nav class="top1 navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="~/Dashboard">Code College</a>
+        </div>
+    </nav>
+
+    <div id="page-wrapper">
+        <div id="Exercises">
+            <div class="row">
+                <div class="col-md-4 grid_box1">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+        <div class="copy_layout">
+            <p>Copyright © 2015 Code College. All Rights Reserved | Design by <a href="http://w3layouts.com/" target="_blank">W3layouts</a></p>
+        </div>
     </div>
 </body>
 </html>

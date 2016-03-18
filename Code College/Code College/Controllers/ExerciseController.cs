@@ -9,7 +9,7 @@ namespace Code_College.Controllers
     public class ExerciseController : Controller
     {
         private static ExDBEntities ExDB = new ExDBEntities();
-        private static int ExerciseID = 4;
+        private static int ExerciseID = 5;
         private static UserDBEntities UserDB = new UserDBEntities();
         private Regex Regex = new Regex("[a-zA-Z0-9'-_.]", RegexOptions.Compiled);
 
