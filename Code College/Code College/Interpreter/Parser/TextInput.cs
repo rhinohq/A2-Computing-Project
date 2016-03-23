@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace Language.Lua
@@ -41,7 +40,7 @@ namespace Language.Lua
             GetLineColumnNumber(position, out line, out col);
             string ch = HasInput(position) ? "'" + GetInputSymbol(position) + "'" : null;
 
-            return String.Format("Line {0}, Col {1} {2}: {3}", line, col, ch, message);
+            return string.Format("Line {0}, Col {1} {2}: {3}", line, col, ch, message);
         }
 
         public char GetInputSymbol(int pos)

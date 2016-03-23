@@ -49,7 +49,7 @@
         <ul>
             @foreach (AddExerciseController.ExRow ExerciseRow in AddExerciseController.ExerciseRows)
             {
-                string ExRecord = String.Format("{0} | {1}", ExerciseRow.ExID.ToString(), ExerciseRow.ExTitle);
+                string ExRecord = string.Format("{0} | {1}", ExerciseRow.ExID.ToString(), ExerciseRow.ExTitle);
 
                 <li>@ExRecord</li>
             }
