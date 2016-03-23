@@ -20,7 +20,6 @@ namespace Language.Lua
 
             BaseLib.RegisterFunctions(global);
             StringLib.RegisterModule(global);
-            TableLib.RegisterModule(global);
             MathLib.RegisterModule(global);
 
             global.SetNameValue("_G", global);

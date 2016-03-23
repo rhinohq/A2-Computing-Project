@@ -244,7 +244,6 @@
     <Compile Include="Interpreter\LuaLibs\BaseLib.cs" />
     <Compile Include="Interpreter\LuaLibs\MathLib.cs" />
     <Compile Include="Interpreter\LuaLibs\StringLib.cs" />
-    <Compile Include="Interpreter\LuaLibs\TableLib.cs" />
     <Compile Include="Interpreter\LuaValue\LuaBoolean.cs" />
     <Compile Include="Interpreter\LuaValue\LuaError.cs" />
     <Compile Include="Interpreter\LuaValue\LuaFunction.cs" />
