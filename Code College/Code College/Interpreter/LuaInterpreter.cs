@@ -50,7 +50,7 @@ namespace Language.Lua
             if (Success)
                 return Chunk;
             else
-                throw new ArgumentException("Code has syntax errors:\r\n" + Parser.GetErrorMessages());
+                throw new ArgumentException("Interpreter: Code has syntax errors:\r\n" + Parser.GetErrorMessages());
         }
 
         public static LuaValue RunCode(string UserCode)

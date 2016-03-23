@@ -11,11 +11,11 @@ namespace Language.Lua.Library
 
             if (message != null)
             {
-                throw new LuaError(message.Text);
+                throw new LuaError("Interpreter: " + message.Text);
             }
             else
             {
-                throw new LuaError("assertion failed!");
+                throw new LuaError("Interpreter: assertion failed!");
             }
             // return new LuaMultiValue { Values = values };
         }
@@ -25,11 +25,11 @@ namespace Language.Lua.Library
             LuaString message = values[0] as LuaString;
             if (message != null)
             {
-                throw new LuaError(message.Text);
+                throw new LuaError("Interpreter: " + message.Text);
             }
             else
             {
-                throw new LuaError("error raised!");
+                throw new LuaError("Interpreter: error raised!");
             }
         }
 
@@ -99,7 +99,7 @@ namespace Language.Lua.Library
             }
             else
             {
-                throw new Exception("bad argument #1 to 'type' (value expected)");
+                throw new Exception("Interpreter: bad argument #1 to 'type' (value expected)");
             }
         }
     }

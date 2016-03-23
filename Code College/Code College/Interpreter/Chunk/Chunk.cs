@@ -96,7 +96,7 @@ namespace Language.Lua
 
                     if (newIndex == LuaNil.Nil)
                     {
-                        throw new Exception("Assign field of userdata without __newindex defined.");
+                        throw new Exception("Interpreter: Assign field of userdata without __newindex defined.");
                     }
                 }
             }
@@ -287,7 +287,7 @@ namespace Language.Lua
 
                     if (table == null)
                     {
-                        throw new Exception("Not a table: " + Name.FullName[i]);
+                        throw new Exception("Interpreter: Not a table: " + Name.FullName[i]);
                     }
                 }
 
@@ -304,7 +304,7 @@ namespace Language.Lua
 
                     if (table == null)
                     {
-                        throw new Exception("Not a table " + Name.FullName[i]);
+                        throw new Exception("Interpreter: Not a table " + Name.FullName[i]);
                     }
                 }
 

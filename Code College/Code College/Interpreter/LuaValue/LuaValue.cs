@@ -40,7 +40,7 @@ namespace Language.Lua
                     }
                 }
 
-                throw new Exception(string.Format("Access field '{0}' from not a table.", key.Value));
+                throw new Exception(string.Format("Interpreter: Access field '{0}' from not a table.", key.Value));
             }
         }
 

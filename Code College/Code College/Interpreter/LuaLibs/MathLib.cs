@@ -71,12 +71,12 @@ namespace Language.Lua.Library
                 }
                 else
                 {
-                    throw new LuaError("bad argument #1 to 'abs' (number expected, got {0})", values[0].GetTypeCode());
+                    throw new LuaError("Interpreter: bad argument #1 to 'abs' (number expected, got {0})", values[0].GetTypeCode());
                 }
             }
             else
             {
-                throw new LuaError("bad argument #1 to 'abs' (number expected, got no value)");
+                throw new LuaError("Interpreter: bad argument #1 to 'abs' (number expected, got no value)");
             }
         }
 
@@ -87,20 +87,20 @@ namespace Language.Lua.Library
                 LuaNumber number1 = values[0] as LuaNumber;
                 if (number1 == null)
                 {
-                    throw new LuaError("bad argument #1 to 'abs' (number expected, got {0})", values[0].GetTypeCode());
+                    throw new LuaError("Interpreter: bad argument #1 to 'abs' (number expected, got {0})", values[0].GetTypeCode());
                 }
 
                 LuaNumber number2 = values[1] as LuaNumber;
                 if (number2 == null)
                 {
-                    throw new LuaError("bad argument #2 to 'abs' (number expected, got {0})", values[1].GetTypeCode());
+                    throw new LuaError("Interpreter: bad argument #2 to 'abs' (number expected, got {0})", values[1].GetTypeCode());
                 }
 
                 return Tuple.Create(number1.Number, number2.Number);
             }
             else
             {
-                throw new LuaError("bad argument #1 to 'abs' (number expected, got no value)");
+                throw new LuaError("Interpreter: bad argument #1 to 'abs' (number expected, got no value)");
             }
         }
     }

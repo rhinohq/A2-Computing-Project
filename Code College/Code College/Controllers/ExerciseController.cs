@@ -1,7 +1,7 @@
 ﻿using Code_College.Models;
 using Language.Lua;
+using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
 namespace Code_College.Controllers
@@ -11,27 +11,38 @@ namespace Code_College.Controllers
         private static ExDBEntities ExDB = new ExDBEntities();
         private static int ExerciseID = 1;
         private static UserDBEntities UserDB = new UserDBEntities();
-        private Regex Regex = new Regex("[a-zA-Z0-9'-_.]", RegexOptions.Compiled);
 
         public static string SubmitCode(string Code, Exercise CurrentExercise, string Username)
         {
             bool Correct;
+            string ConsoleOutput = "Sorry, that was incorrect. Please, read the task and try again.";
 
             Code += CurrentExercise.ExAppendCode ?? "";
 
             Marker.Marker.MarkScheme = CurrentExercise.ExMarkScheme;
 
-            LuaInterpreter.RunCode(Code);
-            Correct = Marker.Marker.FullMark();
+            try
+            {
+                LuaInterpreter.RunCode(Code);
+                Correct = Marker.Marker.FullMark();
+            }
+            catch(Exception ex)
+            {
+                Correct = false;
+
+                ConsoleOutput = ex.Message;
+            }
+            
 
             if (Correct)
             {
                 Account.LevelUp(Username, CurrentExercise);
+                ConsoleOutput = LuaInterpreter.CodeReport.Output;
 
-                return LuaInterpreter.CodeReport.Output;
+                return ConsoleOutput;
             }
             else
-                return "Sorry, that was incorrect. Please, read the task and try again.";
+                return ConsoleOutput;
         }
 
         // GET: Exercise
@@ -46,9 +57,6 @@ namespace Code_College.Controllers
             ViewBag.CodeTemplate = CurrentExercise.ExCodeTemplate ?? "";
             ViewBag.AppendCode = CurrentExercise.ExAppendCode ?? "";
             ViewBag.Exercise = CurrentExercise;
-
-            if (!Regex.IsMatch(ViewBag.CodeTemplate))
-                ViewBag.CodeTemplate = "";
 
             return View();
         }

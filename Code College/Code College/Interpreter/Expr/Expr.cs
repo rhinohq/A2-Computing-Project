@@ -119,7 +119,7 @@ namespace Language.Lua
             }
             else
             {
-                throw new Exception("Invoke function call on non function value.");
+                throw new Exception("Interpreter: Invoke function call on non function value.");
             }
         }
     }
@@ -180,7 +180,7 @@ namespace Language.Lua
             }
             else
             {
-                throw new Exception("Invoke method call on non function value.");
+                throw new Exception("Interpreter: Invoke method call on non function value.");
             }
         }
     }
