@@ -10,21 +10,6 @@ namespace Code_College.Controllers
         private static ExDBEntities ExDB = new ExDBEntities();
         private static UserDBEntities UserDB = new UserDBEntities();
 
-        // GET api/<controller>/5
-        [HttpGet]
-        public string GetSubmission(Submission Submission)
-        {
-            if (!Authenticate(Submission.username, Submission.password))
-                throw new HttpResponseException(HttpStatusCode.Unauthorized);
-
-            Exercise CurrentExercise = ExDB.Exercises.Where(x => x.ExID == Submission.id).FirstOrDefault();
-
-            if (CurrentExercise == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-
-            return ExerciseController.SubmitCode(Submission.code, CurrentExercise, Submission.username);
-        }
-
         // POST api/<controller>
         [HttpPost]
         public string PostSubmission(Submission Submission)
