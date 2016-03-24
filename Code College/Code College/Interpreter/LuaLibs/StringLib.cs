@@ -21,19 +21,10 @@ namespace Language.Lua.Library
             return new LuaNumber(str.Text.Length);
         }
 
-        public static LuaValue lower(LuaValue[] values)
-        {
-            LuaString str = values[0] as LuaString;
-            return new LuaString(str.Text.ToLower());
-        }
-
         public static void RegisterFunctions(LuaTable module)
         {
             module.Register("format", format);
             module.Register("len", len);
-            module.Register("lower", lower);
-            module.Register("upper", upper);
-            module.Register("reverse", reverse);
         }
 
         public static void RegisterModule(LuaTable enviroment)
@@ -41,20 +32,6 @@ namespace Language.Lua.Library
             LuaTable module = new LuaTable();
             RegisterFunctions(module);
             enviroment.SetNameValue("string", module);
-        }
-
-        public static LuaValue reverse(LuaValue[] values)
-        {
-            LuaString str = values[0] as LuaString;
-            char[] chars = str.Text.ToCharArray();
-            Array.Reverse(chars);
-            return new LuaString(new string(chars));
-        }
-
-        public static LuaValue upper(LuaValue[] values)
-        {
-            LuaString str = values[0] as LuaString;
-            return new LuaString(str.Text.ToUpper());
         }
     }
 }

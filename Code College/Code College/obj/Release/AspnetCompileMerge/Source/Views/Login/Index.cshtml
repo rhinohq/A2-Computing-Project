@@ -25,6 +25,7 @@
             Account.AddCookie(Username, Password, Response);
 
             DashCon.Index();
+
         }
     }
 }
@@ -54,7 +55,6 @@
             @Html.Password("Password", null, new { placeholder = "Password" })
             <div class="submit"><input type="submit" value="Login"></div>
             <ul class="new">
-                @*<li class="new_left"><p><a href="#">Forgot Password?</a></p></li>*@
                 <li class="new_right"><p class="sign">New here? <a href="/SignUp">Sign Up</a></p></li>
                 <div class="clearfix"></div>
             </ul>

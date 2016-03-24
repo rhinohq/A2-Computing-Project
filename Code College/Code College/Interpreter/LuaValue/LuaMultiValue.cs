@@ -20,14 +20,10 @@ namespace Language.Lua
         public static LuaValue[] UnWrapLuaValues(LuaValue[] values)
         {
             if (values == null || values.Length == 0 || ContainsMultiValue(values) == false)
-            {
                 return values;
-            }
 
             if (values.Length == 1 && values[0] is LuaMultiValue)
-            {
                 return (values[0] as LuaMultiValue).Values;
-            }
 
             List<LuaValue> neatValues = new List<LuaValue>(values.Length);
 
@@ -37,26 +33,18 @@ namespace Language.Lua
                 LuaMultiValue multiValue = value as LuaMultiValue;
 
                 if (multiValue != null)
-                {
                     neatValues.Add(multiValue.Values[0]);
-                }
                 else
-                {
                     neatValues.Add(value);
-                }
             }
 
             LuaValue lastValue = values[values.Length - 1];
             LuaMultiValue lastMultiValue = lastValue as LuaMultiValue;
 
             if (lastMultiValue != null)
-            {
                 neatValues.AddRange(lastMultiValue.Values);
-            }
             else
-            {
                 neatValues.Add(lastValue);
-            }
 
             return neatValues.ToArray();
         }
@@ -64,17 +52,11 @@ namespace Language.Lua
         public static LuaValue WrapLuaValues(LuaValue[] values)
         {
             if (values == null || values.Length == 0)
-            {
                 return LuaNil.Nil;
-            }
             else if (values.Length == 1)
-            {
                 return values[0];
-            }
             else
-            {
                 return new LuaMultiValue(UnWrapLuaValues(values));
-            }
         }
 
         public override string GetTypeCode()
@@ -87,9 +69,7 @@ namespace Language.Lua
             foreach (LuaValue value in values)
             {
                 if (value is LuaMultiValue)
-                {
                     return true;
-                }
             }
             return false;
         }

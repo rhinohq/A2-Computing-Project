@@ -18,9 +18,7 @@ namespace Language.Lua
             for (int index = 0; index < InputText.Length; index++)
             {
                 if (InputText[index] == '\n')
-                {
                     LineBreaks.Add(index + 1);
-                }
             }
 
             LineBreaks.Add(InputText.Length);
@@ -71,13 +69,9 @@ namespace Language.Lua
                     for (int p = LineBreaks[line - 1]; p < pos; p++)
                     {
                         if (InputText[p] == '\t')
-                        {
                             col += 4;
-                        }
                         else
-                        {
                             col++;
-                        }
                     }
 
                     break;

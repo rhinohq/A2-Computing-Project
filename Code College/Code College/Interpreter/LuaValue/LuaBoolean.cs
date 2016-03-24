@@ -20,13 +20,9 @@
         public static LuaBoolean From(bool value)
         {
             if (value == true)
-            {
                 return True;
-            }
             else
-            {
                 return False;
-            }
         }
 
         public override bool GetBooleanValue()
