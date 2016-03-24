@@ -65,10 +65,10 @@
                     var IsCorrect = CodeCorrect(data);
 
                     if (IsCorrect) {
-                        document.getElementById("Message").innerHTML = "Correct";
+                        // TODO: Set borders to green.
                     }
                     else {
-                        document.getElementById("Message").innerHTML = "Incorrect";
+                        // TODO: Set borders to red.
                     }
                 },
                 error: function (xhr, textStatus, errorThrown) {
@@ -83,9 +83,18 @@
         function CodeCorrect (ConsoleOutput)
         {
             if (ConsoleOutput === "Sorry, that was incorrect. Please, read the task and try again.") {
+                document.getElementById("Message").innerHTML = "Incorrect, your code does not adhere to the task set, sorry.";
+
+                return false;
+            }
+            else if (ConsoleOutput.startsWith('Interpreter:')) {
+                document.getElementById("Message").innerHTML = "Incorrect, you have a syntax error in your code.";
+
                 return false;
             }
             else {
+                document.getElementById("Message").innerHTML = "Correct!";
+
                 return true;
             }
         }

@@ -25,7 +25,7 @@ print(string.format("age = {0}", age))
 <?xml version="1.0" encoding="utf-8"?>
 <MarkScheme>
 	<Variables>
-		<Variable VarValue="[DNM]">name</Variable>
-		<Variable VarValue="[DNM]">age</Variable>
+		<Variables VarValue="[DNM]">name</Variables>
+		<Variables VarValue="[DNM]">age</Variables>
 	</Variables>
 </MarkScheme>
