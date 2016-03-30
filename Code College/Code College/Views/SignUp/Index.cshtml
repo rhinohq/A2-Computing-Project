@@ -1,9 +1,8 @@
 ﻿@using System.Web.Optimization;
-@using Code_College.Controllers;
 @using Code_College.Models;
 
 @{
-    DashboardController DashCon = new DashboardController();
+    bool Redirect = false;
 
     if (Request.Cookies.AllKeys.Contains("CCUserAuth"))
     {
@@ -11,7 +10,7 @@
 
         if (Account.VerifyCookie(Cookie))
         {
-            DashCon.Index();
+            Redirect = true;
         }
     }
 
@@ -27,6 +26,8 @@
             if (Account.Validation(Name, 'n') && Account.Validation(Email, 'e') && Account.Validation(Username, 'u'))
             {
                 Account.CreateNewUser(Name, Email, Username, Password, Response);
+                
+                Redirect = true;
             }
         }
     }
@@ -45,6 +46,14 @@
 
     @Styles.Render("~/bundles/css")
     @Scripts.Render("~/bundles/js")
+
+    <script>
+        var Redirect = "@Redirect";
+
+        if (Redirect === "True") {
+            window.location = "@Url.Action("Index", "Dashboard")";
+        }
+    </script>
 </head>
 
 <body id="login">

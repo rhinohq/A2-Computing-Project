@@ -1,9 +1,8 @@
 ﻿@using System.Web.Optimization;
-@using Code_College.Controllers;
 @using Code_College.Models;
 
 @{
-    LoginController LoginCon = new LoginController();
+    bool Redirect = false;
 
     if (Request.Cookies.AllKeys.Contains("CCUserAuth"))
     {
@@ -11,7 +10,7 @@
 
         if (!Account.VerifyCookie(Cookie))
         {
-            LoginCon.Index();
+            Redirect = true;
         }
         else
         {
@@ -24,7 +23,7 @@
     }
     else
     {
-        LoginCon.Index();
+        Redirect = true;
     }
 }
 
@@ -45,6 +44,12 @@
     @Scripts.Render("~/bundles/js")
 
     <script>
+        var Redirect = "@Redirect";
+
+        if (Redirect === "True") {
+            window.location = "@Url.Action("Index", "Login")";
+        }
+
         function UpdateConsole()
         {
             var Submission = new Object();

@@ -3,8 +3,8 @@
 @using System.Web.Optimization;
 
 @{
+    bool Redirect = false;
     int Index = 0;
-    LoginController LoginCon = new LoginController();
     ExerciseController ExerCon = new ExerciseController();
     ExDBEntities ExDB = new ExDBEntities();
     UserDBEntities UserDB = new UserDBEntities();
@@ -16,7 +16,7 @@
 
         if (!Account.VerifyCookie(Cookie))
         {
-            LoginCon.Index();
+            Redirect = true;
         }
         else
         {
@@ -53,7 +53,7 @@
     }
     else
     {
-        LoginCon.Index();
+        Redirect = true;
     }
 }
 
@@ -72,6 +72,12 @@
     @Scripts.Render("~/bundles/js")
 
     <script type="text/javascript">
+        var Redirect = "@Redirect";
+
+        if (Redirect === "True") {
+            window.location = "@Url.Action("Index", "Login")";
+        }
+
         var Exercise = new Object();
 
         Exercise.ID = 1;

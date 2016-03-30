@@ -53,8 +53,6 @@ namespace Code_College.Models
 
                 AddCookie(NewUser.Username, Password, Response);
             }
-            else
-                Response.Write("Account taken");
         }
 
         public static void DeleteUser(string Username, string Password)
