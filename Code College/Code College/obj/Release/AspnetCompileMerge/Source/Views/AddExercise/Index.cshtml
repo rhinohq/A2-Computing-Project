@@ -24,7 +24,11 @@
     <title>Admin - Add Exercise - Code College</title>
 
     <script type="text/javascript">
-        confirm("This page is for use by admins only.");
+        var Admin = confirm("This page is for use by admins only.");
+
+        if (!Admin) {
+            window.location = "@Url.Action("Index", "Login")";
+        }
 
         function Submit() {
             document.getElementById("Message").innerHTML = "Submitting file...";
