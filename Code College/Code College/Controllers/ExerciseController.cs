@@ -9,7 +9,6 @@ namespace Code_College.Controllers
     public class ExerciseController : Controller
     {
         private static ExDBEntities ExDB = new ExDBEntities();
-        private static int ExerciseID = 1;
         private static UserDBEntities UserDB = new UserDBEntities();
 
         public static string SubmitCode(string Code, Exercise CurrentExercise, string Username)
@@ -46,7 +45,7 @@ namespace Code_College.Controllers
         }
 
         // GET: Exercise
-        public ActionResult Index()
+        public ActionResult Index(int ExerciseID = 1)
         {
             Exercise CurrentExercise = ExDB.Exercises.Where(x => x.ExID == ExerciseID).FirstOrDefault();
 
@@ -59,13 +58,6 @@ namespace Code_College.Controllers
             ViewBag.Exercise = CurrentExercise;
 
             return View();
-        }
-
-        public void SelectExercise(int ID)
-        {
-            ExerciseID = ID;
-
-            Index();
         }
     }
 }

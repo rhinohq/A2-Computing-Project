@@ -5,6 +5,7 @@
 @{
     bool Redirect = false;
     int Index = 0;
+    int ExerciseID = 1;
     ExerciseController ExerCon = new ExerciseController();
     ExDBEntities ExDB = new ExDBEntities();
     UserDBEntities UserDB = new UserDBEntities();
@@ -71,6 +72,12 @@
     @Styles.Render("~/bundles/css")
     @Scripts.Render("~/bundles/js")
 
+    <style type="text/css">
+        .ExerciseTile {
+            text-align: center;
+        }
+    </style>
+
     <script type="text/javascript">
         var Redirect = "@Redirect";
 
@@ -82,6 +89,14 @@
 
         Exercise.ID = 1;
         Exercise.Title = "Printing";
+
+        function GotoExercise(ExID) {
+            for (var i; i < ExID; i++) {
+                @{ ExerciseID++; }
+            }
+
+            @ExerCon.Index(ExerciseID)
+        }
     </script>
 </head>
 <body>
@@ -102,6 +117,15 @@
         <div id="Exercises">
             <div class="row">
                 <div class="col-md-4 grid_box1">
+                    <button onclick="GotoExercise(5)">Click me</button>
+
+                    <div class ="ExerciseTile" style="width: 220px; height: 55px; position: relative; left: 20px; top: 0px;">
+                        <p class="ExerciseTile">
+                            1 | Printing
+                            <button>Try Exercise</button>
+                        </p>
+                    </div>
+
                 </div>
                 <div class="clearfix"></div>
             </div>
