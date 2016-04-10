@@ -26,7 +26,7 @@
             if (Account.Validation(Name, 'n') && Account.Validation(Email, 'e') && Account.Validation(Username, 'u'))
             {
                 Account.CreateNewUser(Name, Email, Username, Password, Response);
-                
+
                 Redirect = true;
             }
         }

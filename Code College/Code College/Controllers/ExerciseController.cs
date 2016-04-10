@@ -25,13 +25,12 @@ namespace Code_College.Controllers
                 LuaInterpreter.RunCode(Code);
                 Correct = Marker.Marker.FullMark();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Correct = false;
 
                 ConsoleOutput = ex.Message;
             }
-            
 
             if (Correct)
             {
