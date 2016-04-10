@@ -101,7 +101,7 @@ namespace Language.Lua
             if (list != null)
             {
                 LuaNumber index = key as LuaNumber;
-                
+
                 if (index != null && index.Number == (int)index.Number)
                     return index.Number >= 1 && index.Number <= list.Count;
             }
@@ -288,7 +288,7 @@ namespace Language.Lua
                 {
                     LuaValue result = compare.Invoke(new LuaValue[] { a, b });
                     LuaBoolean boolValue = result as LuaBoolean;
-                    
+
                     if (boolValue != null && boolValue.BoolValue == true)
                         return 1;
                     else

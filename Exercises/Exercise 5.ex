@@ -12,7 +12,7 @@ To make this happen, we use if statements with relational operators. These are t
 Create an if statement below to check whether age is less than or equal to 18.
 
 [ExCodeTemplate]
-age = 16\r\rif condition then\r\tprint("You are not old enough, go home.")\rend
+age = math.random(1, 17) -- Creates a random number between 1 and 17\r\rprint(age)\rif condition then\r\tprint("You are not old enough, go home.")\rend
 
 [ExAppendCode]
 
@@ -22,6 +22,6 @@ age = 16\r\rif condition then\r\tprint("You are not old enough, go home.")\rend
 	<Output>You are not old enough, go home.</Output>
 
 	<ControlStructures>
-		<ControlStructure StructType="IF">age &gt;= 18</ControlStructure>
+		<ControlStructure StructType="IF">age &#60;= 18</ControlStructure>
 	</ControlStructures>
 </MarkScheme>

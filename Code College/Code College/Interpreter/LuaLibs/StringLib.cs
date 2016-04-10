@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Language.Lua.Library
+﻿namespace Language.Lua.Library
 {
     public static class StringLib
     {
