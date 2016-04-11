@@ -15,7 +15,6 @@ C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Pr
 C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\bin\roslyn\Microsoft.VisualBasic.Core.targets
 C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\bin\roslyn\System.AppContext.dll
 C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\bin\roslyn\System.Collections.Immutable.dll
-C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\bin\roslyn\System.Console.dll
 C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\bin\roslyn\System.Diagnostics.StackTrace.dll
 C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\bin\roslyn\System.IO.FileSystem.dll
 C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\bin\roslyn\System.IO.FileSystem.Primitives.dll

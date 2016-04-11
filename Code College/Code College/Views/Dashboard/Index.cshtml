@@ -118,39 +118,42 @@
     <div class="DashTitle" style="height: 40px; background-color: #06D995">Code College - Dashboard</div>
 
     <div class="Exercises">
-        @foreach (DashboardController.ExTile Tile in DashboardController.ExerciseTiles)
+        @if (!Redirect)
         {
-            string ExRecord = string.Format("{0} | {1}", Tile.ExID.ToString(), Tile.ExTitle);
-
-            if (Tile.CompletedByUser)
+            foreach (DashboardController.ExTile Tile in DashboardController.ExerciseTiles)
             {
-                <div class="Exercise" style="width: 220px; height: 55px; position: relative; left: 315px; background-color: grey;">
-                    <p class="ExerciseTile">
-                        @ExRecord
-                        <button onclick="GotoExercise(@Tile.ExID)">Try Exercise</button>
-                    </p>
-                </div>
-            }
+                string ExRecord = string.Format("{0} | {1}", Tile.ExID.ToString(), Tile.ExTitle);
 
-            if (!Tile.CompletedByUser)
-            {
-                if (Tile.Locked)
+                if (Tile.CompletedByUser)
                 {
-                    <div class="Exercise" style="width: 220px; height: 55px; position: relative; left: 315px; background-color: white;">
-                        <p class="ExerciseTile">
-                            @ExRecord
-                            <button onclick="GotoExercise(@Tile.ExID)" disabled>Try Exercise</button>
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <div class="Exercise" style="width: 220px; height: 55px; position: relative; left: 315px; background-color: white;">
+                    <div class="Exercise" style="width: 220px; height: 55px; position: relative; left: 315px; background-color: grey;">
                         <p class="ExerciseTile">
                             @ExRecord
                             <button onclick="GotoExercise(@Tile.ExID)">Try Exercise</button>
                         </p>
                     </div>
+                }
+
+                if (!Tile.CompletedByUser)
+                {
+                    if (Tile.Locked)
+                    {
+                        <div class="Exercise" style="width: 220px; height: 55px; position: relative; left: 315px; background-color: white;">
+                            <p class="ExerciseTile">
+                                @ExRecord
+                                <button onclick="GotoExercise(@Tile.ExID)" disabled>Try Exercise</button>
+                            </p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="Exercise" style="width: 220px; height: 55px; position: relative; left: 315px; background-color: white;">
+                            <p class="ExerciseTile">
+                                @ExRecord
+                                <button onclick="GotoExercise(@Tile.ExID)">Try Exercise</button>
+                            </p>
+                        </div>
+                    }
                 }
             }
         }

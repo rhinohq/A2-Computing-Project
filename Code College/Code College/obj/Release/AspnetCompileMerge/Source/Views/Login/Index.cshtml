@@ -22,7 +22,7 @@
         if (Account.VerifyUser(Username, Password))
         {
             Account.AddCookie(Username, Password, Response);
-            
+
             Redirect = true;
         }
     }
