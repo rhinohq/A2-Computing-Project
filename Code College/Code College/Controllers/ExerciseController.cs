@@ -44,9 +44,9 @@ namespace Code_College.Controllers
         }
 
         // GET: Exercise
-        public ActionResult Index(int ExerciseID = 1)
+        public ActionResult Index(int id = 1)
         {
-            Exercise CurrentExercise = ExDB.Exercises.Where(x => x.ExID == ExerciseID).FirstOrDefault();
+            Exercise CurrentExercise = ExDB.Exercises.Where(x => x.ExID == id).FirstOrDefault();
 
             ViewBag.Title = CurrentExercise.ExTitle + " - Code College";
             ViewBag.ExerciseTitle = CurrentExercise.ExTitle;
