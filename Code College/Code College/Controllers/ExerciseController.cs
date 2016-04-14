@@ -48,13 +48,13 @@ namespace Code_College.Controllers
         {
             Exercise CurrentExercise = ExDB.Exercises.Where(x => x.ExID == id).FirstOrDefault();
 
+            ViewBag.ExID = CurrentExercise.ExID;
             ViewBag.Title = CurrentExercise.ExTitle + " - Code College";
             ViewBag.ExerciseTitle = CurrentExercise.ExTitle;
             ViewBag.Desc = CurrentExercise.ExDescription;
             ViewBag.ExerciseID = CurrentExercise.ExID;
             ViewBag.CodeTemplate = CurrentExercise.ExCodeTemplate ?? "";
             ViewBag.AppendCode = CurrentExercise.ExAppendCode ?? "";
-            ViewBag.Exercise = CurrentExercise;
 
             return View();
         }

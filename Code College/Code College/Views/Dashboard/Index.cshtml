@@ -7,7 +7,6 @@
     ExerciseController ExerCon = new ExerciseController();
     ExDBEntities ExDB = new ExDBEntities();
     UserDBEntities UserDB = new UserDBEntities();
-    User User;
 
     if (Request.Cookies.AllKeys.Contains("CCUserAuth"))
     {
@@ -20,12 +19,7 @@
         else
         {
             string Username = Cookie.Values["Username"];
-            string Password = Cookie.Values["Password"];
-
-            ViewBag.Username = Username;
-            ViewBag.Password = Password;
-
-            User = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
+            User User = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
 
             foreach (Exercise Exercise in ExDB.Exercises)
             {
@@ -80,7 +74,7 @@
 
         .Exercise {
             text-align: center;
-            border: thin;
+            border: thick;
             font-size: medium;
             padding: 10px;
             margin-left: 220px;
@@ -89,9 +83,10 @@
 
         .ExerciseTile {
             text-align: center;
-            border: thin;
+            border: thick;
             font-size: medium;
             padding: 10px;
+            padding-bottom: 10px;
         }
 
         .Copyright {
@@ -126,11 +121,11 @@
 
                 if (Tile.CompletedByUser)
                 {
-                    <div class="Exercise" style="width: 220px; height: 55px; position: relative; left: 315px; background-color: grey;">
-                        <p class="ExerciseTile">
-                            @ExRecord
+                    <div class="Exercise" style="width: 220px; height: 70px; position: relative; left: 315px; background-color: grey;">
+                        <div class="ExerciseTile">
+                            <p>@ExRecord</p>
                             <button onclick="GotoExercise(@Tile.ExID)">Try Exercise</button>
-                        </p>
+                        </div>
                     </div>
                 }
 
@@ -138,20 +133,20 @@
                 {
                     if (Tile.Locked)
                     {
-                        <div class="Exercise" style="width: 220px; height: 55px; position: relative; left: 315px; background-color: white;">
-                            <p class="ExerciseTile">
-                                @ExRecord
+                        <div class="Exercise" style="width: 220px; height: 70px; position: relative; left: 315px; background-color: white;">
+                            <div class="ExerciseTile">
+                                <p>@ExRecord</p>
                                 <button onclick="GotoExercise(@Tile.ExID)" disabled>Try Exercise</button>
-                            </p>
+                            </div>
                         </div>
                     }
                     else
                     {
-                        <div class="Exercise" style="width: 220px; height: 55px; position: relative; left: 315px; background-color: white;">
-                            <p class="ExerciseTile">
-                                @ExRecord
+                        <div class="Exercise" style="width: 220px; height: 70px; position: relative; left: 315px; background-color: white;">
+                            <div class="ExerciseTile">
+                                <p>@ExRecord</p>
                                 <button onclick="GotoExercise(@Tile.ExID)">Try Exercise</button>
-                            </p>
+                            </div>
                         </div>
                     }
                 }

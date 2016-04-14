@@ -3,6 +3,8 @@
 
 @{
     bool Redirect = false;
+    int ExerciseID = ViewBag.ExID;
+    UserDBEntities UserDB = new UserDBEntities();
 
     if (Request.Cookies.AllKeys.Contains("CCUserAuth"))
     {
@@ -19,6 +21,13 @@
 
             ViewBag.Username = Username;
             ViewBag.Password = Password;
+
+            User User = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
+
+            if (ExerciseID > User.UserLevel)
+            {
+                Redirect = true;
+            }
         }
     }
     else

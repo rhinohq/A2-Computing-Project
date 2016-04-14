@@ -17,7 +17,6 @@ namespace Language.Lua.Library
             {
                 throw new LuaError("Interpreter: assertion failed!");
             }
-            // return new LuaMultiValue { Values = values };
         }
 
         public static LuaValue error(LuaValue[] values)
