@@ -56,7 +56,7 @@
     </div>
     <h2 class="form-heading">Login</h2>
     <div class="app-cam">
-        <form method="post">
+        <form id="loginForm" method="post">
             @Html.TextBox("Username", null, new { placeholder = "Username" })
             @Html.Password("Password", null, new { placeholder = "Password" })
             <div class="submit"><input type="submit" value="Login"></div>
