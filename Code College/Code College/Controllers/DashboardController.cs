@@ -22,17 +22,12 @@ namespace Code_College.Controllers
             return View();
         }
 
-        public class ExTile : IEquatable<ExTile>
+        public class ExTile
         {
             public bool CompletedByUser { get; set; }
             public bool Locked { get; set; }
             public int ExID { get; set; }
             public string ExTitle { get; set; }
-
-            public bool Equals(ExTile other)
-            {
-                throw new NotImplementedException();
-            }
         }
     }
 }
