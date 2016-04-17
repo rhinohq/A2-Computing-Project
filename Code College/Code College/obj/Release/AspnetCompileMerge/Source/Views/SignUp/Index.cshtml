@@ -61,7 +61,7 @@
         <a href="http://ryankendrick.co.uk/"><img src="~/Images/logo.png" alt="" /></a>
     </div>
     <h2 class="form-heading">Register</h2>
-    <form class="form-signin app-cam" action="/SignUp" method="post">
+    <form id="signupForm" class="form-signin app-cam" action="/SignUp" method="post">
         <p>Enter your personal details below:</p>
         @Html.TextBox("Name", null, new { placeholder = "Name" })
         @Html.TextBox("Email", null, new { placeholder = "Email" })

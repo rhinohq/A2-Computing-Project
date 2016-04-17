@@ -122,7 +122,7 @@ namespace Code_College.Models
                     break;
 
                 case 'e':
-                    Regex EmailValidator = new Regex("[a-zA-Z0-9'-@.]", RegexOptions.Compiled);
+                    Regex EmailValidator = new Regex("^[a-zA-Z_0-9]+([-+.'][a-zA-Z_0-9]+)*@[a-zA-Z_0-9]+([-.][a-zA-Z_0-9]+)*.[a-zA-Z_0-9]+([-.][a-zA-Z_0-9]+)*$", RegexOptions.Compiled);
 
                     Validated = EmailValidator.IsMatch(Data);
 
@@ -147,14 +147,14 @@ namespace Code_College.Models
 
             if (user == null)
             {
-                Cookie.Expires.AddYears(-10);
+                Cookie.Expires.AddYears(-2);
                 return false;
             }
             else if (user.PasswordHash == HashCredentials(user.Email, Cryptography.Decrypt(Password, Username)))
                 return true;
             else
             {
-                Cookie.Expires.AddYears(-10);
+                Cookie.Expires.AddYears(-2);
                 return false;
             }
         }
