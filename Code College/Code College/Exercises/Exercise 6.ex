@@ -18,8 +18,8 @@ discount = 0.05\rshipping = 2\r\rsubtotal = 23.50 -- You can change this to what
 <?xml version="1.0" encoding="utf-8"?>
 <MarkScheme>
 	<ControlStructures>
-		<ControlStructure StructType="IF">subtotal &#62; 11</ControlStructure>
-		<ControlStructure StructType="ELSEIF">subtotal &#62; 21</ControlStructure>
+		<ControlStructure StructType="IF">subtotal &#62; 9</ControlStructure>
+		<ControlStructure StructType="ELSEIF">subtotal &#62; 19</ControlStructure>
 		<ControlStructure StructType="ELSE"></ControlStructure>
 	</ControlStructures>
 </MarkScheme>
