@@ -146,11 +146,17 @@ namespace Code_College.Models
             User user = UserDB.Users.Where(x => x.Username == Username).FirstOrDefault();
 
             if (user == null)
+            {
+                Cookie.Expires.AddYears(-10);
                 return false;
+            }
             else if (user.PasswordHash == HashCredentials(user.Email, Cryptography.Decrypt(Password, Username)))
                 return true;
             else
+            {
+                Cookie.Expires.AddYears(-10);
                 return false;
+            }
         }
 
         public static bool VerifyUser(string Username, string Password)
