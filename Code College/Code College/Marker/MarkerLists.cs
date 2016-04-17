@@ -42,6 +42,5 @@ namespace Marker
 
     public class UserCode : Code
     {
-        
     }
 }

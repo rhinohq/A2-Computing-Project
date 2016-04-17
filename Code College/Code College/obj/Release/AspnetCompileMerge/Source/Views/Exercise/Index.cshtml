@@ -76,14 +76,7 @@
                 success: function (data, textStatus, xhr) {
                     console.log(data);
                     document.getElementById("Console").value = data;
-                    var IsCorrect = CodeCorrect(data);
-
-                    if (IsCorrect) {
-                        // TODO: Set borders to green.
-                    }
-                    else {
-                        // TODO: Set borders to red.
-                    }
+                    CodeCorrect(data);
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     console.log('Error in Operation');
@@ -99,18 +92,27 @@
             if (ConsoleOutput === "Sorry, that was incorrect. Please, read the task and try again.") {
                 document.getElementById("Message").innerHTML = "Incorrect, your code does not adhere to the task set, sorry.";
 
-                return false;
+                // TODO: Set borders to red.
             }
             else if (ConsoleOutput.startsWith('Interpreter:')) {
                 document.getElementById("Message").innerHTML = "Incorrect, you have a syntax error in your code.";
 
-                return false;
+                // TODO: Set borders to red.
             }
             else {
                 document.getElementById("Message").innerHTML = "Correct!";
+                document.getElementById("button").onclick = NextExercise;
+                document.getElementById("button").innerHTML = "Next Exercise";
 
-                return true;
+                // TODO: Set borders to green.
             }
+        }
+
+        function NextExercise() {
+            var ExerciseID = @ViewBag.ExID;
+            ExerciseID++;
+
+            window.location = "@Url.Action("Index", "Exercise")?id=" + ExerciseID;
         }
     </script>
 </head>
@@ -126,7 +128,7 @@
 
     <div>
         <textarea id="Code" name="code" value=""></textarea>
-        <div class="submit"><input type="button" value="Submit" onclick="UpdateConsole()"></div>
+        <button id="button" onclick="UpdateConsole()">Submit</button>
     </div>
 
     <div>
