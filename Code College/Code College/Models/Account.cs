@@ -46,7 +46,7 @@ namespace Code_College.Models
                 NewUser.Username = Username;
                 NewUser.PasswordHash = HashCredentials(Email, Password);
 
-                NewUser.UserLevel = 0;
+                NewUser.UserLevel = 1;
 
                 UserDB.Users.Add(NewUser);
                 UserDB.SaveChangesAsync();
