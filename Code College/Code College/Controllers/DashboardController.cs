@@ -1,5 +1,4 @@
 ﻿using Code_College.Models;
-using System;
 using System.Web.Mvc;
 
 namespace Code_College.Controllers
