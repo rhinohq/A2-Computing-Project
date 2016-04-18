@@ -4,7 +4,6 @@
 @{
     bool Redirect = false;
     int Index = 0;
-    ExerciseController ExerCon = new ExerciseController();
     ExDBEntities ExDB = new ExDBEntities();
     UserDBEntities UserDB = new UserDBEntities();
 
@@ -23,7 +22,7 @@
 
             foreach (Exercise Exercise in ExDB.Exercises)
             {
-                if (Exercise.ExID >= User.UserLevel)
+                if (Exercise.ExID == User.UserLevel)
                 {
                     DashboardController.ExerciseTiles[Index] = new DashboardController.ExTile { ExID = Exercise.ExID, ExTitle = Exercise.ExTitle, CompletedByUser = false, Locked = false };
                 }

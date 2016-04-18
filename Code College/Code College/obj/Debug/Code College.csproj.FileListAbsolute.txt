@@ -67,3 +67,4 @@ C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Pr
 C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\bin\System.Net.Http.Formatting.xml
 C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\bin\System.Web.Http.xml
 C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\bin\System.Web.Http.WebHost.xml
+C:\Users\Ryan\New College\Computing\A2 Computing\A2 Project\Code\A2-Computing-Project\Code College\Code College\obj\Debug\Code College.csprojResolveAssemblyReference.cache

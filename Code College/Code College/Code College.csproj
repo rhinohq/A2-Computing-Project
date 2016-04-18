@@ -216,13 +216,11 @@
     <Content Include="Scripts\Editor\codemirror.js" />
     <Content Include="Content\Editor\docs.css" />
     <Content Include="Scripts\Editor\matchbrackets.js" />
-    <Content Include="Scripts\HashForm.js" />
     <Content Include="Scripts\jquery-1.11.2.js" />
     <Content Include="Scripts\jquery-1.11.2.min.js" />
     <Content Include="Scripts\Editor\lua.js" />
     <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\npm.js" />
-    <Content Include="Scripts\SHA512.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
