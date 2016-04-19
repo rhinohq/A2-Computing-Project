@@ -52,6 +52,20 @@
 
     @Scripts.Render("~/bundles/js")
 
+    <style>
+        #Console {
+            background: #1A1A1A;
+            height: 30px;
+            width: 300px;
+            border-radius: 2em;
+            border: none;
+            color: #A2A2A2;
+            padding-left: 1.5em;
+            outline: none;
+            box-shadow: 0 4px 6px -5px hsl(0, 0%, 40%), inset 0px 4px 6px -5px hsl(0, 0%, 2%);
+        }
+    </style>
+
     <script>
         var Redirect = "@Redirect";
 
@@ -132,6 +146,7 @@
     </div>
 
     <div>
+        Console:
         @Html.TextBox("Console", null, new { id = "Console" })
     </div>
 
