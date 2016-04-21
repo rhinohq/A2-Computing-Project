@@ -42,15 +42,10 @@ namespace Code_College.Controllers
             return RedirectToAction("Index");
         }
 
-        public class ExRow : IEquatable<ExRow>
+        public class ExRow
         {
             public int ExID { get; set; }
             public string ExTitle { get; set; }
-
-            public bool Equals(ExRow other)
-            {
-                throw new NotImplementedException();
-            }
         }
     }
 }

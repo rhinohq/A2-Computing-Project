@@ -183,7 +183,7 @@ namespace Code_College.Models
                         {
                             NewMarkScheme.CheckConStruct = true;
 
-                            ExMarkScheme.ControlStructure NewConStruct = new ExMarkScheme.ControlStructure();
+                            Code.ControlStructure NewConStruct = new ExMarkScheme.ControlStructure();
 
                             NewConStruct.StructureCondition = Node.InnerText;
                             NewConStruct.StructureType = Node.Attributes.GetNamedItem("StructType").Value;
@@ -198,7 +198,7 @@ namespace Code_College.Models
                     }
                     catch
                     {
-                        ExMarkScheme.ControlStructure NewConStruct = new ExMarkScheme.ControlStructure();
+                        Code.ControlStructure NewConStruct = new ExMarkScheme.ControlStructure();
 
                         NewMarkScheme.CheckConStruct = false;
 
@@ -237,7 +237,7 @@ namespace Code_College.Models
                         {
                             NewMarkScheme.CheckVars = true;
 
-                            ExMarkScheme.Variable NewVar = new ExMarkScheme.Variable();
+                            Code.Variable NewVar = new ExMarkScheme.Variable();
 
                             NewVar.VarName = Node.InnerText;
                             NewVar.VarValue = Node.Attributes.GetNamedItem("VarValue").Value;
@@ -252,7 +252,7 @@ namespace Code_College.Models
                     }
                     catch
                     {
-                        ExMarkScheme.Variable NewVar = new ExMarkScheme.Variable();
+                        Code.Variable NewVar = new ExMarkScheme.Variable();
 
                         NewMarkScheme.CheckVars = false;
 
