@@ -41,6 +41,7 @@ namespace Language.Lua.Library
         {
             module.SetNameValue("huge", new LuaNumber(double.MaxValue));
             module.SetNameValue("pi", new LuaNumber(Math.PI));
+            module.SetNameValue("e", new LuaNumber(Math.E));
             module.Register("pow", pow);
             module.Register("random", random);
             module.Register("randomseed", randomseed);
