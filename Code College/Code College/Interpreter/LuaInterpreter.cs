@@ -32,11 +32,11 @@ namespace Language.Lua
             return Interpreter(UserCode, CreateGlobalEnviroment());
         }
 
-        public static LuaValue Interpreter(string UserCode, LuaTable Enviroment)
+        public static LuaValue Interpreter(string UserCode, LuaTable Environment)
         {
             Chunk Chunk = Parse(UserCode);
 
-            Chunk.Enviroment = Enviroment;
+            Chunk.Environment = Environment;
 
             return Chunk.Execute();
         }

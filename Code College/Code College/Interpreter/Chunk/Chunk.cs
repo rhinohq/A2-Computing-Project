@@ -123,7 +123,7 @@ namespace Language.Lua
 
     public partial class Chunk
     {
-        public LuaTable Enviroment;
+        public LuaTable Environment;
 
         public LuaValue Execute()
         {
@@ -133,7 +133,7 @@ namespace Language.Lua
 
         public LuaValue Execute(LuaTable enviroment, out bool isBreak)
         {
-            Enviroment = new LuaTable(enviroment);
+            Environment = new LuaTable(enviroment);
             return Execute(out isBreak);
         }
 
@@ -145,7 +145,7 @@ namespace Language.Lua
                 if (returnStmt != null)
                 {
                     isBreak = false;
-                    return LuaMultiValue.WrapLuaValues(returnStmt.ExprList.ConvertAll(expr => expr.Evaluate(Enviroment)).ToArray());
+                    return LuaMultiValue.WrapLuaValues(returnStmt.ExprList.ConvertAll(expr => expr.Evaluate(Environment)).ToArray());
                 }
                 else if (statement is BreakStmt)
                 {
@@ -154,7 +154,7 @@ namespace Language.Lua
                 }
                 else
                 {
-                    var returnValue = statement.Execute(Enviroment, out isBreak);
+                    var returnValue = statement.Execute(Environment, out isBreak);
                     if (returnValue != null || isBreak == true)
                     {
                         return returnValue;
@@ -197,7 +197,7 @@ namespace Language.Lua
             LuaValue loopVar = neatValues[2];
 
             var table = new LuaTable(enviroment);
-            Body.Enviroment = table;
+            Body.Environment = table;
 
             while (true)
             {
@@ -253,7 +253,7 @@ namespace Language.Lua
 
             var table = new LuaTable(enviroment);
             table.SetNameValue(VarName, start);
-            Body.Enviroment = table;
+            Body.Environment = table;
 
             while (step > 0 && start.Number <= end.Number ||
                    step <= 0 && start.Number >= end.Number)

@@ -73,7 +73,7 @@ namespace Language.Lua
                         table.SetNameValue("...", new LuaMultiValue(args));
                     }
 
-                    Chunk.Enviroment = table;
+                    Chunk.Environment = table;
 
                     return Chunk.Execute();
                 })
