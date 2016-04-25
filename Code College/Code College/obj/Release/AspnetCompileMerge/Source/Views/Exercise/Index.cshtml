@@ -129,21 +129,21 @@
         function CodeCorrect (ConsoleOutput)
         {
             if (ConsoleOutput === "Sorry, that was incorrect. Please, read the task and try again.") {
-                document.getElementById("Message").innerHTML = "Incorrect, your code does not adhere to the task set, sorry.";
+                document.getElementsByClassName("Message")[0].innerHTML = "Incorrect, your code does not adhere to the task set, sorry.";
 
-                // TODO: Set borders to red.
+                document.getElementById("Console").style['background'] = 'red';
             }
             else if (ConsoleOutput.startsWith('Interpreter:')) {
-                document.getElementById("Message").innerHTML = "Incorrect, you have a syntax error in your code.";
+                document.getElementsByClassName("Message")[0].innerHTML = "Incorrect, you have a syntax error in your code.";
 
-                // TODO: Set borders to red.
+                document.getElementById("Console").style['background'] = 'red';
             }
             else {
-                document.getElementById("Message").innerHTML = "Correct!";
+                document.getElementsByClassName("Message")[0].innerHTML = "Correct!";
                 document.getElementById("button").onclick = NextExercise;
                 document.getElementById("button").innerHTML = "Next Exercise";
 
-                // TODO: Set borders to green.
+                document.getElementById("Console").style['background'] = 'green';
             }
         }
 
@@ -173,7 +173,7 @@
         <br />@Html.TextBox("Console", null, new { id = "Console" })<br />
     </div>
 
-    <div id="Message"></div>
+    <div class="Message"></div>
 
     <script>
         var CodeTemplate = "@ViewBag.CodeTemplate";
