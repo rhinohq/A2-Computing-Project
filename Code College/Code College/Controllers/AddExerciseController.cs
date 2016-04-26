@@ -14,6 +14,7 @@ namespace Code_College.Controllers
         // GET: AddExercise
         public ActionResult Index()
         {
+            // Determines how many exercises are in the database and creates an array of that size
             int NoOfExercises = 0;
 
             foreach (Exercise Exercise in ExDB.Exercises)
@@ -24,14 +25,18 @@ namespace Code_College.Controllers
             return View();
         }
 
+        // Handles file submission
         [HttpPost]
         public ActionResult Index(HttpPostedFileBase File)
         {
+            // Checks to see if the file is empty
             if (File.ContentLength > 0)
             {
+                // Saves file in an 'Exercises' directory on the server
                 string FileName = Path.GetFileName(File.FileName);
                 string FilePath = Path.Combine(Server.MapPath("~/Exercises"), FileName);
 
+                // Checks to see if file is an exercise file
                 if (File.FileName.EndsWith(".ex"))
                 {
                     File.SaveAs(FilePath);

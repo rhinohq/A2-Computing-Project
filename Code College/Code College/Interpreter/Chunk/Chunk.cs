@@ -5,9 +5,9 @@ namespace Language.Lua
 {
     public partial class Assignment : Statement
     {
-        public override LuaValue Execute(LuaTable enviroment, out bool isBreak)
+        public override LuaValue Execute(LuaTable environment, out bool isBreak)
         {
-            LuaValue[] values = ExprList.ConvertAll(expr => expr.Evaluate(enviroment)).ToArray();
+            LuaValue[] values = ExprList.ConvertAll(expr => expr.Evaluate(environment)).ToArray();
             LuaValue[] neatValues = LuaMultiValue.UnWrapLuaValues(values);
 
             for (int i = 0; i < Math.Min(VarList.Count, neatValues.Length); i++)
@@ -20,7 +20,7 @@ namespace Language.Lua
 
                     if (varName != null)
                     {
-                        SetKeyValue(enviroment, new LuaString(varName.Name), values[i]);
+                        SetKeyValue(environment, new LuaString(varName.Name), values[i]);
 
                         LuaInterpreter.CodeReport.AssignedVariables.Add(new UserCode.Variable { VarName = varName.Name, VarValue = values[i].Value.ToString() });
 
@@ -29,13 +29,13 @@ namespace Language.Lua
                 }
                 else
                 {
-                    LuaValue baseValue = var.Base.Evaluate(enviroment);
+                    LuaValue baseValue = var.Base.Evaluate(environment);
 
                     for (int j = 0; j < var.Accesses.Count - 1; j++)
                     {
                         Access access = var.Accesses[j];
 
-                        baseValue = access.Evaluate(baseValue, enviroment);
+                        baseValue = access.Evaluate(baseValue, environment);
                     }
 
                     Access lastAccess = var.Accesses[var.Accesses.Count - 1];
@@ -50,7 +50,7 @@ namespace Language.Lua
                     KeyAccess keyAccess = lastAccess as KeyAccess;
                     if (lastAccess != null)
                     {
-                        SetKeyValue(baseValue, keyAccess.Key.Evaluate(enviroment), values[i]);
+                        SetKeyValue(baseValue, keyAccess.Key.Evaluate(environment), values[i]);
                     }
                 }
             }
@@ -115,7 +115,7 @@ namespace Language.Lua
 
     public partial class BreakStmt : Statement
     {
-        public override LuaValue Execute(LuaTable enviroment, out bool isBreak)
+        public override LuaValue Execute(LuaTable environment, out bool isBreak)
         {
             throw new NotImplementedException();
         }
@@ -131,9 +131,9 @@ namespace Language.Lua
             return Execute(out isBreak);
         }
 
-        public LuaValue Execute(LuaTable enviroment, out bool isBreak)
+        public LuaValue Execute(LuaTable environment, out bool isBreak)
         {
-            Environment = new LuaTable(enviroment);
+            Environment = new LuaTable(environment);
             return Execute(out isBreak);
         }
 
@@ -169,17 +169,17 @@ namespace Language.Lua
 
     public partial class DoStmt : Statement
     {
-        public override LuaValue Execute(LuaTable enviroment, out bool isBreak)
+        public override LuaValue Execute(LuaTable environment, out bool isBreak)
         {
-            return Body.Execute(enviroment, out isBreak);
+            return Body.Execute(environment, out isBreak);
         }
     }
 
     public partial class ExprStmt : Statement
     {
-        public override LuaValue Execute(LuaTable enviroment, out bool isBreak)
+        public override LuaValue Execute(LuaTable environment, out bool isBreak)
         {
-            Expr.Evaluate(enviroment);
+            Expr.Evaluate(environment);
             isBreak = false;
             return null;
         }
@@ -187,16 +187,16 @@ namespace Language.Lua
 
     public partial class ForInStmt : Statement
     {
-        public override LuaValue Execute(LuaTable enviroment, out bool isBreak)
+        public override LuaValue Execute(LuaTable environment, out bool isBreak)
         {
-            LuaValue[] values = ExprList.ConvertAll(expr => expr.Evaluate(enviroment)).ToArray();
+            LuaValue[] values = ExprList.ConvertAll(expr => expr.Evaluate(environment)).ToArray();
             LuaValue[] neatValues = LuaMultiValue.UnWrapLuaValues(values);
 
             LuaFunction func = neatValues[0] as LuaFunction;
             LuaValue state = neatValues[1];
             LuaValue loopVar = neatValues[2];
 
-            var table = new LuaTable(enviroment);
+            var table = new LuaTable(environment);
             Body.Environment = table;
 
             while (true)
@@ -240,18 +240,18 @@ namespace Language.Lua
 
     public partial class ForStmt : Statement
     {
-        public override LuaValue Execute(LuaTable enviroment, out bool isBreak)
+        public override LuaValue Execute(LuaTable environment, out bool isBreak)
         {
-            LuaNumber start = Start.Evaluate(enviroment) as LuaNumber;
-            LuaNumber end = End.Evaluate(enviroment) as LuaNumber;
+            LuaNumber start = Start.Evaluate(environment) as LuaNumber;
+            LuaNumber end = End.Evaluate(environment) as LuaNumber;
 
             double step = 1;
             if (Step != null)
             {
-                step = (Step.Evaluate(enviroment) as LuaNumber).Number;
+                step = (Step.Evaluate(environment) as LuaNumber).Number;
             }
 
-            var table = new LuaTable(enviroment);
+            var table = new LuaTable(environment);
             table.SetNameValue(VarName, start);
             Body.Environment = table;
 
@@ -274,15 +274,15 @@ namespace Language.Lua
 
     public partial class Function : Statement
     {
-        public override LuaValue Execute(LuaTable enviroment, out bool isBreak)
+        public override LuaValue Execute(LuaTable environment, out bool isBreak)
         {
-            LuaTable table = enviroment;
+            LuaTable table = environment;
 
             if (Name.MethodName == null)
             {
                 for (int i = 0; i < Name.FullName.Count - 1; i++)
                 {
-                    LuaValue obj = enviroment.GetValue(Name.FullName[i]);
+                    LuaValue obj = environment.GetValue(Name.FullName[i]);
                     table = obj as LuaTable;
 
                     if (table == null)
@@ -293,13 +293,13 @@ namespace Language.Lua
 
                 table.SetNameValue(
                     Name.FullName[Name.FullName.Count - 1],
-                    Body.Evaluate(enviroment));
+                    Body.Evaluate(environment));
             }
             else
             {
                 for (int i = 0; i < Name.FullName.Count; i++)
                 {
-                    LuaValue obj = enviroment.GetValue(Name.FullName[i]);
+                    LuaValue obj = environment.GetValue(Name.FullName[i]);
                     table = obj as LuaTable;
 
                     if (table == null)
@@ -312,7 +312,7 @@ namespace Language.Lua
 
                 table.SetNameValue(
                     Name.MethodName,
-                    Body.Evaluate(enviroment));
+                    Body.Evaluate(environment));
             }
 
             isBreak = false;
@@ -322,29 +322,29 @@ namespace Language.Lua
 
     public partial class IfStmt : Statement
     {
-        public override LuaValue Execute(LuaTable enviroment, out bool isBreak)
+        public override LuaValue Execute(LuaTable environment, out bool isBreak)
         {
-            LuaValue condition = Condition.Evaluate(enviroment);
+            LuaValue condition = Condition.Evaluate(environment);
 
             if (condition.GetBooleanValue() == true)
             {
-                return ThenBlock.Execute(enviroment, out isBreak);
+                return ThenBlock.Execute(environment, out isBreak);
             }
             else
             {
                 foreach (ElseifBlock elseifBlock in ElseifBlocks)
                 {
-                    condition = elseifBlock.Condition.Evaluate(enviroment);
+                    condition = elseifBlock.Condition.Evaluate(environment);
 
                     if (condition.GetBooleanValue() == true)
                     {
-                        return elseifBlock.ThenBlock.Execute(enviroment, out isBreak);
+                        return elseifBlock.ThenBlock.Execute(environment, out isBreak);
                     }
                 }
 
                 if (ElseBlock != null)
                 {
-                    return ElseBlock.Execute(enviroment, out isBreak);
+                    return ElseBlock.Execute(environment, out isBreak);
                 }
             }
 
@@ -355,9 +355,9 @@ namespace Language.Lua
 
     public partial class LocalFunc : Statement
     {
-        public override LuaValue Execute(LuaTable enviroment, out bool isBreak)
+        public override LuaValue Execute(LuaTable environment, out bool isBreak)
         {
-            enviroment.SetNameValue(Name, Body.Evaluate(enviroment));
+            environment.SetNameValue(Name, Body.Evaluate(environment));
             isBreak = false;
             return null;
         }
@@ -365,21 +365,21 @@ namespace Language.Lua
 
     public partial class LocalVar : Statement
     {
-        public override LuaValue Execute(LuaTable enviroment, out bool isBreak)
+        public override LuaValue Execute(LuaTable environment, out bool isBreak)
         {
-            LuaValue[] values = ExprList.ConvertAll(expr => expr.Evaluate(enviroment)).ToArray();
+            LuaValue[] values = ExprList.ConvertAll(expr => expr.Evaluate(environment)).ToArray();
             LuaValue[] neatValues = LuaMultiValue.UnWrapLuaValues(values);
 
             for (int i = 0; i < Math.Min(NameList.Count, neatValues.Length); i++)
             {
-                enviroment.RawSetValue(NameList[i], neatValues[i]);
+                environment.RawSetValue(NameList[i], neatValues[i]);
             }
 
             if (neatValues.Length < NameList.Count)
             {
                 for (int i = neatValues.Length; i < NameList.Count - neatValues.Length; i++)
                 {
-                    enviroment.RawSetValue(NameList[i], LuaNil.Nil);
+                    environment.RawSetValue(NameList[i], LuaNil.Nil);
                 }
             }
 
@@ -390,18 +390,18 @@ namespace Language.Lua
 
     public partial class RepeatStmt : Statement
     {
-        public override LuaValue Execute(LuaTable enviroment, out bool isBreak)
+        public override LuaValue Execute(LuaTable environment, out bool isBreak)
         {
             while (true)
             {
-                var returnValue = Body.Execute(enviroment, out isBreak);
+                var returnValue = Body.Execute(environment, out isBreak);
                 if (returnValue != null || isBreak == true)
                 {
                     isBreak = false;
                     return returnValue;
                 }
 
-                LuaValue condition = Condition.Evaluate(enviroment);
+                LuaValue condition = Condition.Evaluate(environment);
 
                 if (condition.GetBooleanValue() == true)
                 {
@@ -415,7 +415,7 @@ namespace Language.Lua
 
     public partial class ReturnStmt : Statement
     {
-        public override LuaValue Execute(LuaTable enviroment, out bool isBreak)
+        public override LuaValue Execute(LuaTable environment, out bool isBreak)
         {
             throw new NotImplementedException();
         }
@@ -423,23 +423,23 @@ namespace Language.Lua
 
     public abstract partial class Statement
     {
-        public abstract LuaValue Execute(LuaTable enviroment, out bool isBreak);
+        public abstract LuaValue Execute(LuaTable environment, out bool isBreak);
     }
 
     public partial class WhileStmt : Statement
     {
-        public override LuaValue Execute(LuaTable enviroment, out bool isBreak)
+        public override LuaValue Execute(LuaTable environment, out bool isBreak)
         {
             while (true)
             {
-                LuaValue condition = Condition.Evaluate(enviroment);
+                LuaValue condition = Condition.Evaluate(environment);
 
                 if (condition.GetBooleanValue() == false)
                 {
                     break;
                 }
 
-                var returnValue = Body.Execute(enviroment, out isBreak);
+                var returnValue = Body.Execute(environment, out isBreak);
                 if (returnValue != null || isBreak == true)
                 {
                     isBreak = false;

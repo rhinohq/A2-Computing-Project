@@ -4,6 +4,7 @@ namespace Language.Lua.Library
 {
     internal class BaseLib
     {
+        // Lua assert function
         public static LuaValue assert(LuaValue[] values)
         {
             bool condition = values[0].GetBooleanValue();
@@ -19,6 +20,7 @@ namespace Language.Lua.Library
             }
         }
 
+        // Lua error function
         public static LuaValue error(LuaValue[] values)
         {
             LuaString message = values[0] as LuaString;
@@ -39,6 +41,7 @@ namespace Language.Lua.Library
             return table.MetaTable;
         }
 
+        // Lua function for printing to the console
         public static LuaValue print(LuaValue[] values)
         {
             LuaInterpreter.CodeReport.Output += string.Join<LuaValue>("    ", values);
@@ -46,6 +49,7 @@ namespace Language.Lua.Library
             return null;
         }
 
+        // Registers functions in library
         public static void RegisterFunctions(LuaTable module)
         {
             module.Register("print", print);
@@ -68,6 +72,7 @@ namespace Language.Lua.Library
             return null;
         }
 
+        // Lua function for converting string to a number
         public static LuaValue tonumber(LuaValue[] values)
         {
             LuaString text = values[0] as LuaString;
@@ -85,11 +90,13 @@ namespace Language.Lua.Library
             return LuaNil.Nil;
         }
 
+        // Lua function for converting number to a string
         public static LuaValue tostring(LuaValue[] values)
         {
             return new LuaString(values[0].ToString());
         }
 
+        // Lua function that returns the data type of an object
         public static LuaValue type(LuaValue[] values)
         {
             if (values.Length > 0)

@@ -11,6 +11,7 @@ namespace Code_College.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
+            // Determines how many exercises are in the database and creates an array of that size
             int NoOfExercises = 0;
 
             foreach (Exercise Exercise in ExDB.Exercises)

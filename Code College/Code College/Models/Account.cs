@@ -171,11 +171,13 @@ namespace Code_College.Models
                 return false;
         }
 
+        // That deals with encryption and decryption of password
         public static class Cryptography
         {
             private const int DerivationIterations = 1000;
             private const int Keysize = 256;
 
+            // Decrypts text
             public static string Decrypt(string CipheredText, string PassPhrase)
             {
                 byte[] cipherTextBytesWithSaltAndIv = Convert.FromBase64String(CipheredText);
@@ -213,6 +215,7 @@ namespace Code_College.Models
                 }
             }
 
+            // Encrypts text
             public static string Encrypt(string PlainText, string PassPhrase)
             {
                 byte[] SaltStringBytes = Generate256BitsOfRandomEntropy();
@@ -254,6 +257,7 @@ namespace Code_College.Models
                 }
             }
 
+            // Generates Random entropy for encryption and decryption
             private static byte[] Generate256BitsOfRandomEntropy()
             {
                 byte[] RandomBytes = new byte[32];

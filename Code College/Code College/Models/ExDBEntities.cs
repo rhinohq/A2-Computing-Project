@@ -4,6 +4,7 @@ using System.Data.Entity;
 
 namespace Code_College.Models
 {
+    // Database context for exercise database 
     public class ExDBEntities : DbContext
     {
         public ExDBEntities() : base("name=ExDBEntities")

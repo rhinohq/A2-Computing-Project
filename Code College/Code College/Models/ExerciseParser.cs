@@ -14,8 +14,10 @@ namespace Code_College.Models
 
         public static void ParseExFile(string Filename)
         {
+            // Open exercise file
             File = new StreamReader(Filename);
 
+            // Parse elements and reset BaseStream position
             NewExercise.ExID = ExParsing.GetExID();
             File.BaseStream.Position = 0;
 
@@ -36,7 +38,7 @@ namespace Code_College.Models
             NewExercise.ExMarkScheme = NewMarkScheme;
 
             ExDB.Exercises.Add(NewExercise);
-            ExDB.SaveChangesAsync();
+            ExDB.SaveChanges();
         }
 
         private static class ExParsing
@@ -164,6 +166,7 @@ namespace Code_College.Models
                 return null;
             }
 
+            // Class that deals with parsing the XML
             public static class XMLParsing
             {
                 public static void ParseXML(XmlDocument XML)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Marker
 {
+    // UserCode and MarkScheme inherit from abstract Code class
     public abstract class Code
     {
         public class Variable : IEquatable<Variable>

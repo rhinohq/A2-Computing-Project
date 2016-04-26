@@ -6,12 +6,14 @@ namespace Language.Lua.Library
     {
         private static Random randomGenerator = new Random();
 
+        // Lua function for finding power of two numbers
         public static LuaValue pow(LuaValue[] values)
         {
             var numbers = CheckArgs2(values);
             return new LuaNumber(Math.Pow(numbers.Item1, numbers.Item2));
         }
 
+        // Lua function for creating random number within limits
         public static LuaValue random(LuaValue[] values)
         {
             if (values.Length == 0)
@@ -30,6 +32,7 @@ namespace Language.Lua.Library
             }
         }
 
+        // Lua function for creating random seed
         public static LuaValue randomseed(LuaValue[] values)
         {
             LuaNumber number = CheckArgs(values);
@@ -37,6 +40,7 @@ namespace Language.Lua.Library
             return number;
         }
 
+        // Registers functions in library
         public static void RegisterFunctions(LuaTable module)
         {
             module.SetNameValue("huge", new LuaNumber(double.MaxValue));
@@ -48,13 +52,15 @@ namespace Language.Lua.Library
             module.Register("sqrt", sqrt);
         }
 
-        public static void RegisterModule(LuaTable enviroment)
+        // Registers library as module in the environment
+        public static void RegisterModule(LuaTable environment)
         {
             LuaTable module = new LuaTable();
             RegisterFunctions(module);
-            enviroment.SetNameValue("math", module);
+            environment.SetNameValue("math", module);
         }
 
+        // Lua function for finding the square root of a number
         public static LuaValue sqrt(LuaValue[] values)
         {
             LuaNumber number = CheckArgs(values);

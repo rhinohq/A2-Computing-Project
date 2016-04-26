@@ -6,21 +6,19 @@ namespace Marker
     public static class Marker
     {
         public static ExMarkScheme MarkScheme { get; set; }
-
+        
         public static bool FullMark()
         {
-            List<bool> MarkList = new List<bool>();
+            List<bool> Marks = new List<bool>();
 
             if (MarkScheme.CheckOutput)
-                MarkList.Add(MarkOutput());
+                Marks.Add(MarkOutput());
             else if (MarkScheme.CheckVars)
-                MarkList.Add(MarkVars());
+                Marks.Add(MarkVars());
             else if (MarkScheme.CheckConStruct)
-                MarkList.Add(MarkControlStructs());
+                Marks.Add(MarkControlStructs());
             else
-                return false;
-
-            bool[] Marks = MarkList.ToArray();
+                return true;
 
             foreach (bool Mark in Marks)
             {
@@ -30,15 +28,14 @@ namespace Marker
 
             return true;
         }
-
+        
         public static bool MarkControlStructs()
         {
             if (MarkScheme.ControlStructures.Contains(new ExMarkScheme.ControlStructure { StructureType = null, StructureCondition = null }))
                 return true;
 
             bool Contains, DNM = false;
-            List<bool> MarkList = new List<bool>();
-            bool[] Marks;
+            List<bool> Marks = new List<bool>();
 
             foreach (UserCode.ControlStructure ConStruct in LuaInterpreter.CodeReport.ControlStructures)
             {
@@ -50,12 +47,10 @@ namespace Marker
                     DNM = true;
 
                 if (Contains || DNM)
-                    MarkList.Add(true);
+                    Marks.Add(true);
                 else
-                    MarkList.Add(false);
+                    Marks.Add(false);
             }
-
-            Marks = MarkList.ToArray();
 
             foreach (bool Mark in Marks)
             {
@@ -80,8 +75,7 @@ namespace Marker
                 return true;
 
             bool Contains, DNM = false;
-            List<bool> MarkList = new List<bool>();
-            bool[] Marks;
+            List<bool> Marks = new List<bool>();
 
             foreach (UserCode.Variable Var in LuaInterpreter.CodeReport.AssignedVariables)
             {
@@ -93,12 +87,10 @@ namespace Marker
                     DNM = true;
 
                 if (Contains || DNM)
-                    MarkList.Add(true);
+                    Marks.Add(true);
                 else
-                    MarkList.Add(false);
+                    Marks.Add(false);
             }
-
-            Marks = MarkList.ToArray();
 
             foreach (bool Mark in Marks)
             {

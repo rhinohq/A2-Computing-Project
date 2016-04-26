@@ -2,6 +2,7 @@
 {
     public static class StringLib
     {
+        // Lua function for formatting strings
         public static LuaValue format(LuaValue[] values)
         {
             LuaString format = values[0] as LuaString;
@@ -13,23 +14,26 @@
             return new LuaString(string.Format(format.Text, args));
         }
 
+        // Lua function for finding length of string
         public static LuaValue len(LuaValue[] values)
         {
             LuaString str = values[0] as LuaString;
             return new LuaNumber(str.Text.Length);
         }
 
+        // Registers functions in library
         public static void RegisterFunctions(LuaTable module)
         {
             module.Register("format", format);
             module.Register("len", len);
         }
 
-        public static void RegisterModule(LuaTable enviroment)
+        // Registers library as module in the environment
+        public static void RegisterModule(LuaTable environment)
         {
             LuaTable module = new LuaTable();
             RegisterFunctions(module);
-            enviroment.SetNameValue("string", module);
+            environment.SetNameValue("string", module);
         }
     }
 }

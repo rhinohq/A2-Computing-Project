@@ -3,6 +3,7 @@ using System.Data.Entity;
 
 namespace Code_College.Models
 {
+    // Database context for user database
     public class User
     {
         public string Email { get; set; }

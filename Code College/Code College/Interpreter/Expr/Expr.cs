@@ -13,7 +13,7 @@ namespace Language.Lua
 
     public abstract partial class Access
     {
-        public abstract LuaValue Evaluate(LuaValue baseValue, LuaTable enviroment);
+        public abstract LuaValue Evaluate(LuaValue baseValue, LuaTable environment);
     }
 
     public abstract partial class BaseExpr : Term
@@ -22,7 +22,7 @@ namespace Language.Lua
 
     public partial class BoolLiteral : Term
     {
-        public override LuaValue Evaluate(LuaTable enviroment)
+        public override LuaValue Evaluate(LuaTable environment)
         {
             return LuaBoolean.From(bool.Parse(Text));
         }
@@ -30,19 +30,19 @@ namespace Language.Lua
 
     public abstract partial class Expr
     {
-        public abstract LuaValue Evaluate(LuaTable enviroment);
+        public abstract LuaValue Evaluate(LuaTable environment);
 
         public abstract Term Simplify();
     }
 
     public partial class FunctionBody
     {
-        public LuaValue Evaluate(LuaTable enviroment)
+        public LuaValue Evaluate(LuaTable environment)
         {
             return new LuaFunction(
                 new LuaFunc(delegate (LuaValue[] args)
                 {
-                    var table = new LuaTable(enviroment);
+                    var table = new LuaTable(environment);
 
                     List<string> names = ParamList.NameList;
 
@@ -83,7 +83,7 @@ namespace Language.Lua
 
     public partial class FunctionCall : Access
     {
-        public override LuaValue Evaluate(LuaValue baseValue, LuaTable enviroment)
+        public override LuaValue Evaluate(LuaValue baseValue, LuaTable environment)
         {
             LuaFunction function = baseValue as LuaFunction;
 
@@ -94,25 +94,25 @@ namespace Language.Lua
                 {
                     if (Args.String != null)
                     {
-                        return function.Function.Invoke(new LuaValue[] { Args.String.Evaluate(enviroment), enviroment });
+                        return function.Function.Invoke(new LuaValue[] { Args.String.Evaluate(environment), environment });
                     }
                     else
                     {
-                        return function.Function.Invoke(new LuaValue[] { Args.ArgList[0].Evaluate(enviroment), enviroment });
+                        return function.Function.Invoke(new LuaValue[] { Args.ArgList[0].Evaluate(environment), environment });
                     }
                 }
 
                 if (Args.Table != null)
                 {
-                    return function.Function.Invoke(new LuaValue[] { Args.Table.Evaluate(enviroment) });
+                    return function.Function.Invoke(new LuaValue[] { Args.Table.Evaluate(environment) });
                 }
                 else if (Args.String != null)
                 {
-                    return function.Function.Invoke(new LuaValue[] { Args.String.Evaluate(enviroment) });
+                    return function.Function.Invoke(new LuaValue[] { Args.String.Evaluate(environment) });
                 }
                 else
                 {
-                    List<LuaValue> args = Args.ArgList.ConvertAll(arg => arg.Evaluate(enviroment));
+                    List<LuaValue> args = Args.ArgList.ConvertAll(arg => arg.Evaluate(environment));
 
                     return function.Function.Invoke(LuaMultiValue.UnWrapLuaValues(args.ToArray()));
                 }
@@ -126,17 +126,17 @@ namespace Language.Lua
 
     public partial class FunctionValue : Term
     {
-        public override LuaValue Evaluate(LuaTable enviroment)
+        public override LuaValue Evaluate(LuaTable environment)
         {
-            return Body.Evaluate(enviroment);
+            return Body.Evaluate(environment);
         }
     }
 
     public partial class GroupExpr : BaseExpr
     {
-        public override LuaValue Evaluate(LuaTable enviroment)
+        public override LuaValue Evaluate(LuaTable environment)
         {
-            return Expr.Evaluate(enviroment);
+            return Expr.Evaluate(environment);
         }
 
         public override Term Simplify()
@@ -147,16 +147,16 @@ namespace Language.Lua
 
     public partial class KeyAccess : Access
     {
-        public override LuaValue Evaluate(LuaValue baseValue, LuaTable enviroment)
+        public override LuaValue Evaluate(LuaValue baseValue, LuaTable environment)
         {
-            LuaValue key = Key.Evaluate(enviroment);
+            LuaValue key = Key.Evaluate(environment);
             return LuaValue.GetKeyValue(baseValue, key);
         }
     }
 
     public partial class MethodCall : Access
     {
-        public override LuaValue Evaluate(LuaValue baseValue, LuaTable enviroment)
+        public override LuaValue Evaluate(LuaValue baseValue, LuaTable environment)
         {
             LuaValue value = LuaValue.GetKeyValue(baseValue, new LuaString(Method));
             LuaFunction function = value as LuaFunction;
@@ -165,15 +165,15 @@ namespace Language.Lua
             {
                 if (Args.Table != null)
                 {
-                    return function.Function.Invoke(new LuaValue[] { baseValue, Args.Table.Evaluate(enviroment) });
+                    return function.Function.Invoke(new LuaValue[] { baseValue, Args.Table.Evaluate(environment) });
                 }
                 else if (Args.String != null)
                 {
-                    return function.Function.Invoke(new LuaValue[] { baseValue, Args.String.Evaluate(enviroment) });
+                    return function.Function.Invoke(new LuaValue[] { baseValue, Args.String.Evaluate(environment) });
                 }
                 else
                 {
-                    List<LuaValue> args = Args.ArgList.ConvertAll(arg => arg.Evaluate(enviroment));
+                    List<LuaValue> args = Args.ArgList.ConvertAll(arg => arg.Evaluate(environment));
                     args.Insert(0, baseValue);
                     return function.Function.Invoke(args.ToArray());
                 }
@@ -187,7 +187,7 @@ namespace Language.Lua
 
     public partial class NameAccess : Access
     {
-        public override LuaValue Evaluate(LuaValue baseValue, LuaTable enviroment)
+        public override LuaValue Evaluate(LuaValue baseValue, LuaTable environment)
         {
             LuaValue key = new LuaString(Name);
             return LuaValue.GetKeyValue(baseValue, key);
@@ -196,7 +196,7 @@ namespace Language.Lua
 
     public partial class NilLiteral : Term
     {
-        public override LuaValue Evaluate(LuaTable enviroment)
+        public override LuaValue Evaluate(LuaTable environment)
         {
             return LuaNil.Nil;
         }
@@ -204,7 +204,7 @@ namespace Language.Lua
 
     public partial class NumberLiteral : Term
     {
-        public override LuaValue Evaluate(LuaTable enviroment)
+        public override LuaValue Evaluate(LuaTable environment)
         {
             double number;
 
@@ -242,19 +242,19 @@ namespace Language.Lua
             RightOperand = right == null ? null : right.Simplify();
         }
 
-        public override LuaValue Evaluate(LuaTable enviroment)
+        public override LuaValue Evaluate(LuaTable environment)
         {
             if (LeftOperand == null)
             {
-                return PrefixUnaryOperation(Operator, RightOperand, enviroment);
+                return PrefixUnaryOperation(Operator, RightOperand, environment);
             }
             else if (RightOperand == null)
             {
-                return LeftOperand.Evaluate(enviroment);
+                return LeftOperand.Evaluate(environment);
             }
             else
             {
-                return InfixBinaryOperation(LeftOperand, Operator, RightOperand, enviroment);
+                return InfixBinaryOperation(LeftOperand, Operator, RightOperand, environment);
             }
         }
 
@@ -301,10 +301,10 @@ namespace Language.Lua
             return null;
         }
 
-        private LuaValue InfixBinaryOperation(Term LeftOperand, string Operator, Term RightOperand, LuaTable enviroment)
+        private LuaValue InfixBinaryOperation(Term LeftOperand, string Operator, Term RightOperand, LuaTable environment)
         {
-            LuaValue leftValue = LeftOperand.Evaluate(enviroment);
-            LuaValue rightValue = RightOperand.Evaluate(enviroment);
+            LuaValue leftValue = LeftOperand.Evaluate(environment);
+            LuaValue rightValue = RightOperand.Evaluate(environment);
 
             switch (Operator)
             {
@@ -523,9 +523,9 @@ namespace Language.Lua
             return null;
         }
 
-        private LuaValue PrefixUnaryOperation(string Operator, Term RightOperand, LuaTable enviroment)
+        private LuaValue PrefixUnaryOperation(string Operator, Term RightOperand, LuaTable environment)
         {
-            LuaValue rightValue = RightOperand.Evaluate(enviroment);
+            LuaValue rightValue = RightOperand.Evaluate(environment);
 
             switch (Operator)
             {
@@ -612,10 +612,10 @@ namespace Language.Lua
             }
         }
 
-        public override LuaValue Evaluate(LuaTable enviroment)
+        public override LuaValue Evaluate(LuaTable environment)
         {
             Term term = BuildExpressionTree();
-            return term.Evaluate(enviroment);
+            return term.Evaluate(environment);
         }
 
         public override Term Simplify()
@@ -738,13 +738,13 @@ namespace Language.Lua
 
     public partial class PrimaryExpr : Term
     {
-        public override LuaValue Evaluate(LuaTable enviroment)
+        public override LuaValue Evaluate(LuaTable environment)
         {
-            LuaValue baseValue = Base.Evaluate(enviroment);
+            LuaValue baseValue = Base.Evaluate(environment);
 
             foreach (Access access in Accesses)
             {
-                baseValue = access.Evaluate(baseValue, enviroment);
+                baseValue = access.Evaluate(baseValue, environment);
             }
 
             return baseValue;
@@ -765,7 +765,7 @@ namespace Language.Lua
 
     public partial class StringLiteral : Term
     {
-        public override LuaValue Evaluate(LuaTable enviroment)
+        public override LuaValue Evaluate(LuaTable environment)
         {
             return new LuaString(Text);
         }
@@ -773,7 +773,7 @@ namespace Language.Lua
 
     public partial class TableConstructor : Term
     {
-        public override LuaValue Evaluate(LuaTable enviroment)
+        public override LuaValue Evaluate(LuaTable environment)
         {
             LuaTable table = new LuaTable();
 
@@ -782,7 +782,7 @@ namespace Language.Lua
                 NameValue nameValue = field as NameValue;
                 if (nameValue != null)
                 {
-                    table.SetNameValue(nameValue.Name, nameValue.Value.Evaluate(enviroment));
+                    table.SetNameValue(nameValue.Name, nameValue.Value.Evaluate(environment));
                     continue;
                 }
 
@@ -790,15 +790,15 @@ namespace Language.Lua
                 if (keyValue != null)
                 {
                     table.SetKeyValue(
-                        keyValue.Key.Evaluate(enviroment),
-                        keyValue.Value.Evaluate(enviroment));
+                        keyValue.Key.Evaluate(environment),
+                        keyValue.Value.Evaluate(environment));
                     continue;
                 }
 
                 ItemValue itemValue = field as ItemValue;
                 if (itemValue != null)
                 {
-                    table.AddValue(itemValue.Value.Evaluate(enviroment));
+                    table.AddValue(itemValue.Value.Evaluate(environment));
                     continue;
                 }
             }
@@ -809,7 +809,7 @@ namespace Language.Lua
 
     public partial class Term : Expr
     {
-        public override LuaValue Evaluate(LuaTable enviroment)
+        public override LuaValue Evaluate(LuaTable environment)
         {
             throw new NotImplementedException();
         }
@@ -822,17 +822,17 @@ namespace Language.Lua
 
     public partial class VariableArg : Term
     {
-        public override LuaValue Evaluate(LuaTable enviroment)
+        public override LuaValue Evaluate(LuaTable environment)
         {
-            return enviroment.GetValue(Name);
+            return environment.GetValue(Name);
         }
     }
 
     public partial class VarName : BaseExpr
     {
-        public override LuaValue Evaluate(LuaTable enviroment)
+        public override LuaValue Evaluate(LuaTable environment)
         {
-            return enviroment.GetValue(Name);
+            return environment.GetValue(Name);
         }
 
         public override Term Simplify()
