@@ -2,6 +2,7 @@
 
 namespace Code_College.App_Start
 {
+    // Set up Web API routing
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)

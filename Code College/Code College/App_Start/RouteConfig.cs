@@ -3,6 +3,7 @@ using System.Web.Routing;
 
 namespace Code_College
 {
+    // Set up MVC routing
     public class RouteConfig
     {
         public static void RegisterRoutes(RouteCollection routes)
